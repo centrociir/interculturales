@@ -1,4 +1,4 @@
-![](img/curso-r1.png)
+![](img/interculturales2.png)
 
 # Seminario Cuantitativo
 
@@ -19,7 +19,7 @@ A lo largo del Seminario, los participantes aprenderán a aplicar metodologías 
 Inscripciones aquí: *Pronto*
 
 | Fecha          | Contenido                                                         | Presentación                                                                                       | Código práctico                                                                     | Packages                           | Referencias                                                                |
-|----------------|-------------------------------------------------------------------|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|------------------------------------|----------------------------------------------------------------------------|
+|------------|------------|------------|------------|------------|------------|
 | *Comming soon* | Introducción al uso de R: Procesamiento de datos con Tidyverse I  | [Presentación 1](https://matdknu.github.io/interculturales/clases/clase1/pres/presentacion-1.html) | [Práctico 1](https://matdknu.github.io/cursoR-etnicidad/clases/clase1/clase_1.html) | `Tidyverse`                        | [An Introduction to R](https://intro2r.com "An Introduction to R [Libro]") |
 | *Comming soon* | Introducción al uso de R: Procesamiento de datos con Tidyverse II | [Presentación 2](https://matdknu.github.io/interculturales/clases/clase6/pres/presentacion-6.html) | [Práctico 2](https://matdknu.github.io/cursoR-etnicidad/clases/clase2/clase2.html)  | `Tidyverse`                        | [R For Data Science](https://r4ds.had.co.nz/ "R For Data Science")         |
 | *Comming soon* | Introducción a la visualización de datos: Uso de Ggplot2          | [Presentación 3](https://matdknu.github.io/interculturales/clases/clase3/pres/presentacion-3.html) | [Práctico 3](https://matdknu.github.io/cursoR-etnicidad/clases/clase3/clase3.html)  | `Tidyverse`, `Ggplot2`             | [R For Data Science](https://r4ds.had.co.nz/ "R For Data Science")         |
