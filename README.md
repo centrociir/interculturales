@@ -8,18 +8,18 @@ Público objetivo: Cualquier persona interesada en aprender o interiorizarse en 
 
 **Inicio de curso: Jueves 8 de mayo 2025. Desde las 18:00**
 
-El objetivo del Seminario es integrar las técnicas de Ciencias Sociales Computacionales a las relaciones interculturales. Este seminario busca: En primer lugar, entregar herramientas básicas para que sus asistentes pueden desenvolverse con éxito en trabajos que requieran habilidades cuantitativas. En segundo lugar, que se establezca una comunida de práctica que reflexione y desafíe sobre las implicancias de las técnicas cuantitativas y la emergencia de la Inteligencia Artificial en nuestras profesiones.
+El objetivo del Seminario es integrar las técnicas de Ciencias Sociales Computacionales a las relaciones interculturales. Este seminario busca: En primer lugar, entregar herramientas básicas para que sus asistentes pueden desenvolverse con éxito en trabajos que requieran habilidades cuantitativas. En segundo lugar, que se establezca una comunidad de práctica que reflexione y desafíe sobre las implicancias de las técnicas cuantitativas y la emergencia de la Inteligencia Artificial en nuestras (actuales o futuras) profesiones.
 
-El foco estará puesto en el análisis de datos provenientes de censos y otras fuentes relevantes, con énfasis en el uso de herramientas de visualización y Sistemas de Información Geográfica (SIG) para mapear y contextualizar patrones de diversidad y desigualdad étnica. Asimismo, se trabajará en el análisis textual para explorar narrativas y discursos relacionados con etnicidad, discriminación y relaciones interculturales, utilizando bases de datos de encuestas, medios de comunicación y discursos presidenciales.
+El curso se centrará en el trabajo con datos de encuestas, orientados a la gestión y comunicación de información; datos geográficos, que permitirán georreferenciar poblaciones e instituciones; e información textual, que abrirá posibilidades de análisis de contenidos. Finalmente, se explorarán técnicas emergentes de gestión de la información, como el Web Scraping y el uso de Inteligencia Artificial. Se utilizará el lenguaje de programación R y Python.
 
-A lo largo del Seminario, los participantes aprenderán a aplicar metodologías innovadoras para procesar, analizar y comunicar resultados, integrando visualizaciones avanzadas en R que resalten las interacciones entre diferentes grupos étnicos, los sesgos presentes en los datos y las complejidades de las relaciones interculturales en diversos contextos.
+A lo largo del Seminario, los participantes aprenderán a aplicar metodologías innovadoras para procesar, analizar y comunicar resultados, integrando visualizaciones avanzada que resalten las interacciones entre diferentes grupos étnicos, los sesgos presentes en los datos y las complejidades de las relaciones interculturales en sus diversos contextos.
 
 Inscripciones aquí: [Aquí](https://forms.cloud.microsoft/r/10cuEygf00)
 
 # Temario del curso
 
 | Sesión     | Contenido                                               | Presentación                                                                                       | Código práctico                                                                     | Paquetes / Tecnologías             | Referencias                                                                                |
-|------------|------------|------------|------------|------------|------------|
+|------------|---------------------------------------------------------|----------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------|------------------------------------|--------------------------------------------------------------------------------------------|
 | 08/05/2025 | Procesamiento de Datos en R con Tidyverse               | [Presentación 1](https://matdknu.github.io/interculturales/clases/clase1/pres/presentacion-1.html) | [Práctico 1](https://matdknu.github.io/cursoR-etnicidad/clases/clase1/clase_1.html) | `Tidyverse`                        | [Intro to R](https://intro2r.com)                                                          |
 | 15/05/2025 | Visualización de Datos con ggplot2                      | [Presentación 2](https://matdknu.github.io/interculturales/clases/clase1/pres/presentacion-1.html) | [Práctico 3](https://matdknu.github.io/cursoR-etnicidad/clases/clase3/clase3.html)  | `Ggplot2`, `Tidyverse`             | [R4DS: Visualización](https://r4ds.had.co.nz/data-visualisation.html)                      |
 | 22/05/2025 | Reportes Automatizados en Quarto                        | [Presentación 3](https://matdknu.github.io/interculturales/clases/clase1/pres/presentacion-1.html) | [Práctico 5](https://matdknu.github.io/cursoR-etnicidad/clases/clase5/clase5.html)  | `Quarto`, `Tidyverse`              | [Guía Quarto](https://quarto.org/docs/get-started/hello/rstudio.html)                      |
@@ -29,25 +29,9 @@ Inscripciones aquí: [Aquí](https://forms.cloud.microsoft/r/10cuEygf00)
 | 19/06/2025 | Uso de APIs en Python                                   | [Presentación 7](https://matdknu.github.io/interculturales/clases/clase1/pres/presentacion-1.html) | [Práctico 8](https://matdknu.github.io/cursoR-etnicidad/clases/clase8/clase8.html)  | `requests`, `json`, `pandas`       | [OpenAI Docs](https://platform.openai.com/docs/)                                           |
 | 26/06/2025 | Web Scraping                                            | [Presentación 8](https://matdknu.github.io/interculturales/clases/clase1/pres/presentacion-1.html) | *Pronto*                                                                            | `rvest`, `BeautifulSoup`, `Scrapy` | [Web Scraping in R](https://rvest.tidyverse.org/), [Scrapy Docs](https://docs.scrapy.org/) |
 
-![](img/portada%20.jpg)
+![](img/sticker_ciir_rosa_v2.png){width="125"}
 
--   Procesamiento de Datos en R con Tidyverse (08/05)
-
--   Visualización de Datos con ggplot2 (15/05)
-
--   Reportes Automatizados en Quarto (22/05)
-
--   Análisis Geográficos de Mapas: Aplicación a Datos (29/06)
-
--   Análisis Cuantitativo de Texto en R (05/06)
-
--   Procesamiento de Datos en Python con Pandas (12/06)
-
--   Herramientas de IA en investigación social (19/06)
-
--   Web Scraping (29/06)\*
-
-## A seguir en GitHub...
+## Follow en GitHub...
 
 Personas chilenas que tienen un contenido de R y Pyhon interesante:
 
