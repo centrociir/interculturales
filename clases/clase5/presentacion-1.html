@@ -261,6 +261,8 @@ Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches
 &lt;span style="color: brown;"&gt;acordarme&lt;/span&gt;.
 &lt;/p&gt;
 
+--
+
 &lt;p style="font-size: 18px;"&gt;
 &lt;span style="color: red;"&gt;(1)&lt;/span&gt; 
 &lt;span style="color: blue;"&gt;(1)&lt;/span&gt; 
@@ -276,22 +278,58 @@ Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches
 &lt;span style="color: brown;"&gt;(4)&lt;/span&gt;
 &lt;/p&gt;
 
+--
 
-| Palabra   | Tipo                |
-|:----------|:--------------------|
-| En        | Preposición          |
-| un        | Artículo             |
-| lugar     | Sustantivo           |
-| de        | Preposición          |
-| la        | Artículo             |
-| Mancha    | Sustantivo propio    |
+&lt;div style="display: flex; align-items: center;"&gt;
 
+&lt;div style="flex: 1; padding-right: 20px;"&gt;
+
+&lt;table style="width:100%; border-collapse: collapse;"&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th style="text-align: left;"&gt;Palabra&lt;/th&gt;
+&lt;th style="text-align: left;"&gt;Tipo&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;En&lt;/td&gt;
+&lt;td&gt;Preposición&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;un&lt;/td&gt;
+&lt;td&gt;Artículo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;lugar&lt;/td&gt;
+&lt;td&gt;Sustantivo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;de&lt;/td&gt;
+&lt;td&gt;Preposición&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;la&lt;/td&gt;
+&lt;td&gt;Artículo&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Mancha&lt;/td&gt;
+&lt;td&gt;Sustantivo propio&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;div style="flex: 1;"&gt;
+
+![](presentacion-1_files/figure-html/unnamed-chunk-2-1.png)&lt;!-- --&gt;
 
 ---
 
 ### Sabemos que denotan y connotan
 
-&lt;img src="presentacion-1_files/figure-html/unnamed-chunk-2-1.png" width="1515" /&gt;
+&lt;img src="presentacion-1_files/figure-html/unnamed-chunk-3-1.png" width="1515" /&gt;
 
 ---
 
@@ -312,7 +350,7 @@ Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches
 ### Los datos textuales son miles de millones
 
 
-&lt;img src="presentacion-1_files/figure-html/unnamed-chunk-3-1.png" width="1133" /&gt;
+&lt;img src="presentacion-1_files/figure-html/unnamed-chunk-4-1.png" width="1133" /&gt;
 
 ---
 
@@ -451,17 +489,81 @@ Lemas: ["niña", "correr", "parque"]
 
 # Representación de Texto: Bag of Words
 
-## Ejemplo
+&lt;div style="display: flex; align-items: flex-start;"&gt;
 
-**Documento 1:** "La casa azul."
+&lt;!-- Texto a la izquierda --&gt;
+&lt;div style="flex: 1; padding-right: 30px;"&gt;
 
-**Documento 2:** "La casa roja."
+&lt;ul&gt;
+  &lt;li&gt;&lt;strong&gt;Persona 1:&lt;/strong&gt; "Estallido social."&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Persona 2:&lt;/strong&gt; "Estallido delictual."&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Persona 3:&lt;/strong&gt; "Estallido popular."&lt;/li&gt;
+  &lt;li&gt;&lt;strong&gt;Persona 4:&lt;/strong&gt; "Revuelta popular."&lt;/li&gt;
+&lt;/ul&gt;
 
-| Palabra | Doc1 | Doc2 |
-|:--------|:----:|:----:|
-| casa    |  1   |  1   |
-| azul    |  1   |  0   |
-| roja    |  0   |  1   |
+&lt;/div&gt;
+
+&lt;!-- Tabla BoW a la derecha --&gt;
+&lt;div style="flex: 1;"&gt;
+
+&lt;table style="width:100%; border-collapse: collapse;"&gt;
+  &lt;thead&gt;
+    &lt;tr&gt;
+      &lt;th style="text-align: left;"&gt;Palabra&lt;/th&gt;
+      &lt;th style="text-align: center;"&gt;Persona 1&lt;/th&gt;
+      &lt;th style="text-align: center;"&gt;Persona 2&lt;/th&gt;
+      &lt;th style="text-align: center;"&gt;Persona 3&lt;/th&gt;
+      &lt;th style="text-align: center;"&gt;Persona 4&lt;/th&gt;
+    &lt;/tr&gt;
+  &lt;/thead&gt;
+  &lt;tbody&gt;
+    &lt;tr&gt;
+      &lt;td&gt;estallido&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;social&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;delictual&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;popular&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+    &lt;tr&gt;
+      &lt;td&gt;revuelta&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;0&lt;/td&gt;
+      &lt;td style="text-align: center;"&gt;1&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+---
+
+
+![](presentacion-1_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+
 
 ---
 

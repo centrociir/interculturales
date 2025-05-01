@@ -323,6 +323,8 @@ Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches
 <span style="color: brown;">acordarme</span>.
 </p>
 
+--
+
 <p style="font-size: 18px;">
 <span style="color: red;">(1)</span> 
 <span style="color: blue;">(1)</span> 
@@ -338,16 +340,65 @@ Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches
 <span style="color: brown;">(4)</span>
 </p>
 
+--
 
-| Palabra   | Tipo                |
-|:----------|:--------------------|
-| En        | Preposición          |
-| un        | Artículo             |
-| lugar     | Sustantivo           |
-| de        | Preposición          |
-| la        | Artículo             |
-| Mancha    | Sustantivo propio    |
+<div style="display: flex; align-items: center;">
 
+<div style="flex: 1; padding-right: 20px;">
+
+<table style="width:100%; border-collapse: collapse;">
+<thead>
+<tr>
+<th style="text-align: left;">Palabra</th>
+<th style="text-align: left;">Tipo</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>En</td>
+<td>Preposición</td>
+</tr>
+<tr>
+<td>un</td>
+<td>Artículo</td>
+</tr>
+<tr>
+<td>lugar</td>
+<td>Sustantivo</td>
+</tr>
+<tr>
+<td>de</td>
+<td>Preposición</td>
+</tr>
+<tr>
+<td>la</td>
+<td>Artículo</td>
+</tr>
+<tr>
+<td>Mancha</td>
+<td>Sustantivo propio</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+
+<div style="flex: 1;">
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Crear la secuencia
+secuencia <- c(1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 2, 4)
+
+# Crear un gráfico de líneas
+plot(secuencia, type = "o", pch = 16, lwd = 2,
+     xlab = "Posición en la secuencia", ylab = "Valor",
+     main = "Gráfico de la secuencia (1)(1)(2)(1)(1)(2)...")
+
+# Agregar líneas de referencia
+abline(h = unique(secuencia), col = "gray", lty = 3)
+
+```
 
 ---
 
@@ -527,17 +578,107 @@ Lemas: ["niña", "correr", "parque"]
 
 # Representación de Texto: Bag of Words
 
-## Ejemplo
+<div style="display: flex; align-items: flex-start;">
 
-**Documento 1:** "La casa azul."
+<!-- Texto a la izquierda -->
+<div style="flex: 1; padding-right: 30px;">
 
-**Documento 2:** "La casa roja."
+<ul>
+  <li><strong>Persona 1:</strong> "Estallido social."</li>
+  <li><strong>Persona 2:</strong> "Estallido delictual."</li>
+  <li><strong>Persona 3:</strong> "Estallido popular."</li>
+  <li><strong>Persona 4:</strong> "Revuelta popular."</li>
+</ul>
 
-| Palabra | Doc1 | Doc2 |
-|:--------|:----:|:----:|
-| casa    |  1   |  1   |
-| azul    |  1   |  0   |
-| roja    |  0   |  1   |
+</div>
+
+<!-- Tabla BoW a la derecha -->
+<div style="flex: 1;">
+
+<table style="width:100%; border-collapse: collapse;">
+  <thead>
+    <tr>
+      <th style="text-align: left;">Palabra</th>
+      <th style="text-align: center;">Persona 1</th>
+      <th style="text-align: center;">Persona 2</th>
+      <th style="text-align: center;">Persona 3</th>
+      <th style="text-align: center;">Persona 4</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>estallido</td>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">0</td>
+    </tr>
+    <tr>
+      <td>social</td>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">0</td>
+    </tr>
+    <tr>
+      <td>delictual</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">0</td>
+    </tr>
+    <tr>
+      <td>popular</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">1</td>
+      <td style="text-align: center;">1</td>
+    </tr>
+    <tr>
+      <td>revuelta</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">0</td>
+      <td style="text-align: center;">1</td>
+    </tr>
+  </tbody>
+</table>
+
+</div>
+
+</div>
+
+---
+
+
+```{r, echo=FALSE, message=FALSE, warning=FALSE}
+
+# Cargar paquete
+library(igraph)
+
+# Definir las conexiones (aristas) entre palabras
+relaciones <- data.frame(
+  from = c("estallido", "estallido", "estallido", "revuelta"),
+  to   = c("social", "delictual", "popular", "popular")
+)
+
+# Crear grafo
+g <- graph_from_data_frame(relaciones, directed = FALSE)
+
+# Dibujar red
+plot(
+  g,
+  vertex.label.color = "black",
+  vertex.label.cex = 1.2,
+  vertex.color = "lightblue",
+  edge.color = "gray50",
+  edge.width = 2,
+  layout = layout_with_fr,
+  main = "Red semántica de términos usados"
+)
+
+```
+
 
 ---
 
