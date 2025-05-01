@@ -240,14 +240,25 @@ El taller se estructura en dos partes: Presentación, con una introducción a lo
 
 ---
 
-## Sobre mí
+## **Sobre mí**
 
 
 ![matias](images/matias.png){width=250px}
 
 ---
 
-## Ciencias Sociales Computacionales 
+## **Temario de hoy**
+
+1. ¿Qué son las ciencias sociales computacionales? 
+2. Introducción a Tidyverse
+3. Funciones fundamentales de Tidyverse
+4. Aplicación a datos reales
+5. Comunicación de resultados
+6. Código práctico
+
+---
+
+## **Ciencias Sociales Computacionales** 
 
 .pull-left[
 📈 **Explosión de datos sociales digitales**
@@ -279,7 +290,7 @@ El taller se estructura en dos partes: Presentación, con una introducción a lo
 
 ---
 
-## Ciencias Sociales Computacionales 
+## **Ciencias Sociales Computacionales**
 
 .pull-left[ **🔍 ¿Se puede ser crítico? **
 
@@ -304,7 +315,7 @@ Proponer formas más justas de representar la realidad ]
  
 ---
 
-## Ciencias Sociales Computacionales 
+## **Ciencias Sociales Computacionales **
 
 .pull-left[ 
 
@@ -320,7 +331,7 @@ Proponer formas más justas de representar la realidad ]
 ]
 
 ---
-## Introducción: R Base y Tidyverse
+## **Introducción: R Base y Tidyverse**
 
 .pull-left[
 
@@ -354,7 +365,7 @@ library(tidyverse)
 
 ---
 
-## Introducción: El Ecosistema Tidyverse
+## **Introducción: El Ecosistema Tidyverse **
 
 &lt;div style="display: flex; justify-content: space-between; align-items: center;"&gt;
 
@@ -377,7 +388,8 @@ library(tidyverse)
 
 
 ---
-## Esto no es una pipa!
+## **Esto no es una pipa! **
+
 .pull-left[
 **¿Qué es la "pipa" en tidyverse?**
 **La pipa `%&gt;%`** permite *encadenar operaciones* de forma clara y legible.  
@@ -413,7 +425,7 @@ De modo similar, el operador %&gt;% no es literalmente una pipa.
 
 ---
 
-## Esto no es una pipa!
+## **Esto no es una pipa!**
 
 .pull-left[
 
@@ -437,7 +449,7 @@ La pipa se ejecuta con `Command/Control + Shift + M `.
 
 ---
  
-### Tidyverse: Ejemplos con data Penguins
+### **Tidyverse: Ejemplos con data Penguins**
 
 ![matias](images/penguin.jpg)
 
@@ -524,7 +536,7 @@ penguins %&gt;%
 
 
 ---
-## Tidyverse: `filter()`
+## **Tidyverse: `filter()`**
 
 
 
@@ -544,7 +556,7 @@ penguins %&gt;%
 
 ---
 
-## Tidyverse: `filter()`  
+## **Tidyverse: `filter()`  **
 
 
 ``` r
@@ -563,7 +575,7 @@ penguins %&gt;%
 
 ---
 
-## Tidyverse: `group_by()` + `summarise()`
+## **Tidyverse: `group_by()` + `summarise()`**
 
 
 
@@ -590,7 +602,7 @@ penguins %&gt;%
 
 ---
 
-## Aplicación de datos
+## **Aplicación de datos**
 
 
 ![paper](images/casen_2022.png)
@@ -616,26 +628,66 @@ casen2022 &lt;- readRDS("data/casen2022_sample.rds") |&gt; glimpse()
 
 
 
+---
+
+## **Aplicación de datos**
 
 
+
+``` r
+casen2022 |&gt; select(pueblos_indigenas, yautcor, region, educ) |&gt; 
+  group_by(pueblos_indigenas) |&gt; # Indígena (0 = No, 1 = Sí)
+  summarise(
+    promedio_ingreso = mean(yautcor, na.rm = TRUE))
+```
+
+```
+## # A tibble: 2 × 2
+##   pueblos_indigenas promedio_ingreso
+##          &lt;hvn_lbll&gt;            &lt;dbl&gt;
+## 1                 0          617099.
+## 2                 1          465819.
+```
+
+---
+
+## **Comunicación de resultados: R orientado a objetos **
+
+
+``` r
+tabla &lt;- casen2022 |&gt; select(pueblos_indigenas, yautcor, region, educ) |&gt; 
+  group_by(pueblos_indigenas) |&gt; # Indígena (0 = No, 1 = Sí)
+  summarise(
+    promedio_ingreso = mean(yautcor, na.rm = TRUE))
+```
+
+
+``` r
+tabla
+```
+
+```
+## # A tibble: 2 × 2
+##   pueblos_indigenas promedio_ingreso
+##          &lt;hvn_lbll&gt;            &lt;dbl&gt;
+## 1                 0          617099.
+## 2                 1          465819.
+```
 
 
 
 
 ---
 
-## Aplicación de datos
+## **Comunicación de resultados**
 
 
----
+``` r
+readr::write_csv(tabla, "table/tabla.csv") #Guardar en carpeta table
+```
 
-## Comunicación de resultados
+![paper](images/tabla-exportada.png)
 
-
-
----
-
-## Comunicación de resultados
 
 ---
 
