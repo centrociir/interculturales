@@ -1,7 +1,7 @@
 ---
 title: "InteRculturales"
-subtitle: "Pontificia Universidad Católica de Chile | CHISOCNET 2024"
-author: "Roberto Cantillan Carrasco"
+subtitle: "Sesión 1"
+author: "Matías Deneken"
 date: ''
 output:
   xaringan::moon_reader:
@@ -18,12 +18,24 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+knitr::opts_chunk$set(
+  warning = FALSE,
+  message = FALSE,
+  cache = FALSE
+)
+
 options(htmltools.dir.version = FALSE)
+
 ```
+
+
 
 ```{r xaringan-themer, include=FALSE}
 library(xaringanthemer)
 library(xaringanExtra)
+library(palmerpenguins)
+library(dplyr)
+library(tidyverse)
 use_panelset()
 
 
@@ -135,7 +147,7 @@ options("slide_image_placeholder" = FALSE)
 ```
 
 class: left title-slide
-background-image: url('pipa.jpg')
+background-image: url('images/pipa.jpg')
 background-size: cover
 background-position: left
 
@@ -277,7 +289,7 @@ Sesión 1 - 2025
 ```{r logo, echo=FALSE}
 library(xaringanExtra)
 use_logo(
-  image_url = "logo_ciir.jpg",
+  image_url = "images/logo_ciir.jpg",
   exclude_class = c("title-slide","hide_logo","inverse"),
   width = "150px",
   height = "150px")
@@ -299,7 +311,182 @@ El taller se estructura en dos partes: Presentación, con una introducción a lo
 
 
 ---
-# Introducción 
+
+## Sobre mí
+
+
+![matias](images/matias.png){width=250px}
+
+---
+
+## Ciencias Sociales Computacionales 
+
+.pull-left[
+📈 **Explosión de datos sociales digitales**
+- Redes sociales, sensores, plataformas digitales  
+- Nuevas fuentes de datos generadas en tiempo real
+
+⚙️ **Avances tecnológicos**
+- Aumento del poder computacional  
+- Acceso a técnicas como machine learning y visualización avanzada
+
+]
+
+.pull-right[
+
+🔍 **Limitaciones de los métodos tradicionales**
+
+- Crece la necesidad de *escalar* el análisis sin perder profundidad teórica
+
+🌐 **Transformación del mundo social**
+- Lo digital ya no es un “medio”, sino parte del tejido social.  
+- La vida social deja huellas de datos
+
+]
+
+---
+
+![matias](images/k-pop.png)
+
+
+---
+
+## Ciencias Sociales Computacionales 
+
+.pull-left[ **🔍 ¿Se puede ser crítico? **
+
+¿Los datos son neutrales o reflejan relaciones de poder?
+¿Qué queda fuera cuando modelamos o cuantificamos fenómenos sociales?
+
+**🧠 Crítica en CSC implica:**
+
+Cuestionar quién produce los datos y con qué fines
+Reflexionar sobre los modelos, métricas y sesgos
+Proponer formas más justas de representar la realidad ]
+
+.pull-right[ **📌 Corrientes críticas**
+
+✊ Feminismo de datos: ¿A quién se nombra, a quién se invisibiliza?
+→ Data Feminism (D'Ignazio & Klein).
+
+🌍 Decolonización de los datos:
+→ ¿Qué epistemologías quedan fuera del análisis computacional?
+→ Datos como forma de poder colonial.
+ ]
+ 
+---
+
+## Ciencias Sociales Computacionales 
+
+.pull-left[ 
+
+![paper](images/chinese-computational.png)
+
+ ]
+ 
+ 
+.pull-right[
+
+![paper](images/feminismo-datos.jpeg){width=150px}
+
+]
+
+---
+## Introducción: R Base y Tidyverse
+
+```{r}
+library(tidyverse)
+```
+
+
+---
+
+## Introducción: R Base y tidyverse
+
+---
+## Esto no es una pipa!
+.pull-left[
+**¿Qué es la "pipa" en tidyverse?**
+**La pipa `%>%`** permite *encadenar operaciones* de forma clara y legible.  
+
+```{r}
+penguins %>%
+  group_by(species) %>%
+  summarise(avg_bill_length = 
+              mean(bill_length_mm, 
+                na.rm = TRUE)) 
+```
+]
+
+.pull-right[ 🎨 **¿Por qué se usa la imagen de Magritte para explicar la pipa?**
+
+El operador %>% se pronuncia comúnmente como pipe (tubería en inglés), y su símbolo recuerda una tubería por donde fluye algo.
+
+Juego conceptual: La obra de Magritte muestra una imagen de una pipa con el texto "Esto no es una pipa".
+
+De modo similar, el operador %>% no es literalmente una pipa.
+
+]
+
+---
+
+## Esto no es una pipa!
+
+.pull-left[
+
+![matias](images/pipa2.jpg)
+
+]
+
+.pull-right[
+
+
+La pipa se ejecuta con `Command/Control + Shift + M `. 
+
+**Dos formas**: Funcionan igual. 
+
+- %>%
+- |> 
+
+![matias](images/pipa_modi.png)
+
+]
+
+
+
+
+---
+
+## Tidyverse: Principales funciones
+
+---
+
+## Tidyverse: Principales funciones
+
+
+---
+
+## Tidyverse: Principales funciones
+
+
+---
+
+## Aplicación de datos
+
+---
+
+## Aplicación de datos
+
+
+---
+
+## Comunicación de resultados
+
+
+
+---
+
+## Comunicación de resultados
 
 ---
 

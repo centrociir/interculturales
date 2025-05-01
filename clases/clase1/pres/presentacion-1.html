@@ -3,7 +3,7 @@
   <head>
     <title>InteRculturales</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Roberto Cantillan Carrasco" />
+    <meta name="author" content="Matías Deneken" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
@@ -47,8 +47,10 @@
 
 
 
+
+
 class: left title-slide
-background-image: url('pipa.jpg')
+background-image: url('images/pipa.jpg')
 background-size: cover
 background-position: left
 
@@ -192,7 +194,7 @@ Sesión 1 - 2025
 width: 150px;
 height: 150px;
 z-index: 0;
-background-image: url(logo_ciir.jpg);
+background-image: url(images/logo_ciir.jpg);
 background-size: contain;
 background-repeat: no-repeat;
 position: absolute;
@@ -237,7 +239,193 @@ El taller se estructura en dos partes: Presentación, con una introducción a lo
 
 
 ---
-# Introducción 
+
+## Sobre mí
+
+
+![matias](images/matias.png){width=250px}
+
+---
+
+## Ciencias Sociales Computacionales 
+
+.pull-left[
+📈 **Explosión de datos sociales digitales**
+- Redes sociales, sensores, plataformas digitales  
+- Nuevas fuentes de datos generadas en tiempo real
+
+⚙️ **Avances tecnológicos**
+- Aumento del poder computacional  
+- Acceso a técnicas como machine learning y visualización avanzada
+
+]
+
+.pull-right[
+
+🔍 **Limitaciones de los métodos tradicionales**
+
+- Crece la necesidad de *escalar* el análisis sin perder profundidad teórica
+
+🌐 **Transformación del mundo social**
+- Lo digital ya no es un “medio”, sino parte del tejido social.  
+- La vida social deja huellas de datos
+
+]
+
+---
+
+![matias](images/k-pop.png)
+
+
+---
+
+## Ciencias Sociales Computacionales 
+
+.pull-left[ **🔍 ¿Se puede ser crítico? **
+
+¿Los datos son neutrales o reflejan relaciones de poder?
+¿Qué queda fuera cuando modelamos o cuantificamos fenómenos sociales?
+
+**🧠 Crítica en CSC implica:**
+
+Cuestionar quién produce los datos y con qué fines
+Reflexionar sobre los modelos, métricas y sesgos
+Proponer formas más justas de representar la realidad ]
+
+.pull-right[ **📌 Corrientes críticas**
+
+✊ Feminismo de datos: ¿A quién se nombra, a quién se invisibiliza?
+→ Data Feminism (D'Ignazio &amp; Klein).
+
+🌍 Decolonización de los datos:
+→ ¿Qué epistemologías quedan fuera del análisis computacional?
+→ Datos como forma de poder colonial.
+ ]
+ 
+---
+
+## Ciencias Sociales Computacionales 
+
+.pull-left[ 
+
+![paper](images/chinese-computational.png)
+
+ ]
+ 
+ 
+.pull-right[
+
+![paper](images/feminismo-datos.jpeg){width=150px}
+
+]
+
+---
+## Introducción: R Base y Tidyverse
+
+
+``` r
+library(tidyverse)
+```
+
+
+---
+
+## Introducción: R Base y tidyverse
+
+---
+## Esto no es una pipa!
+.pull-left[
+**¿Qué es la "pipa" en tidyverse?**
+**La pipa `%&gt;%`** permite *encadenar operaciones* de forma clara y legible.  
+
+
+``` r
+penguins %&gt;%
+  group_by(species) %&gt;%
+  summarise(avg_bill_length = 
+              mean(bill_length_mm, 
+                na.rm = TRUE)) 
+```
+
+```
+## # A tibble: 3 × 2
+##   species   avg_bill_length
+##   &lt;fct&gt;               &lt;dbl&gt;
+## 1 Adelie               38.8
+## 2 Chinstrap            48.8
+## 3 Gentoo               47.5
+```
+]
+
+.pull-right[ 🎨 **¿Por qué se usa la imagen de Magritte para explicar la pipa?**
+
+El operador %&gt;% se pronuncia comúnmente como pipe (tubería en inglés), y su símbolo recuerda una tubería por donde fluye algo.
+
+Juego conceptual: La obra de Magritte muestra una imagen de una pipa con el texto "Esto no es una pipa".
+
+De modo similar, el operador %&gt;% no es literalmente una pipa.
+
+]
+
+---
+
+## Esto no es una pipa!
+
+.pull-left[
+
+![matias](images/pipa2.jpg)
+
+]
+
+.pull-right[
+
+
+La pipa se ejecuta con `Command/Control + Shift + M `. 
+
+**Dos formas**: Funcionan igual. 
+
+- %&gt;%
+- |&gt; 
+
+![matias](images/pipa_modi.png)
+
+]
+
+
+
+
+---
+
+## Tidyverse: Principales funciones
+
+---
+
+## Tidyverse: Principales funciones
+
+
+---
+
+## Tidyverse: Principales funciones
+
+
+---
+
+## Aplicación de datos
+
+---
+
+## Aplicación de datos
+
+
+---
+
+## Comunicación de resultados
+
+
+
+---
+
+## Comunicación de resultados
 
 ---
 
@@ -253,11 +441,11 @@ background-size: cover
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
 <script>var slideshow = remark.create({
-"highlightStyle": "github",
-"highlightLines": true,
-"countIncrementalSlides": true,
-"ratio": "16:9",
-"slideNumberFormat": "%current%"
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": true,
+  "ratio": "16:9",
+  "slideNumberFormat": "%current%"
 });
 if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
   window.dispatchEvent(new Event('resize'));
