@@ -394,14 +394,58 @@ Proponer formas más justas de representar la realidad ]
 ---
 ## Introducción: R Base y Tidyverse
 
+.pull-left[
+
+**🧠 R Base **
+Es el conjunto de funciones que vienen integradas por defecto en R. Permiten hacer casi todo (leer datos, analizarlos, graficarlos), pero con una sintaxis más técnica, menos legible y a veces más compleja para tareas comunes
+
+
+**🌱 Tidyverse**
+
+Es un ecosistema moderno de paquetes construidos sobre R base, diseñado para que trabajar con datos sea más intuitivo, legible y coherente.
+
+]
+
+
+.pull-right[
+
+📌 En resumen
+
+R base es el “idioma nativo” de R.
+Tidyverse es una forma moderna y fluida de hablar ese idioma.
+
+
+**Ejecución de funciones** 
+
 ```{r}
-library(tidyverse)
+library(tidyverse) 
 ```
 
+]
 
 ---
 
-## Introducción: R Base y tidyverse
+## Introducción: El Ecosistema Tidyverse
+
+<div style="display: flex; justify-content: space-between; align-items: center;">
+
+<div style="flex: 1; text-align: left;">
+  <img src="images/wickam.jpg" width="130px"><br>
+  <small>Hadley Wickham</small>
+</div>
+
+<div style="flex: 1; text-align: center;">
+  <img src="images/tidyverso.png" width="140px"><br>
+  <small>Tidyverse</small>
+</div>
+
+<div style="flex: 1; text-align: right;">
+  <img src="images/4datascience.jpg" width="130px"><br>
+  <small>R for Data Science</small>
+</div>
+
+</div>
+
 
 ---
 ## Esto no es una pipa!
@@ -452,26 +496,132 @@ La pipa se ejecuta con `Command/Control + Shift + M `.
 
 ]
 
+---
+ 
+### Tidyverse: Ejemplos con data Penguins
 
-
+![matias](images/penguin.jpg)
 
 ---
 
-## Tidyverse: Principales funciones
+## Tidyverse: `select()` **Extrae columnas específicas del dataset**
+
+```{r}
+#| echo: false
+penguin <- penguins |> select(species, island)
+```
+
+```{r}
+penguin |> glimpse()
+```
+
+```{r}
+penguin %>% 
+  select(species) |> 
+  head(5)
+```
 
 ---
 
-## Tidyverse: Principales funciones
+## Tidyverse: `mutate()` : **Crea nuevas columnas o transforma existentes**
 
+
+```{r, message=FALSE}
+penguins %>%
+  mutate(bmi = body_mass_g / flipper_length_mm) |>  
+  select(species, bmi, body_mass_g, flipper_length_mm) |> 
+  head(2)
+```
 
 ---
 
-## Tidyverse: Principales funciones
+## Tidyverse: `mutate()` : **Crea nuevas columnas o transforma existentes**
+
+
+```{r, message=FALSE}
+# Clasificación condicional con case_when()
+penguins %>%
+  mutate(size_class = case_when(
+    body_mass_g < 3000 ~ "liviano",
+    body_mass_g < 4000 ~ "medio",
+    TRUE ~ "pesado"
+  )) |> select(species, size_class, body_mass_g) |> head(2)
+
+```
+
+
+---
+## Tidyverse: `filter()`
+
+
+```{r, results='hide'}
+# Igualdad y conjunción (AND)
+penguins %>%
+  filter(species == "Adelie", island == "Biscoe")
+```
+
+
+```{r, results='hide'}
+# Disyunción (OR)
+penguins %>%
+  filter(species == "Adelie" | species == "Gentoo")
+```
+
+---
+
+## Tidyverse: `filter()`  
+
+```{r, results='hide'}
+# Negación
+penguins %>%
+  filter(species != "Chinstrap")
+
+# Pertenencia múltiple
+penguins %>%
+  filter(species %in% c("Adelie", "Gentoo"))
+
+# Filtrar valores faltantes
+penguins %>%
+  filter(is.na(sex))
+
+```
+
+---
+
+## Tidyverse: `group_by()` + `summarise()`
+
+
+```{r}
+penguins %>%
+  group_by(species) %>%
+  summarise(
+    promedio_masa = mean(body_mass_g, na.rm = TRUE),
+    mediana_masa = median(body_mass_g, na.rm = TRUE),
+    conteo = n()
+  )
+```
+
 
 
 ---
 
 ## Aplicación de datos
+
+
+![paper](images/casen_2022.png)
+ 
+
+```{r}
+casen2022 <- readRDS("data/casen2022_sample.rds") |> glimpse()
+```
+
+
+
+
+
+
+
+
 
 ---
 
