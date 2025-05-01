@@ -14,7 +14,7 @@ format:
       text: |
         <style>
           body::before {
-            content: url('img/ciir_en-negro-vertical.jpg');
+            content: url('pres/images/logo_ciir.jpg');
             display: block;
             text-align: left;
             margin-bottom: 5px; /* Reducido a 5px para un espacio mínimo */
@@ -37,3 +37,5 @@ citation-location: margin
 ---
 
 # Introducción
+
+El presente código práctico aplicará las funciones fundamentales de Tidyverse a la Encuesta de Caracterización Socioeconómica Nacional (CASEN) de la edición 2022. En función de los objetivos del curso, una variable fundamental será la pertencia a Pueblos Originarios. En particular, interesa describir las estadísticas a nivel educativo e ingreso autónomo.
