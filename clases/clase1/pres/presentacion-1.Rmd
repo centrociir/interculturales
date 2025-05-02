@@ -299,11 +299,11 @@ use_logo(
 
 ---
 
-class: left middle
+## **Bienvenidos al taller metodológico!**
+
 
 .full-width[.content-box-purple[
 .bolder[]
-Bienvenidos al taller metodológico!
 Esperamos que este espacio sea nutritivo para su aprendizaje y que sea un lugar en el cuál podamos discutir sobre las implicancias del uso de técnicas computacionales para la investigación social. 
 
 El taller se estructura en dos partes: Presentación, con una introducción a los conceptos fundamentales de la sesión,  y un código práctico en el cuál aplicaremos lo aprendido. 
