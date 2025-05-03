@@ -516,7 +516,53 @@ La pipa se ejecuta con `Command/Control + Shift + M `.
 ![matias](images/penguin.jpg)
 
 ---
+## **Funciones del R Base**
 
+R es un software basado en objetos. Un objeto es una estructura que almacena información en la memoria.
+
+```{r}
+pepino <- 7
+manzana <- 4
+
+pepino * manzana #mutiplicación
+```
+```{r}
+pepino/manzana #división
+```
+
+---
+
+## **Funciones del R Base**
+
+
+```{r}
+# Crear vector de frutas (caracteres)
+frutas <- c("Manzana", "Banana", "Pera", "Naranja", "Uva")
+# Crear vector con longitudes en centímetros (números)
+longitud_cm <- c(8.5, 20.0, 10.0, 9.0, 2.5)
+
+# Combinar en una tabla usando data.frame
+tabla_frutas <- data.frame(
+  Fruta = frutas,
+  Longitud_cm = longitud_cm
+)
+
+# Ver tabla
+print(tabla_frutas)
+
+```
+
+
+---
+
+## **Funciones del R Base**
+
+```{r}
+summary(penguins)
+```
+
+
+---
 ## Tidyverse: `select()` **Extrae columnas específicas del dataset**
 
 ```{r}
@@ -570,14 +616,15 @@ penguins %>%
 ```{r, results='hide'}
 # Igualdad y conjunción (AND)
 penguins %>%
-  filter(species == "Adelie", island == "Biscoe")
+  filter(species == "Adelie", # Esta especia
+         island == "Biscoe")  #Esta lista
 ```
 
 
 ```{r, results='hide'}
 # Disyunción (OR)
 penguins %>%
-  filter(species == "Adelie" | species == "Gentoo")
+  filter(species == "Adelie" | species == "Gentoo") #Cualquiera de ambas
 ```
 
 ---
@@ -587,15 +634,15 @@ penguins %>%
 ```{r, results='hide'}
 # Negación
 penguins %>%
-  filter(species != "Chinstrap")
+  filter(species != "Chinstrap") # Esa no
 
 # Pertenencia múltiple
 penguins %>%
-  filter(species %in% c("Adelie", "Gentoo"))
+  filter(species %in% c("Adelie", "Gentoo")) #Cualquiera de las dods
 
 # Filtrar valores faltantes
 penguins %>%
-  filter(is.na(sex))
+  filter(!is.na(island)) # No NA
 
 ```
 

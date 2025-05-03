@@ -454,7 +454,62 @@ La pipa se ejecuta con `Command/Control + Shift + M `.
 ![matias](images/penguin.jpg)
 
 ---
+## Cosas previas
 
+R es un software basado en objetos. Un objeto es una estructura que almacena información en la memoria
+
+
+``` r
+pepino &lt;- 7
+manzana &lt;- 4
+
+pepino * manzana #mutiplicación
+```
+
+```
+## [1] 28
+```
+
+``` r
+pepino/manzana #división
+```
+
+```
+## [1] 1.75
+```
+
+
+
+---
+
+## **Funciones del R Base**
+
+
+``` r
+summary(penguins)
+```
+
+```
+##       species          island    bill_length_mm  bill_depth_mm  
+##  Adelie   :152   Biscoe   :168   Min.   :32.10   Min.   :13.10  
+##  Chinstrap: 68   Dream    :124   1st Qu.:39.23   1st Qu.:15.60  
+##  Gentoo   :124   Torgersen: 52   Median :44.45   Median :17.30  
+##                                  Mean   :43.92   Mean   :17.15  
+##                                  3rd Qu.:48.50   3rd Qu.:18.70  
+##                                  Max.   :59.60   Max.   :21.50  
+##                                  NA's   :2       NA's   :2      
+##  flipper_length_mm  body_mass_g       sex           year     
+##  Min.   :172.0     Min.   :2700   female:165   Min.   :2007  
+##  1st Qu.:190.0     1st Qu.:3550   male  :168   1st Qu.:2007  
+##  Median :197.0     Median :4050   NA's  : 11   Median :2008  
+##  Mean   :200.9     Mean   :4202                Mean   :2008  
+##  3rd Qu.:213.0     3rd Qu.:4750                3rd Qu.:2009  
+##  Max.   :231.0     Max.   :6300                Max.   :2009  
+##  NA's   :2         NA's   :2
+```
+
+
+---
 ## Tidyverse: `select()` **Extrae columnas específicas del dataset**
 
 
@@ -614,16 +669,19 @@ casen2022 &lt;- readRDS("data/casen2022_sample.rds") |&gt; glimpse()
 ```
 
 ```
-## Rows: 2,000
-## Columns: 8
-## $ region            &lt;hvn_lbll&gt; 8, 6, 10, 13, 4, 13, 8, 8, 7, 13, 8, 7, 5, 6, 3…
-## $ nse               &lt;hvn_lbll&gt; 1, 4, 4, 6, 1, 2, 3, 4, 4, 7, 3, 4, 2, 4, 4, 1,…
-## $ sexo              &lt;hvn_lbll&gt; 2, 2, 2, 1, 1, 1, 2, 2, 1, 2, 1, 1, 2, 2, 1, 2,…
-## $ ecivil            &lt;hvn_lbll&gt; 8, 1, 8, 8, 1, 2, 1, 1, 8, 1, NA, 8, 8, 1, 1, 7…
-## $ educ              &lt;hvn_lbll&gt; 1, 3, 5, 11, 11, 5, 11, 1, 3, 2, 1, 5, 5, 11, 2…
-## $ pueblos_indigenas &lt;hvn_lbll&gt; 0, 0, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0,…
-## $ pobreza           &lt;hvn_lbll&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,…
-## $ yautcor           &lt;dbl&gt; NA, NA, NA, 758333, 800000, 600000, 500000, NA, NA, …
+## Rows: 10,000
+## Columns: 11
+## $ region            &lt;hvn_lbll&gt; 5, 4, 7, 4, 9, 5, 13, 2, 5, 6, 13, 13, 13, 3, 1…
+## $ nse               &lt;hvn_lbll&gt; 4, 2, 1, 1, 6, 4, 2, 2, 2, 1, 7, 3, 2, 2, 1, 6,…
+## $ sexo              &lt;hvn_lbll&gt; 1, 1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2,…
+## $ ecivil            &lt;hvn_lbll&gt; 2, 2, 8, 8, 8, 1, NA, 5, 8, 7, 8, 8, 5, 8, 8, 2…
+## $ educ              &lt;hvn_lbll&gt; 5, 5, 5, 4, 5, 2, 1, 4, 9, 3, 9, 3, 6, 3, 7, 11…
+## $ pueblos_indigenas &lt;hvn_lbll&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+## $ pobreza           &lt;hvn_lbll&gt; 3, 3, 3, 2, 3, 3, 3, 3, 3, 3, 3, 2, 3, 3, 3, 3,…
+## $ p9                &lt;dbl&gt; 3, 5, 5, 5, 3, 4, 5, 1, 3, 2, 3, 8, 3, 7, 3, 3, 6, 5…
+## $ edad              &lt;dbl&gt; 43, 27, 26, 16, 22, 43, 7, 60, 24, 45, 30, 15, 51, 1…
+## $ yautcor           &lt;dbl&gt; 200000, 100000, 400000, NA, NA, 20000, NA, 260000, N…
+## $ ind_hacina        &lt;hvn_lbll&gt; 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1,…
 ```
 
 
@@ -645,8 +703,8 @@ casen2022 |&gt; select(pueblos_indigenas, yautcor, region, educ) |&gt;
 ## # A tibble: 2 × 2
 ##   pueblos_indigenas promedio_ingreso
 ##          &lt;hvn_lbll&gt;            &lt;dbl&gt;
-## 1                 0          617099.
-## 2                 1          465819.
+## 1                 0          624245.
+## 2                 1          494642.
 ```
 
 ---
@@ -670,8 +728,8 @@ tabla
 ## # A tibble: 2 × 2
 ##   pueblos_indigenas promedio_ingreso
 ##          &lt;hvn_lbll&gt;            &lt;dbl&gt;
-## 1                 0          617099.
-## 2                 1          465819.
+## 1                 0          624245.
+## 2                 1          494642.
 ```
 
 
