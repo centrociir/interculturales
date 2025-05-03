@@ -81,6 +81,8 @@ summary(casen) #Función de R base
 
 # Empecemos a procesar!
 
+## Mutate y select: Crear, recodificar y seleccionar.
+
 Para saber la etiqueta correspondiente de las variables debemos acudir al libro de códigos de la Encuesta Casen que se encuentra aquí [bajo el nombre "Libro de códigos Base de datos Casen 2022 (versión 18 marzo 2024)"](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022).
 
 La variable educación posee las siguientes etiquetas.
@@ -151,3 +153,66 @@ casen <- casen |>
     )
   )
 ```
+
+```{r}
+
+casen <- casen %>%
+  mutate(decil_yautcor2 = case_when(
+    yautcor <= 120000 ~ "decil1",
+    yautcor <= 200000 ~ "decil2",
+    yautcor <= 300000 ~ "decil3",
+    yautcor <= 400000 ~ "decil4",
+    yautcor <= 439167 ~ "decil5",
+    yautcor <= 500000 ~ "decil6",
+    yautcor <= 600000 ~ "decil7",
+    yautcor <= 804666.4 ~ "decil8",
+    yautcor <= 1205499.8 ~ "decil9",
+    yautcor <= 11518333 ~ "decil10",
+    TRUE ~ NA_character_
+  ))
+
+```
+
+```{r}
+casen |> select(yautcor, decil_yautcor, decil_yautcor2)
+```
+
+## Group_by y summarise: Transmitir la información
+
+### Variables númericas: Ingreso autónomo corregido (yautcor).
+
+```{r}
+casen |> group_by(pueblos_indigenas) |> 
+  summarise(salario = mean(yautcor, na.rm = TRUE)) #Borrar valores perdidos.
+```
+
+```{r}
+casen |> group_by(pueblos_indigenas, sexo) |> 
+  summarise(salario = mean(yautcor, na.rm = TRUE)) #Borrar valores perdidos.
+```
+
+### Variables categóricas
+
+```{r}
+library(dplyr)
+
+p <- casen |> 
+  filter(!is.na(educ_nivel)) |>
+  group_by(pueblos_indigenas, educ_nivel) |>
+  summarise(n = n(), .groups = "drop") |>
+  group_by(pueblos_indigenas) |>
+  mutate(
+    total = sum(n),
+    porcentaje = round(100 * n / total, 1)
+  ) |>
+  arrange(pueblos_indigenas, educ_nivel)
+
+```
+
+## Encadenar las funciones
+
+## Exportar resultados
+
+# 
+
+# Cierra
