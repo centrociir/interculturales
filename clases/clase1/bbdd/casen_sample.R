@@ -10,7 +10,7 @@ casen2022_sample <- casen2022 %>%
                            sexo, 
                            ecivil,
                            educ,
-                           pueblos_indigenas,
+                          pueblos_indigenas,
                           pobreza,
                           p9, 
                           edad, 
@@ -19,7 +19,7 @@ casen2022_sample <- casen2022 %>%
 
 
 # Paso 1: calcular proporciones por grupo
-proporciones <- casen2022_sample |>
+proporciones <- casen2022 |>
   count(pueblos_indigenas) |>
   mutate(prop = n / sum(n),
          n_muestra = round(prop * 10000))
@@ -29,13 +29,21 @@ library(dplyr)
 
 
 # Paso 2: hacer muestreo estratificado proporcional
-casen2022_sample <- casen2022 |>
-  semi_join(proporciones, by = "pueblos_indigenas") |>
-  group_by(pueblos_indigenas) |>
-  slice_sample(n = first(proporciones$n_muestra[proporciones$pueblos_indigenas == pueblos_indigenas[1]])) |> 
-  ungroup() |>
-  select(region, nse, sexo, ecivil, educ, pueblos_indigenas,
-         pobreza, p9, edad, yautcor, ind_hacina)
+casen2022_sample <- casen2022 |> 
+  group_by(pueblos_indigenas) |> 
+  sample_frac(size = 10000 / nrow(casen2022)) |> 
+  ungroup() |> 
+  select(region, 
+         nse, 
+         sexo, 
+         ecivil,
+         educ,
+         pueblos_indigenas,
+         pobreza,
+         p9, 
+         edad, 
+         yautcor, 
+         ind_hacina)
 
 
 
