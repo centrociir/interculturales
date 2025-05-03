@@ -328,7 +328,7 @@ DT::datatable(casen_tabla3)
 
 Una vez que hemos creado una tabla limpia y legible, puede ser útil exportarla para compartir con otras personas, usarla en un informe o guardarla como respaldo. Aquí usaremos dos paquetes adicionales:
 
--   `scales`: para formatear los números y eliminar la notación científica (por ejemplo, mostrar 1.234.567 en vez de 1.23e+06).
+-   `scales`: para formatear los números y eliminar la notación científica (por ejemplo, mostrar 599,336 en vez de 599336.4444444445).
 -   `writexl`: para guardar la tabla directamente en formato `.xlsx` (compatible con Excel).
 
 ```{r}
