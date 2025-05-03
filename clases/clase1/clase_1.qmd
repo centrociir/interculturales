@@ -221,8 +221,11 @@ casen |> group_by(pueblos_indigenas, sexo) |>  # Veámoslo con sexo.
 ```{r}
 casen |> group_by(pueblos_indigenas, sexo) |>  # Veámoslo con sexo. 
   summarise(salario_mean = mean(yautcor, na.rm = TRUE), 
-            salaria_median = median(yautcor, na.rm = TRUE)) # Agregamos otro estadístico
+            salario_median = median(yautcor, na.rm = TRUE)) |> # Agregamos otro estadístico
+  mutate(ratio = salario_mean/salario_median) #un ratio alto puede sugerir que dentro del grupo hay mucha dispersión o desigualdad
 ```
+
+**La mayor desigualdad relativa está en hombres no indígenas**, donde el ingreso promedio supera en un 45% a la mediana. Esto indica la presencia de personas con ingresos muy altos dentro del grupo.
 
 ### Variables categóricas
 
