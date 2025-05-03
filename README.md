@@ -1,4 +1,4 @@
-![](img/interculturales2.png){width="586"}
+![](img/interculturales2.png)
 
 # Seminario Cuantitativo
 
