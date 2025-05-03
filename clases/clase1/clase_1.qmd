@@ -1,5 +1,5 @@
 ---
-title: "Introducción a R" 
+title: "Introducción a R"
 subtitle: "Documento de trabajo"
 author: "Matías Deneken"
 date: today
@@ -17,7 +17,7 @@ format:
             content: url('pres/images/logo_ciir.jpg');
             display: block;
             text-align: left;
-            margin-bottom: 5px; /* Reducido a 5px para un espacio mínimo */
+            margin-bottom: 5px;
             transform: scale(0.5);
           }
           body::before img {
@@ -25,12 +25,15 @@ format:
             height: auto;
           }
           #title-block-header {
-            margin-top: 0; /* Eliminado el margen superior */
+            margin-top: 0;
           }
           .quarto-title {
-            margin-top: 0; /* Asegura que no haya espacio extra arriba del título */
+            margin-top: 0;
           }
         </style>
+execute:
+  warning: false
+  message: false
 editor: visual
 reference-location: margin
 citation-location: margin
@@ -38,4 +41,113 @@ citation-location: margin
 
 # Introducción
 
-El presente código práctico aplicará las funciones fundamentales de Tidyverse a la Encuesta de Caracterización Socioeconómica Nacional (CASEN) de la edición 2022. En función de los objetivos del curso, una variable fundamental será la pertencia a Pueblos Originarios. En particular, interesa describir las estadísticas a nivel educativo e ingreso autónomo.
+El presente código práctico aplicará las funciones fundamentales de Tidyverse a la Encuesta de Caracterización Socioeconómica Nacional (CASEN) de la edición 2022 reducida en su N. En función de los objetivos del curso, una variable fundamental será la pertencia a Pueblos Originarios. En particular, interesa describir las estadísticas a nivel educativo, ingreso autónomo, pobreza, entre otras.
+
+La base oficial se puede encontrar [En la página del Observatorio del Ministerio de Desarrollo Social](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022).
+
+# Paso previos
+
+## Cargar base de datos
+
+Cargamos la base de datos directamente desde GitHub. Para hacerlo, solo hay que correr el código con `Control/Command` + `Enter.`
+
+```{r}
+url <- "https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase1/bbdd/casen2022_sample.csv"
+destfile <- "casen2022_sample.csv"
+
+# Leerla directamente en R
+casen <- read.csv(destfile, encoding = "UTF-8")
+head(casen)
+
+```
+
+## Cargar librería necesaria
+
+```{r}
+#install.packages(tidyverse) En caso de no estar instalado
+library(tidyverse)
+library(dplyr)
+```
+
+## Examinamos base de datos
+
+```{r}
+casen |> glimpse() 
+```
+
+```{r}
+summary(casen) #Función de R base
+```
+
+# Empecemos a procesar!
+
+Para saber la etiqueta correspondiente de las variables debemos acudir al libro de códigos de la Encuesta Casen que se encuentra aquí [bajo el nombre "Libro de códigos Base de datos Casen 2022 (versión 18 marzo 2024)"](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022).
+
+La variable educación posee las siguientes etiquetas.
+
+0.  Sin Educación Formal
+1.  Básica incompleta
+2.  Básica completa
+3.  Media humanista incompleta
+4.  Media técnica profesional incompleta
+5.  Media humanista completa
+6.  Media técnica profesional completa
+7.  Técnico nivel superior incompleta
+8.  Técnica nivel superior completo
+9.  Profesional incompleto
+10. Postgrado incompleto
+11. Profesional completo
+12. Postgrado completo
+
+En base a lo que aprendimos con la función `mutate` podemos realizar la siguiente recodificación:
+
+```{r}
+casen <- casen |>  #Renombramos el objeto
+  dplyr::mutate(
+    educ_nivel = dplyr::case_when(
+      educ %in% 0:1   ~ "Sin educación",
+      educ %in% 2:4   ~ "Básica",
+      educ %in% 5:6   ~ "Media",
+      educ %in% 7:8   ~ "Técnico nivel superior",
+      educ %in% 9:11  ~ "Profesional",
+      educ == 12      ~ "Postgrado",
+      TRUE            ~ NA_character_
+    ),
+    educ_nivel = factor(educ_nivel, levels = c(
+      "Sin educación", "Básica", "Media", 
+      "Técnico nivel superior", "Profesional", "Postgrado"
+    ), ordered = TRUE)
+  )
+
+```
+
+Una forma de cerciorarse de que esta bien recodificado, es aplicar un `select` de las variables (sin convertirla en objeto).
+
+```{r}
+casen |> select(educ, educ_nivel) |> head(5)
+```
+
+Una recodificación se puedo aplicar yautco (Ingereso autónomo corregido) en base los quintiles.
+
+```{r}
+quantile(casen$yautcor, na.rm = TRUE)
+```
+
+Una forma más sofisticada de pedir los deciles
+
+```{r}
+quantile(casen$yautcor, probs = seq(0, 1, 0.1), na.rm = TRUE)
+
+```
+
+```{r}
+casen <- casen |> 
+  mutate(
+    decil_yautcor = cut(
+      yautcor,
+      breaks = quantile(yautcor, probs = seq(0, 1, 0.1), na.rm = TRUE),
+      include.lowest = TRUE,
+      labels = paste0("Decil ", 1:10)
+    )
+  )
+```

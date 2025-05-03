@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Matías Deneken">
-<meta name="dcterms.date" content="2025-05-01">
+<meta name="dcterms.date" content="2025-05-02">
 
 <title>Introducción a R</title>
 <style>
@@ -21,6 +21,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -40,7 +74,7 @@ ul.task-list li input[type="checkbox"] {
     content: url('pres/images/logo_ciir.jpg');
     display: block;
     text-align: left;
-    margin-bottom: 5px; /* Reducido a 5px para un espacio mínimo */
+    margin-bottom: 5px;
     transform: scale(0.5);
   }
   body::before img {
@@ -48,10 +82,10 @@ ul.task-list li input[type="checkbox"] {
     height: auto;
   }
   #title-block-header {
-    margin-top: 0; /* Eliminado el margen superior */
+    margin-top: 0;
   }
   .quarto-title {
-    margin-top: 0; /* Asegura que no haya espacio extra arriba del título */
+    margin-top: 0;
   }
 </style>
 
@@ -67,6 +101,13 @@ ul.task-list li input[type="checkbox"] {
    
   <ul>
   <li><a href="#introducción" id="toc-introducción" class="nav-link active" data-scroll-target="#introducción"><span class="header-section-number">1</span> Introducción</a></li>
+  <li><a href="#paso-previos" id="toc-paso-previos" class="nav-link" data-scroll-target="#paso-previos"><span class="header-section-number">2</span> Paso previos</a>
+  <ul class="collapse">
+  <li><a href="#cargar-base-de-datos" id="toc-cargar-base-de-datos" class="nav-link" data-scroll-target="#cargar-base-de-datos"><span class="header-section-number">2.1</span> Cargar base de datos</a></li>
+  <li><a href="#cargar-librería-necesaria" id="toc-cargar-librería-necesaria" class="nav-link" data-scroll-target="#cargar-librería-necesaria"><span class="header-section-number">2.2</span> Cargar librería necesaria</a></li>
+  <li><a href="#examinamos-base-de-datos" id="toc-examinamos-base-de-datos" class="nav-link" data-scroll-target="#examinamos-base-de-datos"><span class="header-section-number">2.3</span> Examinamos base de datos</a></li>
+  </ul></li>
+  <li><a href="#empecemos-a-procesar" id="toc-empecemos-a-procesar" class="nav-link" data-scroll-target="#empecemos-a-procesar"><span class="header-section-number">3</span> Empecemos a procesar!</a></li>
   </ul>
 </nav>
 </div>
@@ -92,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 1, 2025</p>
+      <p class="date">May 2, 2025</p>
     </div>
   </div>
   
@@ -106,7 +147,159 @@ ul.task-list li input[type="checkbox"] {
 
 <section id="introducción" class="level1" data-number="1">
 <h1 data-number="1"><span class="header-section-number">1</span> Introducción</h1>
-<p>El presente código práctico aplicará las funciones fundamentales de Tidyverse a la Encuesta de Caracterización Socioeconómica Nacional (CASEN) de la edición 2022. En función de los objetivos del curso, una variable fundamental será la pertencia a Pueblos Originarios. En particular, interesa describir las estadísticas a nivel educativo e ingreso autónomo.</p>
+<p>El presente código práctico aplicará las funciones fundamentales de Tidyverse a la Encuesta de Caracterización Socioeconómica Nacional (CASEN) de la edición 2022 reducida en su N. En función de los objetivos del curso, una variable fundamental será la pertencia a Pueblos Originarios. En particular, interesa describir las estadísticas a nivel educativo, ingreso autónomo, pobreza, entre otras.</p>
+<p>La base oficial se puede encontrar <a href="https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022">En la página del Observatorio del Ministerio de Desarrollo Social</a>.</p>
+</section>
+<section id="paso-previos" class="level1" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> Paso previos</h1>
+<section id="cargar-base-de-datos" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="cargar-base-de-datos"><span class="header-section-number">2.1</span> Cargar base de datos</h2>
+<p>Cargamos la base de datos directamente desde GitHub. Para hacerlo, solo hay que correr el código con <code>Control/Command</code> + <code>Enter.</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase1/bbdd/casen2022_sample.csv"</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>destfile <span class="ot">&lt;-</span> <span class="st">"casen2022_sample.csv"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Leerla directamente en R</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>casen <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(destfile, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(casen)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  region nse sexo ecivil educ pueblos_indigenas pobreza yautcor
+1      4   7    2      8    6                 0       3  660000
+2      5   1    2      5    1                 0       3      NA
+3     16   2    2      8    2                 0       3      NA
+4     16   6    1      1    2                 0       3  416667
+5      5   6    2      8    0                 0       3      NA
+6     13   3    1     NA    1                 0       3      NA</code></pre>
+</div>
+</div>
+</section>
+<section id="cargar-librería-necesaria" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="cargar-librería-necesaria"><span class="header-section-number">2.2</span> Cargar librería necesaria</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages(tidyverse) En caso de no estar instalado</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="examinamos-base-de-datos" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="examinamos-base-de-datos"><span class="header-section-number">2.3</span> Examinamos base de datos</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">glimpse</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,000
+Columns: 8
+$ region            &lt;int&gt; 4, 5, 16, 16, 5, 13, 8, 1, 6, 13, 7, 8, 3, 2, 8, 14,…
+$ nse               &lt;int&gt; 7, 1, 2, 6, 6, 3, 4, 2, 6, 6, 7, 4, 1, 2, 4, 2, 1, 3…
+$ sexo              &lt;int&gt; 2, 2, 2, 1, 2, 1, 2, 2, 1, 1, 2, 1, 1, 1, 1, 1, 2, 2…
+$ ecivil            &lt;int&gt; 8, 5, 8, 1, 8, NA, 1, 8, 1, 2, 6, 1, 1, 1, 8, 5, NA,…
+$ educ              &lt;int&gt; 6, 1, 2, 2, 0, 1, 1, 3, 4, 11, 11, 3, 5, 1, 8, 6, 1,…
+$ pueblos_indigenas &lt;int&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0…
+$ pobreza           &lt;int&gt; 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3…
+$ yautcor           &lt;int&gt; 660000, NA, NA, 416667, NA, NA, NA, NA, 1205833, NA,…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(casen) <span class="co">#Función de R base</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     region           nse             sexo          ecivil     
+ Min.   : 1.00   Min.   :1.000   Min.   :1.00   Min.   :1.000  
+ 1st Qu.: 5.00   1st Qu.:2.000   1st Qu.:1.00   1st Qu.:1.000  
+ Median : 8.00   Median :3.000   Median :2.00   Median :2.000  
+ Mean   : 8.72   Mean   :3.245   Mean   :1.54   Mean   :4.414  
+ 3rd Qu.:13.00   3rd Qu.:4.000   3rd Qu.:2.00   3rd Qu.:8.000  
+ Max.   :16.00   Max.   :7.000   Max.   :2.00   Max.   :8.000  
+                                                NA's   :344    
+      educ         pueblos_indigenas    pobreza         yautcor        
+ Min.   :-88.000   Min.   :0.000     Min.   :1.000   Min.   :    2083  
+ 1st Qu.:  1.000   1st Qu.:0.000     1st Qu.:3.000   1st Qu.:  250000  
+ Median :  4.000   Median :0.000     Median :3.000   Median :  439167  
+ Mean   :  4.058   Mean   :0.139     Mean   :2.896   Mean   :  600425  
+ 3rd Qu.:  6.000   3rd Qu.:0.000     3rd Qu.:3.000   3rd Qu.:  700000  
+ Max.   : 12.000   Max.   :1.000     Max.   :3.000   Max.   :11518333  
+                                     NA's   :1       NA's   :875       </code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="empecemos-a-procesar" class="level1" data-number="3">
+<h1 data-number="3"><span class="header-section-number">3</span> Empecemos a procesar!</h1>
+<p>Para saber la etiqueta correspondiente de las variables debemos acudir al libro de códigos de la Encuesta Casen que se encuentra aquí <a href="https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022">bajo el nombre “Libro de códigos Base de datos Casen 2022 (versión 18 marzo 2024)”</a>.</p>
+<p>La variable educación posee las siguientes etiquetas.</p>
+<ol start="0" type="1">
+<li>Sin Educación Formal</li>
+<li>Básica incompleta</li>
+<li>Básica completa</li>
+<li>Media humanista incompleta</li>
+<li>Media técnica profesional incompleta</li>
+<li>Media humanista completa</li>
+<li>Media técnica profesional completa</li>
+<li>Técnico nivel superior incompleta</li>
+<li>Técnica nivel superior completo</li>
+<li>Profesional incompleto</li>
+<li>Postgrado incompleto</li>
+<li>Profesional completo</li>
+<li>Postgrado completo</li>
+</ol>
+<p>En base a lo que aprendimos con la función <code>mutate</code> podemos realizar la siguiente recodificación:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>casen <span class="ot">&lt;-</span> casen <span class="sc">|&gt;</span>  <span class="co">#Renombramos el objeto</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">mutate</span>(</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">educ_nivel =</span> dplyr<span class="sc">::</span><span class="fu">case_when</span>(</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span>   <span class="sc">~</span> <span class="st">"Sin educación"</span>,</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span>   <span class="sc">~</span> <span class="st">"Básica"</span>,</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>   <span class="sc">~</span> <span class="st">"Media"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">7</span><span class="sc">:</span><span class="dv">8</span>   <span class="sc">~</span> <span class="st">"Técnico nivel superior"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">9</span><span class="sc">:</span><span class="dv">11</span>  <span class="sc">~</span> <span class="st">"Profesional"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">==</span> <span class="dv">12</span>      <span class="sc">~</span> <span class="st">"Postgrado"</span>,</span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span>            <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">educ_nivel =</span> <span class="fu">factor</span>(educ_nivel, <span class="at">levels =</span> <span class="fu">c</span>(</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Sin educación"</span>, <span class="st">"Básica"</span>, <span class="st">"Media"</span>, </span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>      <span class="st">"Técnico nivel superior"</span>, <span class="st">"Profesional"</span>, <span class="st">"Postgrado"</span></span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    ), <span class="at">ordered =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Una forma de cerciorarse de que esta bien recodificado, es aplicar un <code>select</code> de las variables (sin convertirla en objeto).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">select</span>(educ, educ_nivel) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  educ    educ_nivel
+1    6         Media
+2    1 Sin educación
+3    2        Básica
+4    2        Básica
+5    0 Sin educación</code></pre>
+</div>
+</div>
+<p>Una recodificación se puedo aplicar yautco (Ingereso autónomo corregido) en base los quintiles.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(casen<span class="sc">$</span>yautcor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      0%      25%      50%      75%     100% 
+    2083   250000   439167   700000 11518333 </code></pre>
+</div>
+</div>
+<p>Una forma más sofisticada de pedir los deciles</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">quantile</span>(casen<span class="sc">$</span>yautcor, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>        0%        10%        20%        30%        40%        50%        60% 
+    2083.0   120000.0   200000.0   300000.0   400000.0   439167.0   500000.0 
+       70%        80%        90%       100% 
+  600000.0   804666.4  1205499.8 11518333.0 </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>casen <span class="ot">&lt;-</span> casen <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">decil_yautcor =</span> <span class="fu">cut</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      yautcor,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">breaks =</span> <span class="fu">quantile</span>(yautcor, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="fl">0.1</span>), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">include.lowest =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">labels =</span> <span class="fu">paste0</span>(<span class="st">"Decil "</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 
 </main>
