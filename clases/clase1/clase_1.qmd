@@ -174,7 +174,8 @@ casen <- casen %>%
 ```
 
 ```{r}
-casen |> select(yautcor, decil_yautcor, decil_yautcor2)
+casen |> select(yautcor, decil_yautcor, decil_yautcor2) |> 
+  head(5)
 ```
 
 ## Group_by y summarise: Transmitir la información
@@ -196,16 +197,20 @@ casen |> group_by(pueblos_indigenas, sexo) |>
 ```{r}
 library(dplyr)
 
+library(dplyr)
+library(tidyr)
+
 p <- casen |> 
   filter(!is.na(educ_nivel)) |>
-  group_by(pueblos_indigenas, educ_nivel) |>
-  summarise(n = n(), .groups = "drop") |>
+  count(pueblos_indigenas, educ_nivel, name = "n") |> 
+  complete(pueblos_indigenas, educ_nivel, fill = list(n = 0)) |>
   group_by(pueblos_indigenas) |>
   mutate(
     total = sum(n),
     porcentaje = round(100 * n / total, 1)
   ) |>
   arrange(pueblos_indigenas, educ_nivel)
+
 
 ```
 

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Matías Deneken">
-<meta name="dcterms.date" content="2025-05-02">
+<meta name="dcterms.date" content="2025-05-03">
 
 <title>Introducción a R</title>
 <style>
@@ -107,7 +107,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#cargar-librería-necesaria" id="toc-cargar-librería-necesaria" class="nav-link" data-scroll-target="#cargar-librería-necesaria"><span class="header-section-number">2.2</span> Cargar librería necesaria</a></li>
   <li><a href="#examinamos-base-de-datos" id="toc-examinamos-base-de-datos" class="nav-link" data-scroll-target="#examinamos-base-de-datos"><span class="header-section-number">2.3</span> Examinamos base de datos</a></li>
   </ul></li>
-  <li><a href="#empecemos-a-procesar" id="toc-empecemos-a-procesar" class="nav-link" data-scroll-target="#empecemos-a-procesar"><span class="header-section-number">3</span> Empecemos a procesar!</a></li>
+  <li><a href="#empecemos-a-procesar" id="toc-empecemos-a-procesar" class="nav-link" data-scroll-target="#empecemos-a-procesar"><span class="header-section-number">3</span> Empecemos a procesar!</a>
+  <ul class="collapse">
+  <li><a href="#mutate-y-select-crear-recodificar-y-seleccionar." id="toc-mutate-y-select-crear-recodificar-y-seleccionar." class="nav-link" data-scroll-target="#mutate-y-select-crear-recodificar-y-seleccionar."><span class="header-section-number">3.1</span> Mutate y select: Crear, recodificar y seleccionar.</a></li>
+  <li><a href="#group_by-y-summarise-transmitir-la-información" id="toc-group_by-y-summarise-transmitir-la-información" class="nav-link" data-scroll-target="#group_by-y-summarise-transmitir-la-información"><span class="header-section-number">3.2</span> Group_by y summarise: Transmitir la información</a>
+  <ul class="collapse">
+  <li><a href="#variables-númericas-ingreso-autónomo-corregido-yautcor." id="toc-variables-númericas-ingreso-autónomo-corregido-yautcor." class="nav-link" data-scroll-target="#variables-númericas-ingreso-autónomo-corregido-yautcor."><span class="header-section-number">3.2.1</span> Variables númericas: Ingreso autónomo corregido (yautcor).</a></li>
+  <li><a href="#variables-categóricas" id="toc-variables-categóricas" class="nav-link" data-scroll-target="#variables-categóricas"><span class="header-section-number">3.2.2</span> Variables categóricas</a></li>
+  </ul></li>
+  <li><a href="#encadenar-las-funciones" id="toc-encadenar-las-funciones" class="nav-link" data-scroll-target="#encadenar-las-funciones"><span class="header-section-number">3.3</span> Encadenar las funciones</a></li>
+  <li><a href="#exportar-resultados" id="toc-exportar-resultados" class="nav-link" data-scroll-target="#exportar-resultados"><span class="header-section-number">3.4</span> Exportar resultados</a></li>
+  </ul></li>
+  <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section"><span class="header-section-number">4</span> </a></li>
+  <li><a href="#cierra" id="toc-cierra" class="nav-link" data-scroll-target="#cierra"><span class="header-section-number">5</span> Cierra</a></li>
   </ul>
 </nav>
 </div>
@@ -133,7 +145,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 2, 2025</p>
+      <p class="date">May 3, 2025</p>
     </div>
   </div>
   
@@ -223,6 +235,8 @@ $ yautcor           &lt;int&gt; 660000, NA, NA, 416667, NA, NA, NA, NA, 1205833,
 </section>
 <section id="empecemos-a-procesar" class="level1" data-number="3">
 <h1 data-number="3"><span class="header-section-number">3</span> Empecemos a procesar!</h1>
+<section id="mutate-y-select-crear-recodificar-y-seleccionar." class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="mutate-y-select-crear-recodificar-y-seleccionar."><span class="header-section-number">3.1</span> Mutate y select: Crear, recodificar y seleccionar.</h2>
 <p>Para saber la etiqueta correspondiente de las variables debemos acudir al libro de códigos de la Encuesta Casen que se encuentra aquí <a href="https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022">bajo el nombre “Libro de códigos Base de datos Casen 2022 (versión 18 marzo 2024)”</a>.</p>
 <p>La variable educación posee las siguientes etiquetas.</p>
 <ol start="0" type="1">
@@ -300,6 +314,2089 @@ $ yautcor           &lt;int&gt; 660000, NA, NA, 416667, NA, NA, NA, NA, 1205833,
 <span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>casen <span class="ot">&lt;-</span> casen <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">decil_yautcor2 =</span> <span class="fu">case_when</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">120000</span> <span class="sc">~</span> <span class="st">"decil1"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">200000</span> <span class="sc">~</span> <span class="st">"decil2"</span>,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">300000</span> <span class="sc">~</span> <span class="st">"decil3"</span>,</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">400000</span> <span class="sc">~</span> <span class="st">"decil4"</span>,</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">439167</span> <span class="sc">~</span> <span class="st">"decil5"</span>,</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">500000</span> <span class="sc">~</span> <span class="st">"decil6"</span>,</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">600000</span> <span class="sc">~</span> <span class="st">"decil7"</span>,</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="fl">804666.4</span> <span class="sc">~</span> <span class="st">"decil8"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="fl">1205499.8</span> <span class="sc">~</span> <span class="st">"decil9"</span>,</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    yautcor <span class="sc">&lt;=</span> <span class="dv">11518333</span> <span class="sc">~</span> <span class="st">"decil10"</span>,</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">select</span>(yautcor, decil_yautcor, decil_yautcor2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      yautcor decil_yautcor decil_yautcor2
+1      660000       Decil 8         decil8
+2          NA          &lt;NA&gt;           &lt;NA&gt;
+3          NA          &lt;NA&gt;           &lt;NA&gt;
+4      416667       Decil 5         decil5
+5          NA          &lt;NA&gt;           &lt;NA&gt;
+6          NA          &lt;NA&gt;           &lt;NA&gt;
+7          NA          &lt;NA&gt;           &lt;NA&gt;
+8          NA          &lt;NA&gt;           &lt;NA&gt;
+9     1205833      Decil 10        decil10
+10         NA          &lt;NA&gt;           &lt;NA&gt;
+11     820000       Decil 9         decil9
+12     600000       Decil 7         decil7
+13    1000000       Decil 9         decil9
+14     140000       Decil 2         decil2
+15    1032500       Decil 9         decil9
+16     500000       Decil 6         decil6
+17         NA          &lt;NA&gt;           &lt;NA&gt;
+18     320000       Decil 4         decil4
+19         NA          &lt;NA&gt;           &lt;NA&gt;
+20         NA          &lt;NA&gt;           &lt;NA&gt;
+21     700000       Decil 8         decil8
+22         NA          &lt;NA&gt;           &lt;NA&gt;
+23    2006667      Decil 10        decil10
+24     250000       Decil 3         decil3
+25    1495000      Decil 10        decil10
+26    1211667      Decil 10        decil10
+27         NA          &lt;NA&gt;           &lt;NA&gt;
+28         NA          &lt;NA&gt;           &lt;NA&gt;
+29    1165000       Decil 9         decil9
+30         NA          &lt;NA&gt;           &lt;NA&gt;
+31         NA          &lt;NA&gt;           &lt;NA&gt;
+32         NA          &lt;NA&gt;           &lt;NA&gt;
+33    1123667       Decil 9         decil9
+34    1200000       Decil 9         decil9
+35         NA          &lt;NA&gt;           &lt;NA&gt;
+36      50000       Decil 1         decil1
+37         NA          &lt;NA&gt;           &lt;NA&gt;
+38     420000       Decil 5         decil5
+39         NA          &lt;NA&gt;           &lt;NA&gt;
+40     200000       Decil 2         decil2
+41     300000       Decil 3         decil3
+42         NA          &lt;NA&gt;           &lt;NA&gt;
+43         NA          &lt;NA&gt;           &lt;NA&gt;
+44         NA          &lt;NA&gt;           &lt;NA&gt;
+45     600000       Decil 7         decil7
+46         NA          &lt;NA&gt;           &lt;NA&gt;
+47     555000       Decil 7         decil7
+48         NA          &lt;NA&gt;           &lt;NA&gt;
+49         NA          &lt;NA&gt;           &lt;NA&gt;
+50     250000       Decil 3         decil3
+51         NA          &lt;NA&gt;           &lt;NA&gt;
+52         NA          &lt;NA&gt;           &lt;NA&gt;
+53     204000       Decil 3         decil3
+54         NA          &lt;NA&gt;           &lt;NA&gt;
+55         NA          &lt;NA&gt;           &lt;NA&gt;
+56     608333       Decil 8         decil8
+57     400000       Decil 4         decil4
+58         NA          &lt;NA&gt;           &lt;NA&gt;
+59     758333       Decil 8         decil8
+60     150000       Decil 2         decil2
+61     280000       Decil 3         decil3
+62       2083       Decil 1         decil1
+63         NA          &lt;NA&gt;           &lt;NA&gt;
+64    5000000      Decil 10        decil10
+65     380000       Decil 4         decil4
+66         NA          &lt;NA&gt;           &lt;NA&gt;
+67     440000       Decil 6         decil6
+68     502500       Decil 7         decil7
+69     420000       Decil 5         decil5
+70     500000       Decil 6         decil6
+71         NA          &lt;NA&gt;           &lt;NA&gt;
+72     600000       Decil 7         decil7
+73         NA          &lt;NA&gt;           &lt;NA&gt;
+74      50000       Decil 1         decil1
+75     500000       Decil 6         decil6
+76     195000       Decil 2         decil2
+77     150000       Decil 2         decil2
+78         NA          &lt;NA&gt;           &lt;NA&gt;
+79     500000       Decil 6         decil6
+80    3328667      Decil 10        decil10
+81    1000000       Decil 9         decil9
+82         NA          &lt;NA&gt;           &lt;NA&gt;
+83         NA          &lt;NA&gt;           &lt;NA&gt;
+84     454167       Decil 6         decil6
+85    2100000      Decil 10        decil10
+86    1116667       Decil 9         decil9
+87     870833       Decil 9         decil9
+88     450000       Decil 6         decil6
+89         NA          &lt;NA&gt;           &lt;NA&gt;
+90         NA          &lt;NA&gt;           &lt;NA&gt;
+91         NA          &lt;NA&gt;           &lt;NA&gt;
+92         NA          &lt;NA&gt;           &lt;NA&gt;
+93     500000       Decil 6         decil6
+94         NA          &lt;NA&gt;           &lt;NA&gt;
+95         NA          &lt;NA&gt;           &lt;NA&gt;
+96     260000       Decil 3         decil3
+97     400000       Decil 4         decil4
+98    1205833      Decil 10        decil10
+99         NA          &lt;NA&gt;           &lt;NA&gt;
+100    483333       Decil 6         decil6
+101        NA          &lt;NA&gt;           &lt;NA&gt;
+102        NA          &lt;NA&gt;           &lt;NA&gt;
+103        NA          &lt;NA&gt;           &lt;NA&gt;
+104        NA          &lt;NA&gt;           &lt;NA&gt;
+105        NA          &lt;NA&gt;           &lt;NA&gt;
+106        NA          &lt;NA&gt;           &lt;NA&gt;
+107    182167       Decil 2         decil2
+108        NA          &lt;NA&gt;           &lt;NA&gt;
+109   1343667      Decil 10        decil10
+110    160000       Decil 2         decil2
+111   2108333      Decil 10        decil10
+112        NA          &lt;NA&gt;           &lt;NA&gt;
+113        NA          &lt;NA&gt;           &lt;NA&gt;
+114        NA          &lt;NA&gt;           &lt;NA&gt;
+115        NA          &lt;NA&gt;           &lt;NA&gt;
+116    700000       Decil 8         decil8
+117        NA          &lt;NA&gt;           &lt;NA&gt;
+118        NA          &lt;NA&gt;           &lt;NA&gt;
+119   1230000      Decil 10        decil10
+120        NA          &lt;NA&gt;           &lt;NA&gt;
+121        NA          &lt;NA&gt;           &lt;NA&gt;
+122    978333       Decil 9         decil9
+123    200000       Decil 2         decil2
+124    475000       Decil 6         decil6
+125        NA          &lt;NA&gt;           &lt;NA&gt;
+126    210000       Decil 3         decil3
+127    150000       Decil 2         decil2
+128    425667       Decil 5         decil5
+129    330508       Decil 4         decil4
+130        NA          &lt;NA&gt;           &lt;NA&gt;
+131    336000       Decil 4         decil4
+132        NA          &lt;NA&gt;           &lt;NA&gt;
+133    616667       Decil 8         decil8
+134     41667       Decil 1         decil1
+135    900000       Decil 9         decil9
+136        NA          &lt;NA&gt;           &lt;NA&gt;
+137    803333       Decil 8         decil8
+138        NA          &lt;NA&gt;           &lt;NA&gt;
+139        NA          &lt;NA&gt;           &lt;NA&gt;
+140    380000       Decil 4         decil4
+141     75000       Decil 1         decil1
+142        NA          &lt;NA&gt;           &lt;NA&gt;
+143   1797667      Decil 10        decil10
+144        NA          &lt;NA&gt;           &lt;NA&gt;
+145        NA          &lt;NA&gt;           &lt;NA&gt;
+146    543000       Decil 7         decil7
+147    824778       Decil 9         decil9
+148        NA          &lt;NA&gt;           &lt;NA&gt;
+149   1435834      Decil 10        decil10
+150    400000       Decil 4         decil4
+151        NA          &lt;NA&gt;           &lt;NA&gt;
+152   1591250      Decil 10        decil10
+153        NA          &lt;NA&gt;           &lt;NA&gt;
+154    420000       Decil 5         decil5
+155    740000       Decil 8         decil8
+156     70000       Decil 1         decil1
+157        NA          &lt;NA&gt;           &lt;NA&gt;
+158    300000       Decil 3         decil3
+159        NA          &lt;NA&gt;           &lt;NA&gt;
+160    320000       Decil 4         decil4
+161    200000       Decil 2         decil2
+162        NA          &lt;NA&gt;           &lt;NA&gt;
+163        NA          &lt;NA&gt;           &lt;NA&gt;
+164    100000       Decil 1         decil1
+165    420000       Decil 5         decil5
+166    430000       Decil 5         decil5
+167     25000       Decil 1         decil1
+168    150000       Decil 2         decil2
+169    283651       Decil 3         decil3
+170        NA          &lt;NA&gt;           &lt;NA&gt;
+171    200000       Decil 2         decil2
+172    380000       Decil 4         decil4
+173        NA          &lt;NA&gt;           &lt;NA&gt;
+174    400000       Decil 4         decil4
+175    210000       Decil 3         decil3
+176        NA          &lt;NA&gt;           &lt;NA&gt;
+177    100000       Decil 1         decil1
+178        NA          &lt;NA&gt;           &lt;NA&gt;
+179    600000       Decil 7         decil7
+180    600000       Decil 7         decil7
+181    400000       Decil 4         decil4
+182   1215833      Decil 10        decil10
+183     60000       Decil 1         decil1
+184        NA          &lt;NA&gt;           &lt;NA&gt;
+185     40000       Decil 1         decil1
+186        NA          &lt;NA&gt;           &lt;NA&gt;
+187        NA          &lt;NA&gt;           &lt;NA&gt;
+188        NA          &lt;NA&gt;           &lt;NA&gt;
+189        NA          &lt;NA&gt;           &lt;NA&gt;
+190   1104000       Decil 9         decil9
+191     90000       Decil 1         decil1
+192        NA          &lt;NA&gt;           &lt;NA&gt;
+193        NA          &lt;NA&gt;           &lt;NA&gt;
+194    380000       Decil 4         decil4
+195    390000       Decil 4         decil4
+196    905000       Decil 9         decil9
+197    690000       Decil 8         decil8
+198     50000       Decil 1         decil1
+199    600000       Decil 7         decil7
+200    800000       Decil 8         decil8
+201        NA          &lt;NA&gt;           &lt;NA&gt;
+202        NA          &lt;NA&gt;           &lt;NA&gt;
+203    387000       Decil 4         decil4
+204        NA          &lt;NA&gt;           &lt;NA&gt;
+205    176000       Decil 2         decil2
+206        NA          &lt;NA&gt;           &lt;NA&gt;
+207        NA          &lt;NA&gt;           &lt;NA&gt;
+208        NA          &lt;NA&gt;           &lt;NA&gt;
+209        NA          &lt;NA&gt;           &lt;NA&gt;
+210     50000       Decil 1         decil1
+211    450000       Decil 6         decil6
+212    550000       Decil 7         decil7
+213        NA          &lt;NA&gt;           &lt;NA&gt;
+214    815000       Decil 9         decil9
+215        NA          &lt;NA&gt;           &lt;NA&gt;
+216    530000       Decil 7         decil7
+217    100000       Decil 1         decil1
+218        NA          &lt;NA&gt;           &lt;NA&gt;
+219        NA          &lt;NA&gt;           &lt;NA&gt;
+220    350000       Decil 4         decil4
+221    194000       Decil 2         decil2
+222    450000       Decil 6         decil6
+223    700000       Decil 8         decil8
+224        NA          &lt;NA&gt;           &lt;NA&gt;
+225    390000       Decil 4         decil4
+226    341667       Decil 4         decil4
+227   1000000       Decil 9         decil9
+228    423333       Decil 5         decil5
+229   1000000       Decil 9         decil9
+230    500000       Decil 6         decil6
+231        NA          &lt;NA&gt;           &lt;NA&gt;
+232        NA          &lt;NA&gt;           &lt;NA&gt;
+233     80000       Decil 1         decil1
+234    400000       Decil 4         decil4
+235        NA          &lt;NA&gt;           &lt;NA&gt;
+236     29167       Decil 1         decil1
+237    664167       Decil 8         decil8
+238   2008333      Decil 10        decil10
+239        NA          &lt;NA&gt;           &lt;NA&gt;
+240   1330333      Decil 10        decil10
+241    300000       Decil 3         decil3
+242    400000       Decil 4         decil4
+243     60000       Decil 1         decil1
+244        NA          &lt;NA&gt;           &lt;NA&gt;
+245        NA          &lt;NA&gt;           &lt;NA&gt;
+246        NA          &lt;NA&gt;           &lt;NA&gt;
+247    160000       Decil 2         decil2
+248        NA          &lt;NA&gt;           &lt;NA&gt;
+249        NA          &lt;NA&gt;           &lt;NA&gt;
+250    450000       Decil 6         decil6
+251        NA          &lt;NA&gt;           &lt;NA&gt;
+252    500000       Decil 6         decil6
+253    300000       Decil 3         decil3
+254    350000       Decil 4         decil4
+255    450000       Decil 6         decil6
+256      2083       Decil 1         decil1
+257   1300000      Decil 10        decil10
+258        NA          &lt;NA&gt;           &lt;NA&gt;
+259   2050000      Decil 10        decil10
+260    400000       Decil 4         decil4
+261        NA          &lt;NA&gt;           &lt;NA&gt;
+262        NA          &lt;NA&gt;           &lt;NA&gt;
+263        NA          &lt;NA&gt;           &lt;NA&gt;
+264        NA          &lt;NA&gt;           &lt;NA&gt;
+265    200000       Decil 2         decil2
+266        NA          &lt;NA&gt;           &lt;NA&gt;
+267     80000       Decil 1         decil1
+268        NA          &lt;NA&gt;           &lt;NA&gt;
+269   1000000       Decil 9         decil9
+270        NA          &lt;NA&gt;           &lt;NA&gt;
+271        NA          &lt;NA&gt;           &lt;NA&gt;
+272        NA          &lt;NA&gt;           &lt;NA&gt;
+273        NA          &lt;NA&gt;           &lt;NA&gt;
+274        NA          &lt;NA&gt;           &lt;NA&gt;
+275        NA          &lt;NA&gt;           &lt;NA&gt;
+276        NA          &lt;NA&gt;           &lt;NA&gt;
+277   1406667      Decil 10        decil10
+278   1016667       Decil 9         decil9
+279    810000       Decil 9         decil9
+280    800000       Decil 8         decil8
+281    500000       Decil 6         decil6
+282        NA          &lt;NA&gt;           &lt;NA&gt;
+283        NA          &lt;NA&gt;           &lt;NA&gt;
+284    100000       Decil 1         decil1
+285    753333       Decil 8         decil8
+286    404167       Decil 5         decil5
+287    450000       Decil 6         decil6
+288    733750       Decil 8         decil8
+289        NA          &lt;NA&gt;           &lt;NA&gt;
+290    150000       Decil 2         decil2
+291    599160       Decil 7         decil7
+292        NA          &lt;NA&gt;           &lt;NA&gt;
+293        NA          &lt;NA&gt;           &lt;NA&gt;
+294        NA          &lt;NA&gt;           &lt;NA&gt;
+295        NA          &lt;NA&gt;           &lt;NA&gt;
+296        NA          &lt;NA&gt;           &lt;NA&gt;
+297    400000       Decil 4         decil4
+298        NA          &lt;NA&gt;           &lt;NA&gt;
+299     33333       Decil 1         decil1
+300   1000000       Decil 9         decil9
+301   2400000      Decil 10        decil10
+302        NA          &lt;NA&gt;           &lt;NA&gt;
+303    200000       Decil 2         decil2
+304    600000       Decil 7         decil7
+305        NA          &lt;NA&gt;           &lt;NA&gt;
+306   1716667      Decil 10        decil10
+307    300000       Decil 3         decil3
+308    850000       Decil 9         decil9
+309        NA          &lt;NA&gt;           &lt;NA&gt;
+310        NA          &lt;NA&gt;           &lt;NA&gt;
+311        NA          &lt;NA&gt;           &lt;NA&gt;
+312        NA          &lt;NA&gt;           &lt;NA&gt;
+313        NA          &lt;NA&gt;           &lt;NA&gt;
+314        NA          &lt;NA&gt;           &lt;NA&gt;
+315    290000       Decil 3         decil3
+316    450000       Decil 6         decil6
+317    170000       Decil 2         decil2
+318    496667       Decil 6         decil6
+319    501066       Decil 7         decil7
+320    244000       Decil 3         decil3
+321        NA          &lt;NA&gt;           &lt;NA&gt;
+322    184000       Decil 2         decil2
+323    880000       Decil 9         decil9
+324    147000       Decil 2         decil2
+325    492000       Decil 6         decil6
+326        NA          &lt;NA&gt;           &lt;NA&gt;
+327    200000       Decil 2         decil2
+328    520000       Decil 7         decil7
+329    600000       Decil 7         decil7
+330   2810000      Decil 10        decil10
+331        NA          &lt;NA&gt;           &lt;NA&gt;
+332        NA          &lt;NA&gt;           &lt;NA&gt;
+333    474000       Decil 6         decil6
+334    510000       Decil 7         decil7
+335        NA          &lt;NA&gt;           &lt;NA&gt;
+336   1080000       Decil 9         decil9
+337        NA          &lt;NA&gt;           &lt;NA&gt;
+338        NA          &lt;NA&gt;           &lt;NA&gt;
+339        NA          &lt;NA&gt;           &lt;NA&gt;
+340        NA          &lt;NA&gt;           &lt;NA&gt;
+341    450000       Decil 6         decil6
+342    200000       Decil 2         decil2
+343        NA          &lt;NA&gt;           &lt;NA&gt;
+344    430000       Decil 5         decil5
+345    510000       Decil 7         decil7
+346        NA          &lt;NA&gt;           &lt;NA&gt;
+347    577083       Decil 7         decil7
+348        NA          &lt;NA&gt;           &lt;NA&gt;
+349        NA          &lt;NA&gt;           &lt;NA&gt;
+350        NA          &lt;NA&gt;           &lt;NA&gt;
+351    445834       Decil 6         decil6
+352        NA          &lt;NA&gt;           &lt;NA&gt;
+353   1804167      Decil 10        decil10
+354    500000       Decil 6         decil6
+355        NA          &lt;NA&gt;           &lt;NA&gt;
+356    980750       Decil 9         decil9
+357        NA          &lt;NA&gt;           &lt;NA&gt;
+358    768333       Decil 8         decil8
+359        NA          &lt;NA&gt;           &lt;NA&gt;
+360        NA          &lt;NA&gt;           &lt;NA&gt;
+361    300000       Decil 3         decil3
+362        NA          &lt;NA&gt;           &lt;NA&gt;
+363    858000       Decil 9         decil9
+364    950000       Decil 9         decil9
+365        NA          &lt;NA&gt;           &lt;NA&gt;
+366        NA          &lt;NA&gt;           &lt;NA&gt;
+367        NA          &lt;NA&gt;           &lt;NA&gt;
+368        NA          &lt;NA&gt;           &lt;NA&gt;
+369        NA          &lt;NA&gt;           &lt;NA&gt;
+370     35000       Decil 1         decil1
+371        NA          &lt;NA&gt;           &lt;NA&gt;
+372   1200000       Decil 9         decil9
+373    250000       Decil 3         decil3
+374     28333       Decil 1         decil1
+375        NA          &lt;NA&gt;           &lt;NA&gt;
+376        NA          &lt;NA&gt;           &lt;NA&gt;
+377        NA          &lt;NA&gt;           &lt;NA&gt;
+378        NA          &lt;NA&gt;           &lt;NA&gt;
+379    458333       Decil 6         decil6
+380    590833       Decil 7         decil7
+381   4608333      Decil 10        decil10
+382    200000       Decil 2         decil2
+383        NA          &lt;NA&gt;           &lt;NA&gt;
+384        NA          &lt;NA&gt;           &lt;NA&gt;
+385    450000       Decil 6         decil6
+386    294000       Decil 3         decil3
+387    200000       Decil 2         decil2
+388    700000       Decil 8         decil8
+389    180000       Decil 2         decil2
+390    600000       Decil 7         decil7
+391   1068333       Decil 9         decil9
+392   3833333      Decil 10        decil10
+393    116000       Decil 1         decil1
+394        NA          &lt;NA&gt;           &lt;NA&gt;
+395    181640       Decil 2         decil2
+396        NA          &lt;NA&gt;           &lt;NA&gt;
+397    400000       Decil 4         decil4
+398    300000       Decil 3         decil3
+399        NA          &lt;NA&gt;           &lt;NA&gt;
+400    415000       Decil 5         decil5
+401        NA          &lt;NA&gt;           &lt;NA&gt;
+402    443333       Decil 6         decil6
+403    412083       Decil 5         decil5
+404        NA          &lt;NA&gt;           &lt;NA&gt;
+405        NA          &lt;NA&gt;           &lt;NA&gt;
+406        NA          &lt;NA&gt;           &lt;NA&gt;
+407        NA          &lt;NA&gt;           &lt;NA&gt;
+408        NA          &lt;NA&gt;           &lt;NA&gt;
+409    421000       Decil 5         decil5
+410    320000       Decil 4         decil4
+411    616250       Decil 8         decil8
+412    400000       Decil 4         decil4
+413    300000       Decil 3         decil3
+414        NA          &lt;NA&gt;           &lt;NA&gt;
+415        NA          &lt;NA&gt;           &lt;NA&gt;
+416     50000       Decil 1         decil1
+417        NA          &lt;NA&gt;           &lt;NA&gt;
+418    700000       Decil 8         decil8
+419    650000       Decil 8         decil8
+420   1700000      Decil 10        decil10
+421        NA          &lt;NA&gt;           &lt;NA&gt;
+422        NA          &lt;NA&gt;           &lt;NA&gt;
+423    450000       Decil 6         decil6
+424    500000       Decil 6         decil6
+425        NA          &lt;NA&gt;           &lt;NA&gt;
+426        NA          &lt;NA&gt;           &lt;NA&gt;
+427        NA          &lt;NA&gt;           &lt;NA&gt;
+428    500000       Decil 6         decil6
+429   1500000      Decil 10        decil10
+430   2516667      Decil 10        decil10
+431        NA          &lt;NA&gt;           &lt;NA&gt;
+432        NA          &lt;NA&gt;           &lt;NA&gt;
+433        NA          &lt;NA&gt;           &lt;NA&gt;
+434        NA          &lt;NA&gt;           &lt;NA&gt;
+435    460000       Decil 6         decil6
+436    350000       Decil 4         decil4
+437   1208333      Decil 10        decil10
+438   1005833       Decil 9         decil9
+439    211000       Decil 3         decil3
+440    400000       Decil 4         decil4
+441        NA          &lt;NA&gt;           &lt;NA&gt;
+442    588333       Decil 7         decil7
+443    506207       Decil 7         decil7
+444    195000       Decil 2         decil2
+445        NA          &lt;NA&gt;           &lt;NA&gt;
+446        NA          &lt;NA&gt;           &lt;NA&gt;
+447    700000       Decil 8         decil8
+448        NA          &lt;NA&gt;           &lt;NA&gt;
+449    350000       Decil 4         decil4
+450        NA          &lt;NA&gt;           &lt;NA&gt;
+451   5000000      Decil 10        decil10
+452        NA          &lt;NA&gt;           &lt;NA&gt;
+453    467083       Decil 6         decil6
+454        NA          &lt;NA&gt;           &lt;NA&gt;
+455    216667       Decil 3         decil3
+456    900000       Decil 9         decil9
+457    700000       Decil 8         decil8
+458    165000       Decil 2         decil2
+459    500000       Decil 6         decil6
+460        NA          &lt;NA&gt;           &lt;NA&gt;
+461    400000       Decil 4         decil4
+462    223000       Decil 3         decil3
+463        NA          &lt;NA&gt;           &lt;NA&gt;
+464    550000       Decil 7         decil7
+465    501333       Decil 7         decil7
+466    400000       Decil 4         decil4
+467    800000       Decil 8         decil8
+468    450000       Decil 6         decil6
+469    852500       Decil 9         decil9
+470        NA          &lt;NA&gt;           &lt;NA&gt;
+471    372000       Decil 4         decil4
+472    500000       Decil 6         decil6
+473   2082000      Decil 10        decil10
+474    800000       Decil 8         decil8
+475    600000       Decil 7         decil7
+476   1550000      Decil 10        decil10
+477        NA          &lt;NA&gt;           &lt;NA&gt;
+478        NA          &lt;NA&gt;           &lt;NA&gt;
+479        NA          &lt;NA&gt;           &lt;NA&gt;
+480    240000       Decil 3         decil3
+481    330000       Decil 4         decil4
+482    115000       Decil 1         decil1
+483    161667       Decil 2         decil2
+484        NA          &lt;NA&gt;           &lt;NA&gt;
+485   1328584      Decil 10        decil10
+486        NA          &lt;NA&gt;           &lt;NA&gt;
+487    160000       Decil 2         decil2
+488        NA          &lt;NA&gt;           &lt;NA&gt;
+489   2916667      Decil 10        decil10
+490        NA          &lt;NA&gt;           &lt;NA&gt;
+491    600000       Decil 7         decil7
+492        NA          &lt;NA&gt;           &lt;NA&gt;
+493        NA          &lt;NA&gt;           &lt;NA&gt;
+494      4167       Decil 1         decil1
+495    700000       Decil 8         decil8
+496        NA          &lt;NA&gt;           &lt;NA&gt;
+497        NA          &lt;NA&gt;           &lt;NA&gt;
+498        NA          &lt;NA&gt;           &lt;NA&gt;
+499    400000       Decil 4         decil4
+500        NA          &lt;NA&gt;           &lt;NA&gt;
+501   2687834      Decil 10        decil10
+502        NA          &lt;NA&gt;           &lt;NA&gt;
+503        NA          &lt;NA&gt;           &lt;NA&gt;
+504        NA          &lt;NA&gt;           &lt;NA&gt;
+505     60000       Decil 1         decil1
+506    400000       Decil 4         decil4
+507        NA          &lt;NA&gt;           &lt;NA&gt;
+508        NA          &lt;NA&gt;           &lt;NA&gt;
+509   2225000      Decil 10        decil10
+510   2700000      Decil 10        decil10
+511        NA          &lt;NA&gt;           &lt;NA&gt;
+512    380000       Decil 4         decil4
+513    160000       Decil 2         decil2
+514    568000       Decil 7         decil7
+515    754167       Decil 8         decil8
+516    500000       Decil 6         decil6
+517        NA          &lt;NA&gt;           &lt;NA&gt;
+518        NA          &lt;NA&gt;           &lt;NA&gt;
+519        NA          &lt;NA&gt;           &lt;NA&gt;
+520    100000       Decil 1         decil1
+521    300000       Decil 3         decil3
+522        NA          &lt;NA&gt;           &lt;NA&gt;
+523    802083       Decil 8         decil8
+524    250000       Decil 3         decil3
+525    608333       Decil 8         decil8
+526        NA          &lt;NA&gt;           &lt;NA&gt;
+527    200000       Decil 2         decil2
+528        NA          &lt;NA&gt;           &lt;NA&gt;
+529        NA          &lt;NA&gt;           &lt;NA&gt;
+530    400000       Decil 4         decil4
+531    206667       Decil 3         decil3
+532    120000       Decil 1         decil1
+533   1408333      Decil 10        decil10
+534        NA          &lt;NA&gt;           &lt;NA&gt;
+535        NA          &lt;NA&gt;           &lt;NA&gt;
+536    810000       Decil 9         decil9
+537    633333       Decil 8         decil8
+538    600000       Decil 7         decil7
+539        NA          &lt;NA&gt;           &lt;NA&gt;
+540    400000       Decil 4         decil4
+541    181262       Decil 2         decil2
+542    500000       Decil 6         decil6
+543    190000       Decil 2         decil2
+544        NA          &lt;NA&gt;           &lt;NA&gt;
+545    350000       Decil 4         decil4
+546    502000       Decil 7         decil7
+547        NA          &lt;NA&gt;           &lt;NA&gt;
+548        NA          &lt;NA&gt;           &lt;NA&gt;
+549        NA          &lt;NA&gt;           &lt;NA&gt;
+550        NA          &lt;NA&gt;           &lt;NA&gt;
+551    370000       Decil 4         decil4
+552        NA          &lt;NA&gt;           &lt;NA&gt;
+553    400000       Decil 4         decil4
+554        NA          &lt;NA&gt;           &lt;NA&gt;
+555   1000000       Decil 9         decil9
+556    234667       Decil 3         decil3
+557    500000       Decil 6         decil6
+558        NA          &lt;NA&gt;           &lt;NA&gt;
+559        NA          &lt;NA&gt;           &lt;NA&gt;
+560        NA          &lt;NA&gt;           &lt;NA&gt;
+561        NA          &lt;NA&gt;           &lt;NA&gt;
+562    380000       Decil 4         decil4
+563        NA          &lt;NA&gt;           &lt;NA&gt;
+564    335000       Decil 4         decil4
+565        NA          &lt;NA&gt;           &lt;NA&gt;
+566    320000       Decil 4         decil4
+567    220000       Decil 3         decil3
+568   1131667       Decil 9         decil9
+569    340000       Decil 4         decil4
+570        NA          &lt;NA&gt;           &lt;NA&gt;
+571        NA          &lt;NA&gt;           &lt;NA&gt;
+572   2200000      Decil 10        decil10
+573        NA          &lt;NA&gt;           &lt;NA&gt;
+574        NA          &lt;NA&gt;           &lt;NA&gt;
+575        NA          &lt;NA&gt;           &lt;NA&gt;
+576        NA          &lt;NA&gt;           &lt;NA&gt;
+577   1060833       Decil 9         decil9
+578        NA          &lt;NA&gt;           &lt;NA&gt;
+579        NA          &lt;NA&gt;           &lt;NA&gt;
+580        NA          &lt;NA&gt;           &lt;NA&gt;
+581        NA          &lt;NA&gt;           &lt;NA&gt;
+582    140000       Decil 2         decil2
+583    230000       Decil 3         decil3
+584    250000       Decil 3         decil3
+585   2026667      Decil 10        decil10
+586        NA          &lt;NA&gt;           &lt;NA&gt;
+587    180000       Decil 2         decil2
+588        NA          &lt;NA&gt;           &lt;NA&gt;
+589        NA          &lt;NA&gt;           &lt;NA&gt;
+590    700000       Decil 8         decil8
+591        NA          &lt;NA&gt;           &lt;NA&gt;
+592    380000       Decil 4         decil4
+593    448643       Decil 6         decil6
+594    385000       Decil 4         decil4
+595        NA          &lt;NA&gt;           &lt;NA&gt;
+596        NA          &lt;NA&gt;           &lt;NA&gt;
+597    600000       Decil 7         decil7
+598    825000       Decil 9         decil9
+599     30000       Decil 1         decil1
+600    756667       Decil 8         decil8
+601    460000       Decil 6         decil6
+602        NA          &lt;NA&gt;           &lt;NA&gt;
+603        NA          &lt;NA&gt;           &lt;NA&gt;
+604  11518333      Decil 10        decil10
+605        NA          &lt;NA&gt;           &lt;NA&gt;
+606    250000       Decil 3         decil3
+607        NA          &lt;NA&gt;           &lt;NA&gt;
+608    550000       Decil 7         decil7
+609    260000       Decil 3         decil3
+610    300000       Decil 3         decil3
+611        NA          &lt;NA&gt;           &lt;NA&gt;
+612        NA          &lt;NA&gt;           &lt;NA&gt;
+613   1603333      Decil 10        decil10
+614        NA          &lt;NA&gt;           &lt;NA&gt;
+615        NA          &lt;NA&gt;           &lt;NA&gt;
+616        NA          &lt;NA&gt;           &lt;NA&gt;
+617    500000       Decil 6         decil6
+618        NA          &lt;NA&gt;           &lt;NA&gt;
+619    200000       Decil 2         decil2
+620    100000       Decil 1         decil1
+621    285000       Decil 3         decil3
+622        NA          &lt;NA&gt;           &lt;NA&gt;
+623        NA          &lt;NA&gt;           &lt;NA&gt;
+624    200000       Decil 2         decil2
+625    500000       Decil 6         decil6
+626        NA          &lt;NA&gt;           &lt;NA&gt;
+627        NA          &lt;NA&gt;           &lt;NA&gt;
+628        NA          &lt;NA&gt;           &lt;NA&gt;
+629    600000       Decil 7         decil7
+630    421160       Decil 5         decil5
+631        NA          &lt;NA&gt;           &lt;NA&gt;
+632    420000       Decil 5         decil5
+633        NA          &lt;NA&gt;           &lt;NA&gt;
+634   1504167      Decil 10        decil10
+635        NA          &lt;NA&gt;           &lt;NA&gt;
+636    200000       Decil 2         decil2
+637    524167       Decil 7         decil7
+638    213333       Decil 3         decil3
+639    400000       Decil 4         decil4
+640    400000       Decil 4         decil4
+641        NA          &lt;NA&gt;           &lt;NA&gt;
+642        NA          &lt;NA&gt;           &lt;NA&gt;
+643   1330000      Decil 10        decil10
+644        NA          &lt;NA&gt;           &lt;NA&gt;
+645        NA          &lt;NA&gt;           &lt;NA&gt;
+646    100000       Decil 1         decil1
+647    400000       Decil 4         decil4
+648    120000       Decil 1         decil1
+649    241667       Decil 3         decil3
+650        NA          &lt;NA&gt;           &lt;NA&gt;
+651    400000       Decil 4         decil4
+652        NA          &lt;NA&gt;           &lt;NA&gt;
+653        NA          &lt;NA&gt;           &lt;NA&gt;
+654        NA          &lt;NA&gt;           &lt;NA&gt;
+655    214167       Decil 3         decil3
+656    231743       Decil 3         decil3
+657    861250       Decil 9         decil9
+658     65000       Decil 1         decil1
+659    175000       Decil 2         decil2
+660    532500       Decil 7         decil7
+661    414167       Decil 5         decil5
+662    500000       Decil 6         decil6
+663        NA          &lt;NA&gt;           &lt;NA&gt;
+664   1214833      Decil 10        decil10
+665    362000       Decil 4         decil4
+666    390000       Decil 4         decil4
+667        NA          &lt;NA&gt;           &lt;NA&gt;
+668        NA          &lt;NA&gt;           &lt;NA&gt;
+669        NA          &lt;NA&gt;           &lt;NA&gt;
+670        NA          &lt;NA&gt;           &lt;NA&gt;
+671    500000       Decil 6         decil6
+672        NA          &lt;NA&gt;           &lt;NA&gt;
+673    180000       Decil 2         decil2
+674    400000       Decil 4         decil4
+675    945000       Decil 9         decil9
+676        NA          &lt;NA&gt;           &lt;NA&gt;
+677    695000       Decil 8         decil8
+678    700000       Decil 8         decil8
+679        NA          &lt;NA&gt;           &lt;NA&gt;
+680        NA          &lt;NA&gt;           &lt;NA&gt;
+681    357000       Decil 4         decil4
+682    516667       Decil 7         decil7
+683        NA          &lt;NA&gt;           &lt;NA&gt;
+684   2214167      Decil 10        decil10
+685        NA          &lt;NA&gt;           &lt;NA&gt;
+686    850000       Decil 9         decil9
+687    600000       Decil 7         decil7
+688        NA          &lt;NA&gt;           &lt;NA&gt;
+689    710000       Decil 8         decil8
+690        NA          &lt;NA&gt;           &lt;NA&gt;
+691    246408       Decil 3         decil3
+692    480000       Decil 6         decil6
+693        NA          &lt;NA&gt;           &lt;NA&gt;
+694    418333       Decil 5         decil5
+695    500000       Decil 6         decil6
+696    329304       Decil 4         decil4
+697    152165       Decil 2         decil2
+698        NA          &lt;NA&gt;           &lt;NA&gt;
+699    483333       Decil 6         decil6
+700    240000       Decil 3         decil3
+701        NA          &lt;NA&gt;           &lt;NA&gt;
+702    190000       Decil 2         decil2
+703        NA          &lt;NA&gt;           &lt;NA&gt;
+704    825000       Decil 9         decil9
+705    400000       Decil 4         decil4
+706        NA          &lt;NA&gt;           &lt;NA&gt;
+707   1200000       Decil 9         decil9
+708     80833       Decil 1         decil1
+709    180000       Decil 2         decil2
+710   1500000      Decil 10        decil10
+711    300000       Decil 3         decil3
+712        NA          &lt;NA&gt;           &lt;NA&gt;
+713    667334       Decil 8         decil8
+714        NA          &lt;NA&gt;           &lt;NA&gt;
+715     20000       Decil 1         decil1
+716        NA          &lt;NA&gt;           &lt;NA&gt;
+717        NA          &lt;NA&gt;           &lt;NA&gt;
+718        NA          &lt;NA&gt;           &lt;NA&gt;
+719        NA          &lt;NA&gt;           &lt;NA&gt;
+720        NA          &lt;NA&gt;           &lt;NA&gt;
+721   1430000      Decil 10        decil10
+722   1450000      Decil 10        decil10
+723    400000       Decil 4         decil4
+724        NA          &lt;NA&gt;           &lt;NA&gt;
+725    735000       Decil 8         decil8
+726      8333       Decil 1         decil1
+727    400000       Decil 4         decil4
+728        NA          &lt;NA&gt;           &lt;NA&gt;
+729    150000       Decil 2         decil2
+730     60000       Decil 1         decil1
+731        NA          &lt;NA&gt;           &lt;NA&gt;
+732        NA          &lt;NA&gt;           &lt;NA&gt;
+733    300000       Decil 3         decil3
+734    800000       Decil 8         decil8
+735    300000       Decil 3         decil3
+736    395000       Decil 4         decil4
+737    548000       Decil 7         decil7
+738    420000       Decil 5         decil5
+739        NA          &lt;NA&gt;           &lt;NA&gt;
+740   2425000      Decil 10        decil10
+741        NA          &lt;NA&gt;           &lt;NA&gt;
+742    320000       Decil 4         decil4
+743    726000       Decil 8         decil8
+744    300000       Decil 3         decil3
+745    250000       Decil 3         decil3
+746        NA          &lt;NA&gt;           &lt;NA&gt;
+747    420000       Decil 5         decil5
+748    500000       Decil 6         decil6
+749        NA          &lt;NA&gt;           &lt;NA&gt;
+750   1662001      Decil 10        decil10
+751    881667       Decil 9         decil9
+752    464167       Decil 6         decil6
+753        NA          &lt;NA&gt;           &lt;NA&gt;
+754    380000       Decil 4         decil4
+755    406000       Decil 5         decil5
+756        NA          &lt;NA&gt;           &lt;NA&gt;
+757    177000       Decil 2         decil2
+758    400000       Decil 4         decil4
+759        NA          &lt;NA&gt;           &lt;NA&gt;
+760    510000       Decil 7         decil7
+761     16667       Decil 1         decil1
+762        NA          &lt;NA&gt;           &lt;NA&gt;
+763    300000       Decil 3         decil3
+764        NA          &lt;NA&gt;           &lt;NA&gt;
+765    450000       Decil 6         decil6
+766        NA          &lt;NA&gt;           &lt;NA&gt;
+767   3180000      Decil 10        decil10
+768        NA          &lt;NA&gt;           &lt;NA&gt;
+769        NA          &lt;NA&gt;           &lt;NA&gt;
+770    575000       Decil 7         decil7
+771   2296667      Decil 10        decil10
+772    170000       Decil 2         decil2
+773    454167       Decil 6         decil6
+774        NA          &lt;NA&gt;           &lt;NA&gt;
+775    400000       Decil 4         decil4
+776    550000       Decil 7         decil7
+777    400000       Decil 4         decil4
+778        NA          &lt;NA&gt;           &lt;NA&gt;
+779        NA          &lt;NA&gt;           &lt;NA&gt;
+780        NA          &lt;NA&gt;           &lt;NA&gt;
+781   1108333       Decil 9         decil9
+782     50000       Decil 1         decil1
+783    700000       Decil 8         decil8
+784        NA          &lt;NA&gt;           &lt;NA&gt;
+785    120000       Decil 1         decil1
+786    430000       Decil 5         decil5
+787    213000       Decil 3         decil3
+788        NA          &lt;NA&gt;           &lt;NA&gt;
+789        NA          &lt;NA&gt;           &lt;NA&gt;
+790        NA          &lt;NA&gt;           &lt;NA&gt;
+791    315000       Decil 4         decil4
+792      2500       Decil 1         decil1
+793        NA          &lt;NA&gt;           &lt;NA&gt;
+794        NA          &lt;NA&gt;           &lt;NA&gt;
+795        NA          &lt;NA&gt;           &lt;NA&gt;
+796    404167       Decil 5         decil5
+797        NA          &lt;NA&gt;           &lt;NA&gt;
+798    416667       Decil 5         decil5
+799    300000       Decil 3         decil3
+800        NA          &lt;NA&gt;           &lt;NA&gt;
+801    974167       Decil 9         decil9
+802        NA          &lt;NA&gt;           &lt;NA&gt;
+803     50000       Decil 1         decil1
+804        NA          &lt;NA&gt;           &lt;NA&gt;
+805    708333       Decil 8         decil8
+806    180000       Decil 2         decil2
+807    600000       Decil 7         decil7
+808        NA          &lt;NA&gt;           &lt;NA&gt;
+809    400000       Decil 4         decil4
+810    550000       Decil 7         decil7
+811        NA          &lt;NA&gt;           &lt;NA&gt;
+812    440000       Decil 6         decil6
+813    420000       Decil 5         decil5
+814    240000       Decil 3         decil3
+815        NA          &lt;NA&gt;           &lt;NA&gt;
+816        NA          &lt;NA&gt;           &lt;NA&gt;
+817    320000       Decil 4         decil4
+818        NA          &lt;NA&gt;           &lt;NA&gt;
+819        NA          &lt;NA&gt;           &lt;NA&gt;
+820    200000       Decil 2         decil2
+821    280000       Decil 3         decil3
+822    201667       Decil 3         decil3
+823        NA          &lt;NA&gt;           &lt;NA&gt;
+824    420000       Decil 5         decil5
+825   1051333       Decil 9         decil9
+826    600000       Decil 7         decil7
+827    190000       Decil 2         decil2
+828        NA          &lt;NA&gt;           &lt;NA&gt;
+829        NA          &lt;NA&gt;           &lt;NA&gt;
+830        NA          &lt;NA&gt;           &lt;NA&gt;
+831    281324       Decil 3         decil3
+832   1405072      Decil 10        decil10
+833    450167       Decil 6         decil6
+834        NA          &lt;NA&gt;           &lt;NA&gt;
+835    429167       Decil 5         decil5
+836        NA          &lt;NA&gt;           &lt;NA&gt;
+837   1000834       Decil 9         decil9
+838        NA          &lt;NA&gt;           &lt;NA&gt;
+839    610000       Decil 8         decil8
+840   1060000       Decil 9         decil9
+841        NA          &lt;NA&gt;           &lt;NA&gt;
+842    530000       Decil 7         decil7
+843    193935       Decil 2         decil2
+844    400000       Decil 4         decil4
+845        NA          &lt;NA&gt;           &lt;NA&gt;
+846        NA          &lt;NA&gt;           &lt;NA&gt;
+847        NA          &lt;NA&gt;           &lt;NA&gt;
+848   4950000      Decil 10        decil10
+849        NA          &lt;NA&gt;           &lt;NA&gt;
+850     16667       Decil 1         decil1
+851    300000       Decil 3         decil3
+852    200000       Decil 2         decil2
+853    400000       Decil 4         decil4
+854   1083333       Decil 9         decil9
+855        NA          &lt;NA&gt;           &lt;NA&gt;
+856        NA          &lt;NA&gt;           &lt;NA&gt;
+857     70000       Decil 1         decil1
+858     10000       Decil 1         decil1
+859        NA          &lt;NA&gt;           &lt;NA&gt;
+860        NA          &lt;NA&gt;           &lt;NA&gt;
+861    646000       Decil 8         decil8
+862        NA          &lt;NA&gt;           &lt;NA&gt;
+863        NA          &lt;NA&gt;           &lt;NA&gt;
+864    160000       Decil 2         decil2
+865        NA          &lt;NA&gt;           &lt;NA&gt;
+866    410000       Decil 5         decil5
+867    360000       Decil 4         decil4
+868        NA          &lt;NA&gt;           &lt;NA&gt;
+869        NA          &lt;NA&gt;           &lt;NA&gt;
+870    650000       Decil 8         decil8
+871    620000       Decil 8         decil8
+872    370757       Decil 4         decil4
+873    300000       Decil 3         decil3
+874    530000       Decil 7         decil7
+875    400000       Decil 4         decil4
+876        NA          &lt;NA&gt;           &lt;NA&gt;
+877        NA          &lt;NA&gt;           &lt;NA&gt;
+878        NA          &lt;NA&gt;           &lt;NA&gt;
+879    300000       Decil 3         decil3
+880        NA          &lt;NA&gt;           &lt;NA&gt;
+881    604167       Decil 8         decil8
+882   1300000      Decil 10        decil10
+883        NA          &lt;NA&gt;           &lt;NA&gt;
+884   1351667      Decil 10        decil10
+885    700000       Decil 8         decil8
+886     50000       Decil 1         decil1
+887     70000       Decil 1         decil1
+888    410000       Decil 5         decil5
+889        NA          &lt;NA&gt;           &lt;NA&gt;
+890    150000       Decil 2         decil2
+891      2500       Decil 1         decil1
+892        NA          &lt;NA&gt;           &lt;NA&gt;
+893    450000       Decil 6         decil6
+894        NA          &lt;NA&gt;           &lt;NA&gt;
+895        NA          &lt;NA&gt;           &lt;NA&gt;
+896   1100000       Decil 9         decil9
+897        NA          &lt;NA&gt;           &lt;NA&gt;
+898        NA          &lt;NA&gt;           &lt;NA&gt;
+899        NA          &lt;NA&gt;           &lt;NA&gt;
+900     45930       Decil 1         decil1
+901        NA          &lt;NA&gt;           &lt;NA&gt;
+902        NA          &lt;NA&gt;           &lt;NA&gt;
+903        NA          &lt;NA&gt;           &lt;NA&gt;
+904        NA          &lt;NA&gt;           &lt;NA&gt;
+905        NA          &lt;NA&gt;           &lt;NA&gt;
+906    450000       Decil 6         decil6
+907        NA          &lt;NA&gt;           &lt;NA&gt;
+908    750000       Decil 8         decil8
+909        NA          &lt;NA&gt;           &lt;NA&gt;
+910        NA          &lt;NA&gt;           &lt;NA&gt;
+911    500000       Decil 6         decil6
+912    260000       Decil 3         decil3
+913    550000       Decil 7         decil7
+914    400000       Decil 4         decil4
+915        NA          &lt;NA&gt;           &lt;NA&gt;
+916    400000       Decil 4         decil4
+917    600000       Decil 7         decil7
+918        NA          &lt;NA&gt;           &lt;NA&gt;
+919    340000       Decil 4         decil4
+920     55000       Decil 1         decil1
+921        NA          &lt;NA&gt;           &lt;NA&gt;
+922    106000       Decil 1         decil1
+923        NA          &lt;NA&gt;           &lt;NA&gt;
+924    450000       Decil 6         decil6
+925        NA          &lt;NA&gt;           &lt;NA&gt;
+926    200000       Decil 2         decil2
+927    855000       Decil 9         decil9
+928        NA          &lt;NA&gt;           &lt;NA&gt;
+929        NA          &lt;NA&gt;           &lt;NA&gt;
+930    285000       Decil 3         decil3
+931        NA          &lt;NA&gt;           &lt;NA&gt;
+932        NA          &lt;NA&gt;           &lt;NA&gt;
+933        NA          &lt;NA&gt;           &lt;NA&gt;
+934    116667       Decil 1         decil1
+935        NA          &lt;NA&gt;           &lt;NA&gt;
+936        NA          &lt;NA&gt;           &lt;NA&gt;
+937        NA          &lt;NA&gt;           &lt;NA&gt;
+938        NA          &lt;NA&gt;           &lt;NA&gt;
+939    500000       Decil 6         decil6
+940        NA          &lt;NA&gt;           &lt;NA&gt;
+941        NA          &lt;NA&gt;           &lt;NA&gt;
+942    900000       Decil 9         decil9
+943   1000000       Decil 9         decil9
+944        NA          &lt;NA&gt;           &lt;NA&gt;
+945        NA          &lt;NA&gt;           &lt;NA&gt;
+946    193000       Decil 2         decil2
+947        NA          &lt;NA&gt;           &lt;NA&gt;
+948    536667       Decil 7         decil7
+949        NA          &lt;NA&gt;           &lt;NA&gt;
+950        NA          &lt;NA&gt;           &lt;NA&gt;
+951    689333       Decil 8         decil8
+952    340100       Decil 4         decil4
+953    852083       Decil 9         decil9
+954        NA          &lt;NA&gt;           &lt;NA&gt;
+955        NA          &lt;NA&gt;           &lt;NA&gt;
+956   1100000       Decil 9         decil9
+957    600000       Decil 7         decil7
+958        NA          &lt;NA&gt;           &lt;NA&gt;
+959    800000       Decil 8         decil8
+960    300000       Decil 3         decil3
+961    400000       Decil 4         decil4
+962        NA          &lt;NA&gt;           &lt;NA&gt;
+963    190000       Decil 2         decil2
+964        NA          &lt;NA&gt;           &lt;NA&gt;
+965    344167       Decil 4         decil4
+966        NA          &lt;NA&gt;           &lt;NA&gt;
+967    250922       Decil 3         decil3
+968    750000       Decil 8         decil8
+969   1000000       Decil 9         decil9
+970    500000       Decil 6         decil6
+971    610000       Decil 8         decil8
+972    600000       Decil 7         decil7
+973        NA          &lt;NA&gt;           &lt;NA&gt;
+974    329153       Decil 4         decil4
+975        NA          &lt;NA&gt;           &lt;NA&gt;
+976        NA          &lt;NA&gt;           &lt;NA&gt;
+977        NA          &lt;NA&gt;           &lt;NA&gt;
+978        NA          &lt;NA&gt;           &lt;NA&gt;
+979        NA          &lt;NA&gt;           &lt;NA&gt;
+980    400000       Decil 4         decil4
+981        NA          &lt;NA&gt;           &lt;NA&gt;
+982    400000       Decil 4         decil4
+983     70000       Decil 1         decil1
+984        NA          &lt;NA&gt;           &lt;NA&gt;
+985    731667       Decil 8         decil8
+986    400000       Decil 4         decil4
+987        NA          &lt;NA&gt;           &lt;NA&gt;
+988    420000       Decil 5         decil5
+989        NA          &lt;NA&gt;           &lt;NA&gt;
+990        NA          &lt;NA&gt;           &lt;NA&gt;
+991        NA          &lt;NA&gt;           &lt;NA&gt;
+992        NA          &lt;NA&gt;           &lt;NA&gt;
+993        NA          &lt;NA&gt;           &lt;NA&gt;
+994        NA          &lt;NA&gt;           &lt;NA&gt;
+995        NA          &lt;NA&gt;           &lt;NA&gt;
+996    504167       Decil 7         decil7
+997   3000000      Decil 10        decil10
+998    141333       Decil 2         decil2
+999        NA          &lt;NA&gt;           &lt;NA&gt;
+1000       NA          &lt;NA&gt;           &lt;NA&gt;
+1001       NA          &lt;NA&gt;           &lt;NA&gt;
+1002       NA          &lt;NA&gt;           &lt;NA&gt;
+1003  1308334      Decil 10        decil10
+1004       NA          &lt;NA&gt;           &lt;NA&gt;
+1005   600000       Decil 7         decil7
+1006       NA          &lt;NA&gt;           &lt;NA&gt;
+1007  1500000      Decil 10        decil10
+1008   176796       Decil 2         decil2
+1009  1333333      Decil 10        decil10
+1010   410000       Decil 5         decil5
+1011       NA          &lt;NA&gt;           &lt;NA&gt;
+1012       NA          &lt;NA&gt;           &lt;NA&gt;
+1013   250000       Decil 3         decil3
+1014   554167       Decil 7         decil7
+1015    68333       Decil 1         decil1
+1016   402500       Decil 5         decil5
+1017       NA          &lt;NA&gt;           &lt;NA&gt;
+1018   592500       Decil 7         decil7
+1019       NA          &lt;NA&gt;           &lt;NA&gt;
+1020       NA          &lt;NA&gt;           &lt;NA&gt;
+1021  1479167      Decil 10        decil10
+1022     2500       Decil 1         decil1
+1023       NA          &lt;NA&gt;           &lt;NA&gt;
+1024   120000       Decil 1         decil1
+1025       NA          &lt;NA&gt;           &lt;NA&gt;
+1026       NA          &lt;NA&gt;           &lt;NA&gt;
+1027       NA          &lt;NA&gt;           &lt;NA&gt;
+1028       NA          &lt;NA&gt;           &lt;NA&gt;
+1029       NA          &lt;NA&gt;           &lt;NA&gt;
+1030   400088       Decil 5         decil5
+1031   355833       Decil 4         decil4
+1032  2300000      Decil 10        decil10
+1033   595000       Decil 7         decil7
+1034   350000       Decil 4         decil4
+1035       NA          &lt;NA&gt;           &lt;NA&gt;
+1036       NA          &lt;NA&gt;           &lt;NA&gt;
+1037   500000       Decil 6         decil6
+1038       NA          &lt;NA&gt;           &lt;NA&gt;
+1039       NA          &lt;NA&gt;           &lt;NA&gt;
+1040   678000       Decil 8         decil8
+1041       NA          &lt;NA&gt;           &lt;NA&gt;
+1042       NA          &lt;NA&gt;           &lt;NA&gt;
+1043       NA          &lt;NA&gt;           &lt;NA&gt;
+1044       NA          &lt;NA&gt;           &lt;NA&gt;
+1045       NA          &lt;NA&gt;           &lt;NA&gt;
+1046       NA          &lt;NA&gt;           &lt;NA&gt;
+1047       NA          &lt;NA&gt;           &lt;NA&gt;
+1048       NA          &lt;NA&gt;           &lt;NA&gt;
+1049   720000       Decil 8         decil8
+1050   380000       Decil 4         decil4
+1051       NA          &lt;NA&gt;           &lt;NA&gt;
+1052   380565       Decil 4         decil4
+1053   900000       Decil 9         decil9
+1054   550000       Decil 7         decil7
+1055   390000       Decil 4         decil4
+1056   920000       Decil 9         decil9
+1057   400000       Decil 4         decil4
+1058       NA          &lt;NA&gt;           &lt;NA&gt;
+1059       NA          &lt;NA&gt;           &lt;NA&gt;
+1060   154167       Decil 2         decil2
+1061   521667       Decil 7         decil7
+1062   380000       Decil 4         decil4
+1063   192000       Decil 2         decil2
+1064   200000       Decil 2         decil2
+1065  1039666       Decil 9         decil9
+1066       NA          &lt;NA&gt;           &lt;NA&gt;
+1067  1304167      Decil 10        decil10
+1068   220000       Decil 3         decil3
+1069   500000       Decil 6         decil6
+1070       NA          &lt;NA&gt;           &lt;NA&gt;
+1071   300000       Decil 3         decil3
+1072   114167       Decil 1         decil1
+1073   480000       Decil 6         decil6
+1074       NA          &lt;NA&gt;           &lt;NA&gt;
+1075   331204       Decil 4         decil4
+1076       NA          &lt;NA&gt;           &lt;NA&gt;
+1077       NA          &lt;NA&gt;           &lt;NA&gt;
+1078       NA          &lt;NA&gt;           &lt;NA&gt;
+1079       NA          &lt;NA&gt;           &lt;NA&gt;
+1080   586667       Decil 7         decil7
+1081       NA          &lt;NA&gt;           &lt;NA&gt;
+1082       NA          &lt;NA&gt;           &lt;NA&gt;
+1083   550000       Decil 7         decil7
+1084   600000       Decil 7         decil7
+1085    61200       Decil 1         decil1
+1086  1080000       Decil 9         decil9
+1087       NA          &lt;NA&gt;           &lt;NA&gt;
+1088       NA          &lt;NA&gt;           &lt;NA&gt;
+1089   450000       Decil 6         decil6
+1090   421000       Decil 5         decil5
+1091       NA          &lt;NA&gt;           &lt;NA&gt;
+1092   400000       Decil 4         decil4
+1093   450000       Decil 6         decil6
+1094  2600000      Decil 10        decil10
+1095   511333       Decil 7         decil7
+1096       NA          &lt;NA&gt;           &lt;NA&gt;
+1097   800000       Decil 8         decil8
+1098   380000       Decil 4         decil4
+1099       NA          &lt;NA&gt;           &lt;NA&gt;
+1100       NA          &lt;NA&gt;           &lt;NA&gt;
+1101  1206667      Decil 10        decil10
+1102   280000       Decil 3         decil3
+1103   379103       Decil 4         decil4
+1104   302241       Decil 4         decil4
+1105       NA          &lt;NA&gt;           &lt;NA&gt;
+1106   554167       Decil 7         decil7
+1107   310000       Decil 4         decil4
+1108       NA          &lt;NA&gt;           &lt;NA&gt;
+1109       NA          &lt;NA&gt;           &lt;NA&gt;
+1110       NA          &lt;NA&gt;           &lt;NA&gt;
+1111       NA          &lt;NA&gt;           &lt;NA&gt;
+1112       NA          &lt;NA&gt;           &lt;NA&gt;
+1113   500000       Decil 6         decil6
+1114       NA          &lt;NA&gt;           &lt;NA&gt;
+1115       NA          &lt;NA&gt;           &lt;NA&gt;
+1116       NA          &lt;NA&gt;           &lt;NA&gt;
+1117       NA          &lt;NA&gt;           &lt;NA&gt;
+1118    25000       Decil 1         decil1
+1119   431667       Decil 5         decil5
+1120       NA          &lt;NA&gt;           &lt;NA&gt;
+1121       NA          &lt;NA&gt;           &lt;NA&gt;
+1122   100000       Decil 1         decil1
+1123       NA          &lt;NA&gt;           &lt;NA&gt;
+1124   330000       Decil 4         decil4
+1125       NA          &lt;NA&gt;           &lt;NA&gt;
+1126   220000       Decil 3         decil3
+1127   200000       Decil 2         decil2
+1128   280000       Decil 3         decil3
+1129       NA          &lt;NA&gt;           &lt;NA&gt;
+1130       NA          &lt;NA&gt;           &lt;NA&gt;
+1131       NA          &lt;NA&gt;           &lt;NA&gt;
+1132       NA          &lt;NA&gt;           &lt;NA&gt;
+1133       NA          &lt;NA&gt;           &lt;NA&gt;
+1134   600000       Decil 7         decil7
+1135       NA          &lt;NA&gt;           &lt;NA&gt;
+1136       NA          &lt;NA&gt;           &lt;NA&gt;
+1137   395000       Decil 4         decil4
+1138   160833       Decil 2         decil2
+1139   100000       Decil 1         decil1
+1140   948333       Decil 9         decil9
+1141   400000       Decil 4         decil4
+1142       NA          &lt;NA&gt;           &lt;NA&gt;
+1143       NA          &lt;NA&gt;           &lt;NA&gt;
+1144   332417       Decil 4         decil4
+1145   324167       Decil 4         decil4
+1146       NA          &lt;NA&gt;           &lt;NA&gt;
+1147       NA          &lt;NA&gt;           &lt;NA&gt;
+1148   464167       Decil 6         decil6
+1149       NA          &lt;NA&gt;           &lt;NA&gt;
+1150   700000       Decil 8         decil8
+1151       NA          &lt;NA&gt;           &lt;NA&gt;
+1152       NA          &lt;NA&gt;           &lt;NA&gt;
+1153       NA          &lt;NA&gt;           &lt;NA&gt;
+1154       NA          &lt;NA&gt;           &lt;NA&gt;
+1155       NA          &lt;NA&gt;           &lt;NA&gt;
+1156   505000       Decil 7         decil7
+1157   530000       Decil 7         decil7
+1158       NA          &lt;NA&gt;           &lt;NA&gt;
+1159   100000       Decil 1         decil1
+1160   191667       Decil 2         decil2
+1161  1500000      Decil 10        decil10
+1162       NA          &lt;NA&gt;           &lt;NA&gt;
+1163       NA          &lt;NA&gt;           &lt;NA&gt;
+1164       NA          &lt;NA&gt;           &lt;NA&gt;
+1165       NA          &lt;NA&gt;           &lt;NA&gt;
+1166   340000       Decil 4         decil4
+1167   800000       Decil 8         decil8
+1168       NA          &lt;NA&gt;           &lt;NA&gt;
+1169   228000       Decil 3         decil3
+1170       NA          &lt;NA&gt;           &lt;NA&gt;
+1171   220000       Decil 3         decil3
+1172       NA          &lt;NA&gt;           &lt;NA&gt;
+1173       NA          &lt;NA&gt;           &lt;NA&gt;
+1174    50000       Decil 1         decil1
+1175       NA          &lt;NA&gt;           &lt;NA&gt;
+1176   243000       Decil 3         decil3
+1177   480000       Decil 6         decil6
+1178  1115833       Decil 9         decil9
+1179       NA          &lt;NA&gt;           &lt;NA&gt;
+1180   320000       Decil 4         decil4
+1181   734667       Decil 8         decil8
+1182       NA          &lt;NA&gt;           &lt;NA&gt;
+1183       NA          &lt;NA&gt;           &lt;NA&gt;
+1184       NA          &lt;NA&gt;           &lt;NA&gt;
+1185   465000       Decil 6         decil6
+1186       NA          &lt;NA&gt;           &lt;NA&gt;
+1187       NA          &lt;NA&gt;           &lt;NA&gt;
+1188  4000000      Decil 10        decil10
+1189       NA          &lt;NA&gt;           &lt;NA&gt;
+1190  1574334      Decil 10        decil10
+1191       NA          &lt;NA&gt;           &lt;NA&gt;
+1192   600000       Decil 7         decil7
+1193   280000       Decil 3         decil3
+1194   220000       Decil 3         decil3
+1195   700000       Decil 8         decil8
+1196   250417       Decil 3         decil3
+1197       NA          &lt;NA&gt;           &lt;NA&gt;
+1198   600000       Decil 7         decil7
+1199       NA          &lt;NA&gt;           &lt;NA&gt;
+1200   120000       Decil 1         decil1
+1201   406667       Decil 5         decil5
+1202   300000       Decil 3         decil3
+1203       NA          &lt;NA&gt;           &lt;NA&gt;
+1204   100000       Decil 1         decil1
+1205   400000       Decil 4         decil4
+1206    80000       Decil 1         decil1
+1207  1380000      Decil 10        decil10
+1208   815000       Decil 9         decil9
+1209       NA          &lt;NA&gt;           &lt;NA&gt;
+1210       NA          &lt;NA&gt;           &lt;NA&gt;
+1211  1180000       Decil 9         decil9
+1212       NA          &lt;NA&gt;           &lt;NA&gt;
+1213       NA          &lt;NA&gt;           &lt;NA&gt;
+1214   408333       Decil 5         decil5
+1215       NA          &lt;NA&gt;           &lt;NA&gt;
+1216   352500       Decil 4         decil4
+1217       NA          &lt;NA&gt;           &lt;NA&gt;
+1218       NA          &lt;NA&gt;           &lt;NA&gt;
+1219       NA          &lt;NA&gt;           &lt;NA&gt;
+1220       NA          &lt;NA&gt;           &lt;NA&gt;
+1221   350000       Decil 4         decil4
+1222   190000       Decil 2         decil2
+1223    12500       Decil 1         decil1
+1224   500000       Decil 6         decil6
+1225   405000       Decil 5         decil5
+1226       NA          &lt;NA&gt;           &lt;NA&gt;
+1227   140000       Decil 2         decil2
+1228       NA          &lt;NA&gt;           &lt;NA&gt;
+1229    90000       Decil 1         decil1
+1230   200000       Decil 2         decil2
+1231   260000       Decil 3         decil3
+1232       NA          &lt;NA&gt;           &lt;NA&gt;
+1233   300000       Decil 3         decil3
+1234   140000       Decil 2         decil2
+1235       NA          &lt;NA&gt;           &lt;NA&gt;
+1236       NA          &lt;NA&gt;           &lt;NA&gt;
+1237  1790000      Decil 10        decil10
+1238  1216667      Decil 10        decil10
+1239       NA          &lt;NA&gt;           &lt;NA&gt;
+1240       NA          &lt;NA&gt;           &lt;NA&gt;
+1241   600000       Decil 7         decil7
+1242       NA          &lt;NA&gt;           &lt;NA&gt;
+1243  1058333       Decil 9         decil9
+1244   400000       Decil 4         decil4
+1245   121660       Decil 2         decil2
+1246   900000       Decil 9         decil9
+1247       NA          &lt;NA&gt;           &lt;NA&gt;
+1248       NA          &lt;NA&gt;           &lt;NA&gt;
+1249       NA          &lt;NA&gt;           &lt;NA&gt;
+1250       NA          &lt;NA&gt;           &lt;NA&gt;
+1251   300000       Decil 3         decil3
+1252   300000       Decil 3         decil3
+1253  1000000       Decil 9         decil9
+1254       NA          &lt;NA&gt;           &lt;NA&gt;
+1255       NA          &lt;NA&gt;           &lt;NA&gt;
+1256       NA          &lt;NA&gt;           &lt;NA&gt;
+1257    60000       Decil 1         decil1
+1258       NA          &lt;NA&gt;           &lt;NA&gt;
+1259    60000       Decil 1         decil1
+1260       NA          &lt;NA&gt;           &lt;NA&gt;
+1261   400000       Decil 4         decil4
+1262   593333       Decil 7         decil7
+1263   503333       Decil 7         decil7
+1264       NA          &lt;NA&gt;           &lt;NA&gt;
+1265   454167       Decil 6         decil6
+1266   644167       Decil 8         decil8
+1267   150000       Decil 2         decil2
+1268   400000       Decil 4         decil4
+1269   291498       Decil 3         decil3
+1270   410000       Decil 5         decil5
+1271   810000       Decil 9         decil9
+1272  1500000      Decil 10        decil10
+1273   259000       Decil 3         decil3
+1274   121000       Decil 2         decil2
+1275       NA          &lt;NA&gt;           &lt;NA&gt;
+1276   270000       Decil 3         decil3
+1277  1300000      Decil 10        decil10
+1278       NA          &lt;NA&gt;           &lt;NA&gt;
+1279   426667       Decil 5         decil5
+1280       NA          &lt;NA&gt;           &lt;NA&gt;
+1281   100000       Decil 1         decil1
+1282       NA          &lt;NA&gt;           &lt;NA&gt;
+1283   150000       Decil 2         decil2
+1284       NA          &lt;NA&gt;           &lt;NA&gt;
+1285    16667       Decil 1         decil1
+1286       NA          &lt;NA&gt;           &lt;NA&gt;
+1287   160000       Decil 2         decil2
+1288       NA          &lt;NA&gt;           &lt;NA&gt;
+1289   439167       Decil 5         decil5
+1290       NA          &lt;NA&gt;           &lt;NA&gt;
+1291    60000       Decil 1         decil1
+1292   100000       Decil 1         decil1
+1293  4008333      Decil 10        decil10
+1294   240000       Decil 3         decil3
+1295   280000       Decil 3         decil3
+1296       NA          &lt;NA&gt;           &lt;NA&gt;
+1297   300000       Decil 3         decil3
+1298       NA          &lt;NA&gt;           &lt;NA&gt;
+1299       NA          &lt;NA&gt;           &lt;NA&gt;
+1300   250000       Decil 3         decil3
+1301   608333       Decil 8         decil8
+1302       NA          &lt;NA&gt;           &lt;NA&gt;
+1303  1341666      Decil 10        decil10
+1304   400000       Decil 4         decil4
+1305  2050000      Decil 10        decil10
+1306   140000       Decil 2         decil2
+1307   270000       Decil 3         decil3
+1308       NA          &lt;NA&gt;           &lt;NA&gt;
+1309   410000       Decil 5         decil5
+1310       NA          &lt;NA&gt;           &lt;NA&gt;
+1311   600000       Decil 7         decil7
+1312       NA          &lt;NA&gt;           &lt;NA&gt;
+1313       NA          &lt;NA&gt;           &lt;NA&gt;
+1314       NA          &lt;NA&gt;           &lt;NA&gt;
+1315   504167       Decil 7         decil7
+1316   250000       Decil 3         decil3
+1317       NA          &lt;NA&gt;           &lt;NA&gt;
+1318   602917       Decil 8         decil8
+1319   390000       Decil 4         decil4
+1320       NA          &lt;NA&gt;           &lt;NA&gt;
+1321   643000       Decil 8         decil8
+1322   600000       Decil 7         decil7
+1323   688333       Decil 8         decil8
+1324  2300000      Decil 10        decil10
+1325       NA          &lt;NA&gt;           &lt;NA&gt;
+1326   500000       Decil 6         decil6
+1327       NA          &lt;NA&gt;           &lt;NA&gt;
+1328   377000       Decil 4         decil4
+1329       NA          &lt;NA&gt;           &lt;NA&gt;
+1330   402500       Decil 5         decil5
+1331   650000       Decil 8         decil8
+1332  2000000      Decil 10        decil10
+1333   900000       Decil 9         decil9
+1334   400000       Decil 4         decil4
+1335       NA          &lt;NA&gt;           &lt;NA&gt;
+1336   500000       Decil 6         decil6
+1337       NA          &lt;NA&gt;           &lt;NA&gt;
+1338       NA          &lt;NA&gt;           &lt;NA&gt;
+1339   640000       Decil 8         decil8
+1340   480000       Decil 6         decil6
+1341       NA          &lt;NA&gt;           &lt;NA&gt;
+1342       NA          &lt;NA&gt;           &lt;NA&gt;
+1343       NA          &lt;NA&gt;           &lt;NA&gt;
+1344       NA          &lt;NA&gt;           &lt;NA&gt;
+1345   602500       Decil 8         decil8
+1346  1000000       Decil 9         decil9
+1347   429167       Decil 5         decil5
+1348  1000000       Decil 9         decil9
+1349  1700000      Decil 10        decil10
+1350   205000       Decil 3         decil3
+1351   130000       Decil 2         decil2
+1352   611667       Decil 8         decil8
+1353   523333       Decil 7         decil7
+1354   500000       Decil 6         decil6
+1355       NA          &lt;NA&gt;           &lt;NA&gt;
+1356       NA          &lt;NA&gt;           &lt;NA&gt;
+1357  1000000       Decil 9         decil9
+1358       NA          &lt;NA&gt;           &lt;NA&gt;
+1359       NA          &lt;NA&gt;           &lt;NA&gt;
+1360   403333       Decil 5         decil5
+1361       NA          &lt;NA&gt;           &lt;NA&gt;
+1362   130000       Decil 2         decil2
+1363   140000       Decil 2         decil2
+1364       NA          &lt;NA&gt;           &lt;NA&gt;
+1365  1500000      Decil 10        decil10
+1366       NA          &lt;NA&gt;           &lt;NA&gt;
+1367       NA          &lt;NA&gt;           &lt;NA&gt;
+1368   210000       Decil 3         decil3
+1369   950833       Decil 9         decil9
+1370     8333       Decil 1         decil1
+1371       NA          &lt;NA&gt;           &lt;NA&gt;
+1372       NA          &lt;NA&gt;           &lt;NA&gt;
+1373   200000       Decil 2         decil2
+1374   900000       Decil 9         decil9
+1375       NA          &lt;NA&gt;           &lt;NA&gt;
+1376  1192333       Decil 9         decil9
+1377       NA          &lt;NA&gt;           &lt;NA&gt;
+1378       NA          &lt;NA&gt;           &lt;NA&gt;
+1379  1358333      Decil 10        decil10
+1380   200000       Decil 2         decil2
+1381   651667       Decil 8         decil8
+1382       NA          &lt;NA&gt;           &lt;NA&gt;
+1383       NA          &lt;NA&gt;           &lt;NA&gt;
+1384       NA          &lt;NA&gt;           &lt;NA&gt;
+1385   870000       Decil 9         decil9
+1386       NA          &lt;NA&gt;           &lt;NA&gt;
+1387   450000       Decil 6         decil6
+1388   633333       Decil 8         decil8
+1389   140000       Decil 2         decil2
+1390       NA          &lt;NA&gt;           &lt;NA&gt;
+1391   600000       Decil 7         decil7
+1392       NA          &lt;NA&gt;           &lt;NA&gt;
+1393       NA          &lt;NA&gt;           &lt;NA&gt;
+1394       NA          &lt;NA&gt;           &lt;NA&gt;
+1395       NA          &lt;NA&gt;           &lt;NA&gt;
+1396   550000       Decil 7         decil7
+1397   550000       Decil 7         decil7
+1398   355000       Decil 4         decil4
+1399   150000       Decil 2         decil2
+1400       NA          &lt;NA&gt;           &lt;NA&gt;
+1401       NA          &lt;NA&gt;           &lt;NA&gt;
+1402       NA          &lt;NA&gt;           &lt;NA&gt;
+1403   100000       Decil 1         decil1
+1404   450000       Decil 6         decil6
+1405       NA          &lt;NA&gt;           &lt;NA&gt;
+1406   250000       Decil 3         decil3
+1407       NA          &lt;NA&gt;           &lt;NA&gt;
+1408       NA          &lt;NA&gt;           &lt;NA&gt;
+1409   550000       Decil 7         decil7
+1410       NA          &lt;NA&gt;           &lt;NA&gt;
+1411       NA          &lt;NA&gt;           &lt;NA&gt;
+1412  2280000      Decil 10        decil10
+1413   450000       Decil 6         decil6
+1414   290000       Decil 3         decil3
+1415   980000       Decil 9         decil9
+1416       NA          &lt;NA&gt;           &lt;NA&gt;
+1417   450000       Decil 6         decil6
+1418   800000       Decil 8         decil8
+1419       NA          &lt;NA&gt;           &lt;NA&gt;
+1420       NA          &lt;NA&gt;           &lt;NA&gt;
+1421       NA          &lt;NA&gt;           &lt;NA&gt;
+1422       NA          &lt;NA&gt;           &lt;NA&gt;
+1423       NA          &lt;NA&gt;           &lt;NA&gt;
+1424   280000       Decil 3         decil3
+1425       NA          &lt;NA&gt;           &lt;NA&gt;
+1426  1120000       Decil 9         decil9
+1427       NA          &lt;NA&gt;           &lt;NA&gt;
+1428       NA          &lt;NA&gt;           &lt;NA&gt;
+1429       NA          &lt;NA&gt;           &lt;NA&gt;
+1430       NA          &lt;NA&gt;           &lt;NA&gt;
+1431  1205000       Decil 9         decil9
+1432       NA          &lt;NA&gt;           &lt;NA&gt;
+1433   754167       Decil 8         decil8
+1434   173000       Decil 2         decil2
+1435   505833       Decil 7         decil7
+1436       NA          &lt;NA&gt;           &lt;NA&gt;
+1437  1045000       Decil 9         decil9
+1438  1414167      Decil 10        decil10
+1439       NA          &lt;NA&gt;           &lt;NA&gt;
+1440   201277       Decil 3         decil3
+1441       NA          &lt;NA&gt;           &lt;NA&gt;
+1442       NA          &lt;NA&gt;           &lt;NA&gt;
+1443   200000       Decil 2         decil2
+1444   120000       Decil 1         decil1
+1445  1119167       Decil 9         decil9
+1446       NA          &lt;NA&gt;           &lt;NA&gt;
+1447   190000       Decil 2         decil2
+1448       NA          &lt;NA&gt;           &lt;NA&gt;
+1449   850000       Decil 9         decil9
+1450       NA          &lt;NA&gt;           &lt;NA&gt;
+1451  1116667       Decil 9         decil9
+1452    90000       Decil 1         decil1
+1453       NA          &lt;NA&gt;           &lt;NA&gt;
+1454  1216667      Decil 10        decil10
+1455   317417       Decil 4         decil4
+1456       NA          &lt;NA&gt;           &lt;NA&gt;
+1457       NA          &lt;NA&gt;           &lt;NA&gt;
+1458   332500       Decil 4         decil4
+1459       NA          &lt;NA&gt;           &lt;NA&gt;
+1460       NA          &lt;NA&gt;           &lt;NA&gt;
+1461   100000       Decil 1         decil1
+1462       NA          &lt;NA&gt;           &lt;NA&gt;
+1463   600000       Decil 7         decil7
+1464   710000       Decil 8         decil8
+1465       NA          &lt;NA&gt;           &lt;NA&gt;
+1466   300833       Decil 4         decil4
+1467       NA          &lt;NA&gt;           &lt;NA&gt;
+1468   500000       Decil 6         decil6
+1469       NA          &lt;NA&gt;           &lt;NA&gt;
+1470       NA          &lt;NA&gt;           &lt;NA&gt;
+1471       NA          &lt;NA&gt;           &lt;NA&gt;
+1472       NA          &lt;NA&gt;           &lt;NA&gt;
+1473  1100000       Decil 9         decil9
+1474   530325       Decil 7         decil7
+1475       NA          &lt;NA&gt;           &lt;NA&gt;
+1476       NA          &lt;NA&gt;           &lt;NA&gt;
+1477   400000       Decil 4         decil4
+1478   937000       Decil 9         decil9
+1479       NA          &lt;NA&gt;           &lt;NA&gt;
+1480   300000       Decil 3         decil3
+1481       NA          &lt;NA&gt;           &lt;NA&gt;
+1482   300000       Decil 3         decil3
+1483   468000       Decil 6         decil6
+1484   545000       Decil 7         decil7
+1485   120000       Decil 1         decil1
+1486   196000       Decil 2         decil2
+1487       NA          &lt;NA&gt;           &lt;NA&gt;
+1488   200000       Decil 2         decil2
+1489   800000       Decil 8         decil8
+1490       NA          &lt;NA&gt;           &lt;NA&gt;
+1491   489667       Decil 6         decil6
+1492   490000       Decil 6         decil6
+1493   861667       Decil 9         decil9
+1494   380000       Decil 4         decil4
+1495   599500       Decil 7         decil7
+1496  2000000      Decil 10        decil10
+1497    26667       Decil 1         decil1
+1498   350000       Decil 4         decil4
+1499       NA          &lt;NA&gt;           &lt;NA&gt;
+1500   920833       Decil 9         decil9
+1501       NA          &lt;NA&gt;           &lt;NA&gt;
+1502   150000       Decil 2         decil2
+1503       NA          &lt;NA&gt;           &lt;NA&gt;
+1504   700417       Decil 8         decil8
+1505       NA          &lt;NA&gt;           &lt;NA&gt;
+1506       NA          &lt;NA&gt;           &lt;NA&gt;
+1507   800000       Decil 8         decil8
+1508   158000       Decil 2         decil2
+1509       NA          &lt;NA&gt;           &lt;NA&gt;
+1510   400000       Decil 4         decil4
+1511   381667       Decil 4         decil4
+1512  1032768       Decil 9         decil9
+1513   160000       Decil 2         decil2
+1514       NA          &lt;NA&gt;           &lt;NA&gt;
+1515       NA          &lt;NA&gt;           &lt;NA&gt;
+1516       NA          &lt;NA&gt;           &lt;NA&gt;
+1517   452500       Decil 6         decil6
+1518       NA          &lt;NA&gt;           &lt;NA&gt;
+1519       NA          &lt;NA&gt;           &lt;NA&gt;
+1520   160000       Decil 2         decil2
+1521   120000       Decil 1         decil1
+1522       NA          &lt;NA&gt;           &lt;NA&gt;
+1523       NA          &lt;NA&gt;           &lt;NA&gt;
+1524   658333       Decil 8         decil8
+1525   400000       Decil 4         decil4
+1526   478773       Decil 6         decil6
+1527   280000       Decil 3         decil3
+1528       NA          &lt;NA&gt;           &lt;NA&gt;
+1529   500000       Decil 6         decil6
+1530       NA          &lt;NA&gt;           &lt;NA&gt;
+1531       NA          &lt;NA&gt;           &lt;NA&gt;
+1532   528333       Decil 7         decil7
+1533       NA          &lt;NA&gt;           &lt;NA&gt;
+1534   600000       Decil 7         decil7
+1535       NA          &lt;NA&gt;           &lt;NA&gt;
+1536   384167       Decil 4         decil4
+1537  4000000      Decil 10        decil10
+1538       NA          &lt;NA&gt;           &lt;NA&gt;
+1539   320417       Decil 4         decil4
+1540   160000       Decil 2         decil2
+1541       NA          &lt;NA&gt;           &lt;NA&gt;
+1542   390000       Decil 4         decil4
+1543       NA          &lt;NA&gt;           &lt;NA&gt;
+1544       NA          &lt;NA&gt;           &lt;NA&gt;
+1545    50000       Decil 1         decil1
+1546       NA          &lt;NA&gt;           &lt;NA&gt;
+1547       NA          &lt;NA&gt;           &lt;NA&gt;
+1548   295154       Decil 3         decil3
+1549       NA          &lt;NA&gt;           &lt;NA&gt;
+1550       NA          &lt;NA&gt;           &lt;NA&gt;
+1551       NA          &lt;NA&gt;           &lt;NA&gt;
+1552       NA          &lt;NA&gt;           &lt;NA&gt;
+1553   283333       Decil 3         decil3
+1554   800000       Decil 8         decil8
+1555   150000       Decil 2         decil2
+1556       NA          &lt;NA&gt;           &lt;NA&gt;
+1557  1050417       Decil 9         decil9
+1558   494000       Decil 6         decil6
+1559       NA          &lt;NA&gt;           &lt;NA&gt;
+1560   488000       Decil 6         decil6
+1561       NA          &lt;NA&gt;           &lt;NA&gt;
+1562    30000       Decil 1         decil1
+1563  1985427      Decil 10        decil10
+1564   480000       Decil 6         decil6
+1565  2266667      Decil 10        decil10
+1566   480000       Decil 6         decil6
+1567       NA          &lt;NA&gt;           &lt;NA&gt;
+1568       NA          &lt;NA&gt;           &lt;NA&gt;
+1569   150000       Decil 2         decil2
+1570    40000       Decil 1         decil1
+1571   891833       Decil 9         decil9
+1572   200000       Decil 2         decil2
+1573  3780000      Decil 10        decil10
+1574   130000       Decil 2         decil2
+1575   600000       Decil 7         decil7
+1576   360000       Decil 4         decil4
+1577    50000       Decil 1         decil1
+1578   400000       Decil 4         decil4
+1579   703167       Decil 8         decil8
+1580    50000       Decil 1         decil1
+1581       NA          &lt;NA&gt;           &lt;NA&gt;
+1582   100000       Decil 1         decil1
+1583   250000       Decil 3         decil3
+1584   870000       Decil 9         decil9
+1585   422000       Decil 5         decil5
+1586   728333       Decil 8         decil8
+1587   466917       Decil 6         decil6
+1588   915000       Decil 9         decil9
+1589   220000       Decil 3         decil3
+1590       NA          &lt;NA&gt;           &lt;NA&gt;
+1591       NA          &lt;NA&gt;           &lt;NA&gt;
+1592   400000       Decil 4         decil4
+1593   320000       Decil 4         decil4
+1594       NA          &lt;NA&gt;           &lt;NA&gt;
+1595   597250       Decil 7         decil7
+1596   760000       Decil 8         decil8
+1597   616667       Decil 8         decil8
+1598   404167       Decil 5         decil5
+1599   700000       Decil 8         decil8
+1600   400000       Decil 4         decil4
+1601   100000       Decil 1         decil1
+1602   450000       Decil 6         decil6
+1603   150000       Decil 2         decil2
+1604  1205833      Decil 10        decil10
+1605   600000       Decil 7         decil7
+1606       NA          &lt;NA&gt;           &lt;NA&gt;
+1607   700000       Decil 8         decil8
+1608  1495833      Decil 10        decil10
+1609    16666       Decil 1         decil1
+1610   600000       Decil 7         decil7
+1611    60000       Decil 1         decil1
+1612       NA          &lt;NA&gt;           &lt;NA&gt;
+1613       NA          &lt;NA&gt;           &lt;NA&gt;
+1614   524167       Decil 7         decil7
+1615       NA          &lt;NA&gt;           &lt;NA&gt;
+1616  1606667      Decil 10        decil10
+1617       NA          &lt;NA&gt;           &lt;NA&gt;
+1618   250000       Decil 3         decil3
+1619       NA          &lt;NA&gt;           &lt;NA&gt;
+1620    24000       Decil 1         decil1
+1621       NA          &lt;NA&gt;           &lt;NA&gt;
+1622       NA          &lt;NA&gt;           &lt;NA&gt;
+1623   200000       Decil 2         decil2
+1624   570000       Decil 7         decil7
+1625   300000       Decil 3         decil3
+1626       NA          &lt;NA&gt;           &lt;NA&gt;
+1627   300000       Decil 3         decil3
+1628   220000       Decil 3         decil3
+1629   200000       Decil 2         decil2
+1630   300000       Decil 3         decil3
+1631   564167       Decil 7         decil7
+1632   200000       Decil 2         decil2
+1633       NA          &lt;NA&gt;           &lt;NA&gt;
+1634       NA          &lt;NA&gt;           &lt;NA&gt;
+1635       NA          &lt;NA&gt;           &lt;NA&gt;
+1636       NA          &lt;NA&gt;           &lt;NA&gt;
+1637       NA          &lt;NA&gt;           &lt;NA&gt;
+1638   200000       Decil 2         decil2
+1639   900000       Decil 9         decil9
+1640       NA          &lt;NA&gt;           &lt;NA&gt;
+1641   405833       Decil 5         decil5
+1642       NA          &lt;NA&gt;           &lt;NA&gt;
+1643   120000       Decil 1         decil1
+1644       NA          &lt;NA&gt;           &lt;NA&gt;
+1645   150000       Decil 2         decil2
+1646       NA          &lt;NA&gt;           &lt;NA&gt;
+1647       NA          &lt;NA&gt;           &lt;NA&gt;
+1648  1029167       Decil 9         decil9
+1649       NA          &lt;NA&gt;           &lt;NA&gt;
+1650       NA          &lt;NA&gt;           &lt;NA&gt;
+1651       NA          &lt;NA&gt;           &lt;NA&gt;
+1652       NA          &lt;NA&gt;           &lt;NA&gt;
+1653   150000       Decil 2         decil2
+1654       NA          &lt;NA&gt;           &lt;NA&gt;
+1655       NA          &lt;NA&gt;           &lt;NA&gt;
+1656  1180000       Decil 9         decil9
+1657       NA          &lt;NA&gt;           &lt;NA&gt;
+1658       NA          &lt;NA&gt;           &lt;NA&gt;
+1659       NA          &lt;NA&gt;           &lt;NA&gt;
+1660   450000       Decil 6         decil6
+1661   166000       Decil 2         decil2
+1662  1850000      Decil 10        decil10
+1663       NA          &lt;NA&gt;           &lt;NA&gt;
+1664  1355000      Decil 10        decil10
+1665   580000       Decil 7         decil7
+1666   264000       Decil 3         decil3
+1667  1300000      Decil 10        decil10
+1668   190235       Decil 2         decil2
+1669       NA          &lt;NA&gt;           &lt;NA&gt;
+1670       NA          &lt;NA&gt;           &lt;NA&gt;
+1671       NA          &lt;NA&gt;           &lt;NA&gt;
+1672       NA          &lt;NA&gt;           &lt;NA&gt;
+1673  2033333      Decil 10        decil10
+1674   400000       Decil 4         decil4
+1675       NA          &lt;NA&gt;           &lt;NA&gt;
+1676   150000       Decil 2         decil2
+1677  1115000       Decil 9         decil9
+1678   150000       Decil 2         decil2
+1679    83333       Decil 1         decil1
+1680       NA          &lt;NA&gt;           &lt;NA&gt;
+1681       NA          &lt;NA&gt;           &lt;NA&gt;
+1682       NA          &lt;NA&gt;           &lt;NA&gt;
+1683     2500       Decil 1         decil1
+1684       NA          &lt;NA&gt;           &lt;NA&gt;
+1685   600000       Decil 7         decil7
+1686   881667       Decil 9         decil9
+1687       NA          &lt;NA&gt;           &lt;NA&gt;
+1688   185000       Decil 2         decil2
+1689       NA          &lt;NA&gt;           &lt;NA&gt;
+1690   500000       Decil 6         decil6
+1691       NA          &lt;NA&gt;           &lt;NA&gt;
+1692   608333       Decil 8         decil8
+1693  1150000       Decil 9         decil9
+1694       NA          &lt;NA&gt;           &lt;NA&gt;
+1695       NA          &lt;NA&gt;           &lt;NA&gt;
+1696       NA          &lt;NA&gt;           &lt;NA&gt;
+1697   393000       Decil 4         decil4
+1698   984167       Decil 9         decil9
+1699       NA          &lt;NA&gt;           &lt;NA&gt;
+1700   600000       Decil 7         decil7
+1701   500000       Decil 6         decil6
+1702   700000       Decil 8         decil8
+1703       NA          &lt;NA&gt;           &lt;NA&gt;
+1704       NA          &lt;NA&gt;           &lt;NA&gt;
+1705   695667       Decil 8         decil8
+1706       NA          &lt;NA&gt;           &lt;NA&gt;
+1707       NA          &lt;NA&gt;           &lt;NA&gt;
+1708   450000       Decil 6         decil6
+1709   150000       Decil 2         decil2
+1710    80000       Decil 1         decil1
+1711   320000       Decil 4         decil4
+1712       NA          &lt;NA&gt;           &lt;NA&gt;
+1713   400000       Decil 4         decil4
+1714       NA          &lt;NA&gt;           &lt;NA&gt;
+1715  1600000      Decil 10        decil10
+1716       NA          &lt;NA&gt;           &lt;NA&gt;
+1717       NA          &lt;NA&gt;           &lt;NA&gt;
+1718   370000       Decil 4         decil4
+1719       NA          &lt;NA&gt;           &lt;NA&gt;
+1720   950000       Decil 9         decil9
+1721   600000       Decil 7         decil7
+1722   176000       Decil 2         decil2
+1723       NA          &lt;NA&gt;           &lt;NA&gt;
+1724   750000       Decil 8         decil8
+1725       NA          &lt;NA&gt;           &lt;NA&gt;
+1726       NA          &lt;NA&gt;           &lt;NA&gt;
+1727   718333       Decil 8         decil8
+1728       NA          &lt;NA&gt;           &lt;NA&gt;
+1729       NA          &lt;NA&gt;           &lt;NA&gt;
+1730   553666       Decil 7         decil7
+1731   700000       Decil 8         decil8
+1732   800000       Decil 8         decil8
+1733       NA          &lt;NA&gt;           &lt;NA&gt;
+1734       NA          &lt;NA&gt;           &lt;NA&gt;
+1735   540000       Decil 7         decil7
+1736   150000       Decil 2         decil2
+1737       NA          &lt;NA&gt;           &lt;NA&gt;
+1738       NA          &lt;NA&gt;           &lt;NA&gt;
+1739   610000       Decil 8         decil8
+1740       NA          &lt;NA&gt;           &lt;NA&gt;
+1741   200000       Decil 2         decil2
+1742       NA          &lt;NA&gt;           &lt;NA&gt;
+1743       NA          &lt;NA&gt;           &lt;NA&gt;
+1744       NA          &lt;NA&gt;           &lt;NA&gt;
+1745       NA          &lt;NA&gt;           &lt;NA&gt;
+1746       NA          &lt;NA&gt;           &lt;NA&gt;
+1747   700000       Decil 8         decil8
+1748       NA          &lt;NA&gt;           &lt;NA&gt;
+1749       NA          &lt;NA&gt;           &lt;NA&gt;
+1750       NA          &lt;NA&gt;           &lt;NA&gt;
+1751       NA          &lt;NA&gt;           &lt;NA&gt;
+1752   450000       Decil 6         decil6
+1753   190000       Decil 2         decil2
+1754       NA          &lt;NA&gt;           &lt;NA&gt;
+1755   140000       Decil 2         decil2
+1756       NA          &lt;NA&gt;           &lt;NA&gt;
+1757   500000       Decil 6         decil6
+1758   124000       Decil 2         decil2
+1759   160000       Decil 2         decil2
+1760   106667       Decil 1         decil1
+1761    55000       Decil 1         decil1
+1762       NA          &lt;NA&gt;           &lt;NA&gt;
+1763       NA          &lt;NA&gt;           &lt;NA&gt;
+1764   600000       Decil 7         decil7
+1765       NA          &lt;NA&gt;           &lt;NA&gt;
+1766       NA          &lt;NA&gt;           &lt;NA&gt;
+1767   400000       Decil 4         decil4
+1768  2300000      Decil 10        decil10
+1769    41667       Decil 1         decil1
+1770   340000       Decil 4         decil4
+1771  2060667      Decil 10        decil10
+1772   715000       Decil 8         decil8
+1773       NA          &lt;NA&gt;           &lt;NA&gt;
+1774       NA          &lt;NA&gt;           &lt;NA&gt;
+1775   550758       Decil 7         decil7
+1776       NA          &lt;NA&gt;           &lt;NA&gt;
+1777   530000       Decil 7         decil7
+1778   250000       Decil 3         decil3
+1779       NA          &lt;NA&gt;           &lt;NA&gt;
+1780  1250000      Decil 10        decil10
+1781   260000       Decil 3         decil3
+1782  1400000      Decil 10        decil10
+1783   188833       Decil 2         decil2
+1784   120000       Decil 1         decil1
+1785       NA          &lt;NA&gt;           &lt;NA&gt;
+1786       NA          &lt;NA&gt;           &lt;NA&gt;
+1787       NA          &lt;NA&gt;           &lt;NA&gt;
+1788   210000       Decil 3         decil3
+1789  1060000       Decil 9         decil9
+1790   800000       Decil 8         decil8
+1791   320000       Decil 4         decil4
+1792       NA          &lt;NA&gt;           &lt;NA&gt;
+1793   100000       Decil 1         decil1
+1794       NA          &lt;NA&gt;           &lt;NA&gt;
+1795       NA          &lt;NA&gt;           &lt;NA&gt;
+1796       NA          &lt;NA&gt;           &lt;NA&gt;
+1797   602500       Decil 8         decil8
+1798   855000       Decil 9         decil9
+1799       NA          &lt;NA&gt;           &lt;NA&gt;
+1800   450000       Decil 6         decil6
+1801   100000       Decil 1         decil1
+1802       NA          &lt;NA&gt;           &lt;NA&gt;
+1803   460000       Decil 6         decil6
+1804       NA          &lt;NA&gt;           &lt;NA&gt;
+1805   125000       Decil 2         decil2
+1806   350000       Decil 4         decil4
+1807   200000       Decil 2         decil2
+1808       NA          &lt;NA&gt;           &lt;NA&gt;
+1809   115000       Decil 1         decil1
+1810       NA          &lt;NA&gt;           &lt;NA&gt;
+1811   400000       Decil 4         decil4
+1812   600000       Decil 7         decil7
+1813       NA          &lt;NA&gt;           &lt;NA&gt;
+1814  2400000      Decil 10        decil10
+1815       NA          &lt;NA&gt;           &lt;NA&gt;
+1816   741667       Decil 8         decil8
+1817   450000       Decil 6         decil6
+1818   900000       Decil 9         decil9
+1819       NA          &lt;NA&gt;           &lt;NA&gt;
+1820       NA          &lt;NA&gt;           &lt;NA&gt;
+1821       NA          &lt;NA&gt;           &lt;NA&gt;
+1822       NA          &lt;NA&gt;           &lt;NA&gt;
+1823   505417       Decil 7         decil7
+1824   715000       Decil 8         decil8
+1825       NA          &lt;NA&gt;           &lt;NA&gt;
+1826   485000       Decil 6         decil6
+1827   300000       Decil 3         decil3
+1828       NA          &lt;NA&gt;           &lt;NA&gt;
+1829       NA          &lt;NA&gt;           &lt;NA&gt;
+1830       NA          &lt;NA&gt;           &lt;NA&gt;
+1831       NA          &lt;NA&gt;           &lt;NA&gt;
+1832       NA          &lt;NA&gt;           &lt;NA&gt;
+1833  1060000       Decil 9         decil9
+1834   194617       Decil 2         decil2
+1835   380000       Decil 4         decil4
+1836   100000       Decil 1         decil1
+1837       NA          &lt;NA&gt;           &lt;NA&gt;
+1838   400000       Decil 4         decil4
+1839   821250       Decil 9         decil9
+1840    30000       Decil 1         decil1
+1841   500000       Decil 6         decil6
+1842       NA          &lt;NA&gt;           &lt;NA&gt;
+1843       NA          &lt;NA&gt;           &lt;NA&gt;
+1844     6667       Decil 1         decil1
+1845    60000       Decil 1         decil1
+1846       NA          &lt;NA&gt;           &lt;NA&gt;
+1847   666667       Decil 8         decil8
+1848   840000       Decil 9         decil9
+1849   600000       Decil 7         decil7
+1850       NA          &lt;NA&gt;           &lt;NA&gt;
+1851   240000       Decil 3         decil3
+1852       NA          &lt;NA&gt;           &lt;NA&gt;
+1853       NA          &lt;NA&gt;           &lt;NA&gt;
+1854       NA          &lt;NA&gt;           &lt;NA&gt;
+1855   621666       Decil 8         decil8
+1856    60000       Decil 1         decil1
+1857  1516667      Decil 10        decil10
+1858   650000       Decil 8         decil8
+1859   394482       Decil 4         decil4
+1860   400000       Decil 4         decil4
+1861       NA          &lt;NA&gt;           &lt;NA&gt;
+1862   400000       Decil 4         decil4
+1863       NA          &lt;NA&gt;           &lt;NA&gt;
+1864       NA          &lt;NA&gt;           &lt;NA&gt;
+1865       NA          &lt;NA&gt;           &lt;NA&gt;
+1866   504167       Decil 7         decil7
+1867       NA          &lt;NA&gt;           &lt;NA&gt;
+1868       NA          &lt;NA&gt;           &lt;NA&gt;
+1869  1560000      Decil 10        decil10
+1870   650000       Decil 8         decil8
+1871   380000       Decil 4         decil4
+1872       NA          &lt;NA&gt;           &lt;NA&gt;
+1873       NA          &lt;NA&gt;           &lt;NA&gt;
+1874   600000       Decil 7         decil7
+1875   400000       Decil 4         decil4
+1876  1714398      Decil 10        decil10
+1877   508333       Decil 7         decil7
+1878       NA          &lt;NA&gt;           &lt;NA&gt;
+1879       NA          &lt;NA&gt;           &lt;NA&gt;
+1880   745000       Decil 8         decil8
+1881   350000       Decil 4         decil4
+1882   516667       Decil 7         decil7
+1883       NA          &lt;NA&gt;           &lt;NA&gt;
+1884   456667       Decil 6         decil6
+1885   410000       Decil 5         decil5
+1886  1600000      Decil 10        decil10
+1887   200000       Decil 2         decil2
+1888   500000       Decil 6         decil6
+1889       NA          &lt;NA&gt;           &lt;NA&gt;
+1890       NA          &lt;NA&gt;           &lt;NA&gt;
+1891       NA          &lt;NA&gt;           &lt;NA&gt;
+1892       NA          &lt;NA&gt;           &lt;NA&gt;
+1893   630000       Decil 8         decil8
+1894       NA          &lt;NA&gt;           &lt;NA&gt;
+1895       NA          &lt;NA&gt;           &lt;NA&gt;
+1896       NA          &lt;NA&gt;           &lt;NA&gt;
+1897       NA          &lt;NA&gt;           &lt;NA&gt;
+1898       NA          &lt;NA&gt;           &lt;NA&gt;
+1899       NA          &lt;NA&gt;           &lt;NA&gt;
+1900  3200000      Decil 10        decil10
+1901   700000       Decil 8         decil8
+1902       NA          &lt;NA&gt;           &lt;NA&gt;
+1903       NA          &lt;NA&gt;           &lt;NA&gt;
+1904   500000       Decil 6         decil6
+1905   110000       Decil 1         decil1
+1906   150000       Decil 2         decil2
+1907   300000       Decil 3         decil3
+1908   800000       Decil 8         decil8
+1909   400000       Decil 4         decil4
+1910       NA          &lt;NA&gt;           &lt;NA&gt;
+1911       NA          &lt;NA&gt;           &lt;NA&gt;
+1912   500000       Decil 6         decil6
+1913  1004167       Decil 9         decil9
+1914   450000       Decil 6         decil6
+1915   120000       Decil 1         decil1
+1916       NA          &lt;NA&gt;           &lt;NA&gt;
+1917       NA          &lt;NA&gt;           &lt;NA&gt;
+1918       NA          &lt;NA&gt;           &lt;NA&gt;
+1919  1950000      Decil 10        decil10
+1920   480000       Decil 6         decil6
+1921   301500       Decil 4         decil4
+1922   745833       Decil 8         decil8
+1923       NA          &lt;NA&gt;           &lt;NA&gt;
+1924       NA          &lt;NA&gt;           &lt;NA&gt;
+1925   590000       Decil 7         decil7
+1926       NA          &lt;NA&gt;           &lt;NA&gt;
+1927       NA          &lt;NA&gt;           &lt;NA&gt;
+1928       NA          &lt;NA&gt;           &lt;NA&gt;
+1929   400000       Decil 4         decil4
+1930       NA          &lt;NA&gt;           &lt;NA&gt;
+1931   558333       Decil 7         decil7
+1932       NA          &lt;NA&gt;           &lt;NA&gt;
+1933  1705833      Decil 10        decil10
+1934       NA          &lt;NA&gt;           &lt;NA&gt;
+1935   100000       Decil 1         decil1
+1936       NA          &lt;NA&gt;           &lt;NA&gt;
+1937       NA          &lt;NA&gt;           &lt;NA&gt;
+1938       NA          &lt;NA&gt;           &lt;NA&gt;
+1939   900000       Decil 9         decil9
+1940       NA          &lt;NA&gt;           &lt;NA&gt;
+1941       NA          &lt;NA&gt;           &lt;NA&gt;
+1942   500000       Decil 6         decil6
+1943   420000       Decil 5         decil5
+1944   400000       Decil 4         decil4
+1945   175000       Decil 2         decil2
+1946       NA          &lt;NA&gt;           &lt;NA&gt;
+1947   499167       Decil 6         decil6
+1948   441667       Decil 6         decil6
+1949   866667       Decil 9         decil9
+1950       NA          &lt;NA&gt;           &lt;NA&gt;
+1951       NA          &lt;NA&gt;           &lt;NA&gt;
+1952       NA          &lt;NA&gt;           &lt;NA&gt;
+1953       NA          &lt;NA&gt;           &lt;NA&gt;
+1954   198000       Decil 2         decil2
+1955    90000       Decil 1         decil1
+1956   864167       Decil 9         decil9
+1957   100000       Decil 1         decil1
+1958       NA          &lt;NA&gt;           &lt;NA&gt;
+1959       NA          &lt;NA&gt;           &lt;NA&gt;
+1960       NA          &lt;NA&gt;           &lt;NA&gt;
+1961       NA          &lt;NA&gt;           &lt;NA&gt;
+1962   189000       Decil 2         decil2
+1963       NA          &lt;NA&gt;           &lt;NA&gt;
+1964  1393333      Decil 10        decil10
+1965   357000       Decil 4         decil4
+1966   300000       Decil 3         decil3
+1967       NA          &lt;NA&gt;           &lt;NA&gt;
+1968   400000       Decil 4         decil4
+1969   153333       Decil 2         decil2
+1970   400000       Decil 4         decil4
+1971       NA          &lt;NA&gt;           &lt;NA&gt;
+1972       NA          &lt;NA&gt;           &lt;NA&gt;
+1973   520000       Decil 7         decil7
+1974   450000       Decil 6         decil6
+1975       NA          &lt;NA&gt;           &lt;NA&gt;
+1976   600000       Decil 7         decil7
+1977   500000       Decil 6         decil6
+1978   416667       Decil 5         decil5
+1979       NA          &lt;NA&gt;           &lt;NA&gt;
+1980   185000       Decil 2         decil2
+1981       NA          &lt;NA&gt;           &lt;NA&gt;
+1982       NA          &lt;NA&gt;           &lt;NA&gt;
+1983       NA          &lt;NA&gt;           &lt;NA&gt;
+1984  1050000       Decil 9         decil9
+1985       NA          &lt;NA&gt;           &lt;NA&gt;
+1986  1200000       Decil 9         decil9
+1987       NA          &lt;NA&gt;           &lt;NA&gt;
+1988   453333       Decil 6         decil6
+1989       NA          &lt;NA&gt;           &lt;NA&gt;
+1990       NA          &lt;NA&gt;           &lt;NA&gt;
+1991       NA          &lt;NA&gt;           &lt;NA&gt;
+1992       NA          &lt;NA&gt;           &lt;NA&gt;
+1993   200000       Decil 2         decil2
+1994       NA          &lt;NA&gt;           &lt;NA&gt;
+1995  1300000      Decil 10        decil10
+1996       NA          &lt;NA&gt;           &lt;NA&gt;
+1997   533000       Decil 7         decil7
+1998   480000       Decil 6         decil6
+1999       NA          &lt;NA&gt;           &lt;NA&gt;
+2000       NA          &lt;NA&gt;           &lt;NA&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="group_by-y-summarise-transmitir-la-información" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="group_by-y-summarise-transmitir-la-información"><span class="header-section-number">3.2</span> Group_by y summarise: Transmitir la información</h2>
+<section id="variables-númericas-ingreso-autónomo-corregido-yautcor." class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="variables-númericas-ingreso-autónomo-corregido-yautcor."><span class="header-section-number">3.2.1</span> Variables númericas: Ingreso autónomo corregido (yautcor).</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">group_by</span>(pueblos_indigenas) <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">salario =</span> <span class="fu">mean</span>(yautcor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="co">#Borrar valores perdidos.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  pueblos_indigenas salario
+              &lt;int&gt;   &lt;dbl&gt;
+1                 0 617099.
+2                 1 465819.</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">group_by</span>(pueblos_indigenas, sexo) <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">salario =</span> <span class="fu">mean</span>(yautcor, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="co">#Borrar valores perdidos.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+# Groups:   pueblos_indigenas [2]
+  pueblos_indigenas  sexo salario
+              &lt;int&gt; &lt;int&gt;   &lt;dbl&gt;
+1                 0     1 726241.
+2                 0     2 497682.
+3                 1     1 599336.
+4                 1     2 362819.</code></pre>
+</div>
+</div>
+</section>
+<section id="variables-categóricas" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="variables-categóricas"><span class="header-section-number">3.2.2</span> Variables categóricas</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> casen <span class="sc">|&gt;</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(educ_nivel)) <span class="sc">|&gt;</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pueblos_indigenas, educ_nivel) <span class="sc">|&gt;</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pueblos_indigenas) <span class="sc">|&gt;</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">total =</span> <span class="fu">sum</span>(n),</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">porcentaje =</span> <span class="fu">round</span>(<span class="dv">100</span> <span class="sc">*</span> n <span class="sc">/</span> total, <span class="dv">1</span>)</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(pueblos_indigenas, educ_nivel)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="encadenar-las-funciones" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="encadenar-las-funciones"><span class="header-section-number">3.3</span> Encadenar las funciones</h2>
+</section>
+<section id="exportar-resultados" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="exportar-resultados"><span class="header-section-number">3.4</span> Exportar resultados</h2>
+</section>
+</section>
+<section id="section" class="level1" data-number="4">
+<h1 data-number="4"><span class="header-section-number">4</span> </h1>
+</section>
+<section id="cierra" class="level1" data-number="5">
+<h1 data-number="5"><span class="header-section-number">5</span> Cierra</h1>
 </section>
 
 </main>

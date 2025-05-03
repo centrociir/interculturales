@@ -5,7 +5,7 @@ library(sjmisc)
 casen2022 <- read_dta("clases/clase1/bbdd/casen2022.dta")
 
 casen2022_sample <- casen2022 %>%
-  sample_n(2000) |> select(region, 
+  sample_n(10000) |> select(region, 
                            nse, 
                            sexo, 
                            ecivil,
@@ -17,6 +17,25 @@ casen2022_sample <- casen2022 %>%
                           yautcor, 
                           ind_hacina)
 
+
+# Paso 1: calcular proporciones por grupo
+proporciones <- casen2022_sample |>
+  count(pueblos_indigenas) |>
+  mutate(prop = n / sum(n),
+         n_muestra = round(prop * 10000))
+
+
+library(dplyr)
+
+
+# Paso 2: hacer muestreo estratificado proporcional
+casen2022_sample <- casen2022 |>
+  semi_join(proporciones, by = "pueblos_indigenas") |>
+  group_by(pueblos_indigenas) |>
+  slice_sample(n = first(proporciones$n_muestra[proporciones$pueblos_indigenas == pueblos_indigenas[1]])) |> 
+  ungroup() |>
+  select(region, nse, sexo, ecivil, educ, pueblos_indigenas,
+         pobreza, p9, edad, yautcor, ind_hacina)
 
 
 
