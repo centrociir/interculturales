@@ -331,6 +331,12 @@ El taller se estructura en dos partes: Presentación, con una introducción a lo
 
 ---
 
+<img src="images/cursos-vanguardia.jpg" alt="matias" style="width 60%; max-width:600px; height:auto; display:block; margin:auto;" />
+
+
+
+---
+
 ## **Ciencias Sociales Computacionales** 
 
 .pull-left[
@@ -387,6 +393,7 @@ Proponer formas más justas de representar la realidad ]
  ]
  
 ---
+
 
 ## **Ciencias Sociales Computacionales **
 

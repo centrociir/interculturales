@@ -258,6 +258,12 @@ El taller se estructura en dos partes: Presentación, con una introducción a lo
 
 ---
 
+&lt;img src="images/cursos-vanguardia.jpg" alt="matias" style="width 60%; max-width:600px; height:auto; display:block; margin:auto;" /&gt;
+
+
+
+---
+
 ## **Ciencias Sociales Computacionales** 
 
 .pull-left[
@@ -314,6 +320,7 @@ Proponer formas más justas de representar la realidad ]
  ]
  
 ---
+
 
 ## **Ciencias Sociales Computacionales **
 
@@ -454,9 +461,9 @@ La pipa se ejecuta con `Command/Control + Shift + M `.
 ![matias](images/penguin.jpg)
 
 ---
-## Cosas previas
+## **Funciones del R Base**
 
-R es un software basado en objetos. Un objeto es una estructura que almacena información en la memoria
+R es un software basado en objetos. Un objeto es una estructura que almacena información en la memoria.
 
 
 ``` r
@@ -478,6 +485,36 @@ pepino/manzana #división
 ## [1] 1.75
 ```
 
+---
+
+## **Funciones del R Base**
+
+
+
+``` r
+# Crear vector de frutas (caracteres)
+frutas &lt;- c("Manzana", "Banana", "Pera", "Naranja", "Uva")
+# Crear vector con longitudes en centímetros (números)
+longitud_cm &lt;- c(8.5, 20.0, 10.0, 9.0, 2.5)
+
+# Combinar en una tabla usando data.frame
+tabla_frutas &lt;- data.frame(
+  Fruta = frutas,
+  Longitud_cm = longitud_cm
+)
+
+# Ver tabla
+print(tabla_frutas)
+```
+
+```
+##     Fruta Longitud_cm
+## 1 Manzana         8.5
+## 2  Banana        20.0
+## 3    Pera        10.0
+## 4 Naranja         9.0
+## 5     Uva         2.5
+```
 
 
 ---
@@ -598,7 +635,8 @@ penguins %&gt;%
 ``` r
 # Igualdad y conjunción (AND)
 penguins %&gt;%
-  filter(species == "Adelie", island == "Biscoe")
+  filter(species == "Adelie", # Esta especia
+         island == "Biscoe")  #Esta lista
 ```
 
 
@@ -606,7 +644,7 @@ penguins %&gt;%
 ``` r
 # Disyunción (OR)
 penguins %&gt;%
-  filter(species == "Adelie" | species == "Gentoo")
+  filter(species == "Adelie" | species == "Gentoo") #Cualquiera de ambas
 ```
 
 ---
@@ -617,15 +655,15 @@ penguins %&gt;%
 ``` r
 # Negación
 penguins %&gt;%
-  filter(species != "Chinstrap")
+  filter(species != "Chinstrap") # Esa no
 
 # Pertenencia múltiple
 penguins %&gt;%
-  filter(species %in% c("Adelie", "Gentoo"))
+  filter(species %in% c("Adelie", "Gentoo")) #Cualquiera de las dods
 
 # Filtrar valores faltantes
 penguins %&gt;%
-  filter(is.na(sex))
+  filter(!is.na(island)) # No NA
 ```
 
 ---
