@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 <meta name="author" content="Matías Deneken">
-<meta name="dcterms.date" content="2025-05-03">
+<meta name="dcterms.date" content="2025-05-05">
 
 <title>Introducción a R</title>
 <style>
@@ -154,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 3, 2025</p>
+      <p class="date">May 5, 2025</p>
     </div>
   </div>
   
@@ -440,8 +440,8 @@ Luego, usamos&nbsp;<code>DT::datatable()</code>&nbsp;para convertir la tabla en 
 <span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(casen_tabla)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-7b792127093c15417717" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-7b792127093c15417717">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[0,0,0,0,0,0,1,1,1,1,1],["Sin educación","Básica","Media","Técnico nivel superior","Profesional","Postgrado","Sin educación","Básica","Media","Técnico nivel superior","Profesional"],[465,378,436,136,285,14,101,62,66,18,31],[1714,1714,1714,1714,1714,1714,278,278,278,278,278],[27.1,22.1,25.4,7.9,16.6,0.8,36.3,22.3,23.7,6.5,11.2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>pueblos_indigenas<\/th>\n      <th>educ_nivel<\/th>\n      <th>n<\/th>\n      <th>total<\/th>\n      <th>porcentaje<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"pueblos_indigenas","targets":1},{"name":"educ_nivel","targets":2},{"name":"n","targets":3},{"name":"total","targets":4},{"name":"porcentaje","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-28ecc31b6e3ef09514bd" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-28ecc31b6e3ef09514bd">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11"],[0,0,0,0,0,0,1,1,1,1,1],["Sin educación","Básica","Media","Técnico nivel superior","Profesional","Postgrado","Sin educación","Básica","Media","Técnico nivel superior","Profesional"],[465,378,436,136,285,14,101,62,66,18,31],[1714,1714,1714,1714,1714,1714,278,278,278,278,278],[27.1,22.1,25.4,7.9,16.6,0.8,36.3,22.3,23.7,6.5,11.2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>pueblos_indigenas<\/th>\n      <th>educ_nivel<\/th>\n      <th>n<\/th>\n      <th>total<\/th>\n      <th>porcentaje<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"pueblos_indigenas","targets":1},{"name":"educ_nivel","targets":2},{"name":"n","targets":3},{"name":"total","targets":4},{"name":"porcentaje","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 <p>Veamos cómo asegurarnos de que&nbsp;<strong>todos los niveles de educación aparezcan</strong>, incluso si un grupo no tiene personas en algún nivel.</p>
@@ -459,8 +459,8 @@ Luego, usamos&nbsp;<code>DT::datatable()</code>&nbsp;para convertir la tabla en 
 <span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(casen_tabla2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-a677768f9b811711c9ac" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-a677768f9b811711c9ac">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12"],[0,0,0,0,0,0,1,1,1,1,1,1],["Sin educación","Básica","Media","Técnico nivel superior","Profesional","Postgrado","Sin educación","Básica","Media","Técnico nivel superior","Profesional","Postgrado"],[465,378,436,136,285,14,101,62,66,18,31,0],[1714,1714,1714,1714,1714,1714,278,278,278,278,278,278],[27.1,22.1,25.4,7.9,16.6,0.8,36.3,22.3,23.7,6.5,11.2,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>pueblos_indigenas<\/th>\n      <th>educ_nivel<\/th>\n      <th>n<\/th>\n      <th>total<\/th>\n      <th>porcentaje<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"pueblos_indigenas","targets":1},{"name":"educ_nivel","targets":2},{"name":"n","targets":3},{"name":"total","targets":4},{"name":"porcentaje","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-2e98b0310afa54d9d7cd" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-2e98b0310afa54d9d7cd">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12"],[0,0,0,0,0,0,1,1,1,1,1,1],["Sin educación","Básica","Media","Técnico nivel superior","Profesional","Postgrado","Sin educación","Básica","Media","Técnico nivel superior","Profesional","Postgrado"],[465,378,436,136,285,14,101,62,66,18,31,0],[1714,1714,1714,1714,1714,1714,278,278,278,278,278,278],[27.1,22.1,25.4,7.9,16.6,0.8,36.3,22.3,23.7,6.5,11.2,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>pueblos_indigenas<\/th>\n      <th>educ_nivel<\/th>\n      <th>n<\/th>\n      <th>total<\/th>\n      <th>porcentaje<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[1,3,4,5]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"pueblos_indigenas","targets":1},{"name":"educ_nivel","targets":2},{"name":"n","targets":3},{"name":"total","targets":4},{"name":"porcentaje","targets":5}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
@@ -514,8 +514,8 @@ Luego, usamos&nbsp;<code>DT::datatable()</code>&nbsp;para convertir la tabla en 
 <span id="cb27-44"><a href="#cb27-44" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb27-45"><a href="#cb27-45" aria-hidden="true" tabindex="-1"></a>DT<span class="sc">::</span><span class="fu">datatable</span>(casen_tabla3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div class="datatables html-widget html-fill-item" id="htmlwidget-f0a588ead93290e0cddc" style="width:100%;height:auto;"></div>
-<script type="application/json" data-for="htmlwidget-f0a588ead93290e0cddc">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4"],["Indígena - Hombre","Indígena - Mujer","No indígena - Hombre","No indígena - Mujer"],[599336.4444444445,362819.3142857143,726241.1128107074,497682.0418410042],[496666.5,324576.5,500000,390000]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>colapsa<\/th>\n      <th>salario_mean<\/th>\n      <th>salaria_median<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"colapsa","targets":1},{"name":"salario_mean","targets":2},{"name":"salaria_median","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+<div class="datatables html-widget html-fill-item" id="htmlwidget-d61d52e300eb491164c2" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-d61d52e300eb491164c2">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4"],["Indígena - Hombre","Indígena - Mujer","No indígena - Hombre","No indígena - Mujer"],[599336.4444444445,362819.3142857143,726241.1128107074,497682.0418410042],[496666.5,324576.5,500000,390000]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>colapsa<\/th>\n      <th>salario_mean<\/th>\n      <th>salaria_median<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[2,3]},{"orderable":false,"targets":0},{"name":" ","targets":0},{"name":"colapsa","targets":1},{"name":"salario_mean","targets":2},{"name":"salaria_median","targets":3}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
 </div>
 </section>
