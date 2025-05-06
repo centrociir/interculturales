@@ -1,4 +1,4 @@
-![](img/interculturales2.png){width="682"}
+![](img/interculturales2.png)
 
 # Seminario Cuantitativo
 
@@ -23,7 +23,7 @@ Antes de iniciar el curso, se solicita que todas tengan el software R instalado.
 Se solicita considerar este vídeo: [Rutas de trabajo](https://www.youtube.com/watch?v=gWcmdA_uGVY). Esto es una cuestión ESENCIAL para el trabajo en R. Durante las sesiones no nos detendremos en enseñarlo.
 
 | **Sesión** | **Contenido**                                  | **Presentación**                                                                                     | **Código práctico**                                                                  | **Paquetes fundamentales**         | **Referencias**                                                                                                   |
-|------------|------------------------------------------------|------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+|------------|------------|------------|------------|------------|------------|
 | 08/05/2025 | Procesamiento de Datos en R con Tidyverse      | [Presentación 1](https://centrociir.github.io/interculturales/clases/clase1/pres/resentacion-1.html) | [Práctico 1](https://centrociir.github.io/interculturales/clases/clase1/clas_1.html) | `tidyverse`                        | [Introducción a Tidyverse](https://r4ds.had.co.nz/tidy-data.html), [R Cloud](https://posit.cloud/content/1010196) |
 | 15/05/2025 | Visualización de Datos con ggplot2             |                                                                                                      |                                                                                      | `ggplot2`, `tidyverse`             | [R4DS: Visualización](https://r4ds.had.co.nz/data-visualisation.html)                                             |
 | 22/05/2025 | Reportes Automatizados en Quarto               |                                                                                                      |                                                                                      | `quarto`, `tidyverse`              | [Guía Quarto](https://quarto.org/docs/get-started/hello/rstudio.html)                                             |
@@ -33,11 +33,7 @@ Se solicita considerar este vídeo: [Rutas de trabajo](https://www.youtube.com/w
 | 19/06/2025 | Uso de APIs en Python                          |                                                                                                      |                                                                                      | `requests`, `json`, `pandas`       | [OpenAI Docs](https://platform.openai.com/docs/)                                                                  |
 | 26/06/2025 | Web Scraping                                   |                                                                                                      |                                                                                      | `rvest`, `BeautifulSoup`, `scrapy` | [rvest](https://rvest.tidyverse.org/), [Scrapy Docs](https://docs.scrapy.org/)                                    |
 
-```         
-                               |
-```
-
-![](img/sticker_ciir_rosa_v2.png){width="331"}
+![](img/sticker_ciir_rosa_v2.png)
 
 ## Follow en GitHub...
 
