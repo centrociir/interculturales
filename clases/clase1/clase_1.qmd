@@ -45,7 +45,73 @@ El presente código práctico aplicará las funciones fundamentales de Tidyverse
 
 La base oficial se puede encontrar [En la página del Observatorio del Ministerio de Desarrollo Social](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022).
 
-# Paso previos
+# Nociones previas: R Base
+
+Estos son los tres tipos de datos más básicos en R: numéricos, texto (caracter) y lógicos. Todo lo que trabajemos en R parte desde estas formas elementales.
+
+```{r, eval=FALSE}
+# Numéricos
+1
+2
+3.1
+
+# Caracter o texto
+"hola"
+
+# Lógicos
+TRUE
+FALSE
+
+```
+
+
+R funciona como una calculadora: puedes hacer operaciones directamente.
+
+
+```{r, eval=FALSE}
+2 + 2        # suma
+50 * 100     # multiplicación
+4556 - 1000  # resta
+6565 / 89    # división
+
+```
+
+Los operadores lógicos nos permiten hacer comparaciones entre valores.
+El resultado siempre será un valor lógico: TRUE o FALSE. Esto es fundamental para filtros y condicionales en análisis de datos.
+
+```{r, eval=FALSE}
+1 == 1       # igualdad
+1 == 2
+40 != 30     # desigualdad
+40 != 40
+31 > 18      # mayor que
+40 < 80      # menor que
+40 >= 40     # mayor o igual
+50 >= 40
+4 <= 5       # menor o igual
+
+```
+
+R es un lenguaje basado en objetos. Podemos crear objetos (variables) con <- y luego reutilizarlos en operaciones. Esto es clave para construir flujos de trabajo limpios y organizados.
+
+```{r, eval=FALSE}
+# Crear objeto
+año <- 1993
+año
+
+# Operaciones con objetos
+año + 10
+2024 - año
+
+# Crear nuevo objeto a partir de un cálculo
+edad <- 2024 - año
+edad
+
+```
+
+
+
+# Vamos a la CASEN desde Tidyverse
 
 ## Cargar base de datos
 

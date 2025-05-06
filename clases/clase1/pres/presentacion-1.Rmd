@@ -443,6 +443,41 @@ library(tidyverse)
 ]
 
 ---
+## ** Sobre R**
+.pull-left[
+Al trabajar en R, realizamos nuestros análisis y pruebas mediante scripts. Los scripts son archivos de texto que terminan en .R. En estos archivos de texto escribimos nuestro código.
+
+La consola es la forma directa de interactuar con el lenguaje R. En ella, las instrucciones se escriben y se presiona enter para enviar los comandos.
+
+Si escribimos nuestros comandos en scripts, los comandos van a quedar guardados. Si una línea contiene un signo gato #, todo lo que esté después del gato se transformará un comentario
+]
+
+.pull-right[
+
+
+![paper](images/rstudio.png)
+
+]
+
+---
+
+## ** Sobre R**
+
+.pull-left[ 
+
+R es un lenguaje de programación diseñado especialmente para el análisis de datos, la estadística y la visualización. Con R puedes realizar desde operaciones matemáticas básicas, como si fuera una calculadora, hasta tareas mucho más complejas como definir funciones propias, manipular grandes bases de datos, crear gráficos personalizados, aplicar modelos estadísticos, realizar análisis de texto.
+
+Gracias a su comunidad, R cuenta con miles de paquetes que permiten extender sus funcionalidades en áreas como machine learning y análisis espacial.
+
+]
+
+<div style="float: right; width: 30%;">
+  <img src="images/latinr.png" alt="paper" style="width: 100%;">
+</div>
+
+
+
+---
 
 ## **Introducción: El Ecosistema Tidyverse **
 
