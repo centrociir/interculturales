@@ -174,3 +174,88 @@ ggsave("clases/clase2/images/grafico_final.png",
        units = "cm",
        dpi = 300)           # resolución alta para impresión o presentación
 
+
+
+# Extras---
+
+
+casen |>
+  filter(yautcor < 500000) |>
+  ggplot(aes(x = factor(pueblos_indigenas), y = yautcor, fill = factor(pueblos_indigenas))) +
+  geom_boxplot(alpha = 0.6) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(
+    title = "Distribución del ingreso autónomo por pertenencia indígena",
+    x = "Pertenencia a pueblo indígena",
+    y = "Ingreso autónomo",
+    fill = "Pertenencia"
+  ) +
+  theme_minimal()
+
+
+
+casen |>
+  filter(yautcor < 500000) |>
+  ggplot(aes(x = factor(pueblos_indigenas), y = yautcor, fill = factor(pueblos_indigenas))) +
+  geom_violin(trim = FALSE, alpha = 0.5) +
+  labs(
+    title = "Distribución de ingresos (forma y densidad)",
+    x = "Pertenencia indígena",
+    y = "Ingreso autónomo"
+  ) +
+  scale_fill_manual(values = c("0" = "#999999", "1" = "#D95F02")) +
+  theme_minimal()
+
+
+casen |>
+  filter(yautcor < 300000) |>
+  ggplot(aes(x = yautcor, fill = factor(pueblos_indigenas))) +
+  geom_histogram(bins = 30, alpha = 0.6, position = "identity") +
+  facet_wrap(~ region, scales = "free_y") +
+  labs(
+    title = "Distribución del ingreso por región y pertenencia indígena",
+    x = "Ingreso autónomo",
+    y = "Frecuencia"
+  ) +
+  theme_minimal()
+
+
+tabla_educ_por_grupo |>
+  ggplot(aes(x = pueblos_indigenas, y = prop, fill = educ_nivel)) +
+  geom_bar(stat = "identity") +
+  geom_text(
+    aes(label = scales::percent(prop, accuracy = 1)),
+    position = position_stack(vjust = 0.5),
+    color = "white",
+    size = 3.2
+  ) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(
+    title = "Composición educativa dentro de cada grupo",
+    x = "Pertenencia indígena",
+    y = "Proporción",
+    fill = "Nivel educativo"
+  ) +
+  theme_minimal()
+
+
+
+tabla_educ_por_grupo |>
+  ggplot(aes(x = pueblos_indigenas, y = prop, fill = educ_nivel)) +
+  geom_bar(stat = "identity") +
+  geom_text(
+    aes(label = scales::percent(prop, accuracy = 1)),
+    position = position_stack(vjust = 0.5),
+    color = "white",
+    size = 3.2
+  ) +
+  scale_y_continuous(labels = scales::percent_format()) +
+  labs(
+    title = "Composición educativa dentro de cada grupo",
+    x = "Pertenencia indígena",
+    y = "Proporción",
+    fill = "Nivel educativo"
+  ) +
+  theme_minimal()
+
+
