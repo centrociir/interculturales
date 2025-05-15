@@ -17,7 +17,7 @@ format:
             content: url('logo_ciir.jpg');
             display: block;
             text-align: left;
-            margin-bottom: 5px; /* Reducido a 5px para un espacio mínimo */
+            margin-bottom: 5px;
             transform: scale(0.5);
           }
           body::before img {
@@ -25,10 +25,10 @@ format:
             height: auto;
           }
           #title-block-header {
-            margin-top: 0; /* Eliminado el margen superior */
+            margin-top: 0;
           }
           .quarto-title {
-            margin-top: 0; /* Asegura que no haya espacio extra arriba del título */
+            margin-top: 0;
           }
         </style>
 editor: visual
@@ -36,66 +36,57 @@ reference-location: margin
 citation-location: margin
 ---
 
-## Cargar paquete de datos.
+## Cargar librerías necesarias
 
 ```{r}
-#| message: false
-#| warning: false
-
-library(tidyverse) # manipulación de datos
-library(ggplot2) # carga de archivos Excel
-
+# tidyverse: manipular datos, filtrar, agrupar, resumir y visualizar
+library(tidyverse)
+# ggplot2: crear visualizaciones con sistema de capas
+library(ggplot2)
 ```
 
+## Descargar y cargar datos
+
 ```{r}
+# Definimos la URL y el nombre del archivo
 url <- "https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase1/bbdd/casen2022_sample.csv"
 destfile <- "casen2022_sample.csv"
 
-# Descargar el archivo
+# Descargamos el archivo desde GitHub
 download.file(url, destfile, mode = "wb")
 
-# Leer el archivo CSV
+# Cargamos el CSV descargado en un dataframe
 casen <- read.csv(destfile, encoding = "UTF-8")
-
 ```
 
+## Inspeccionar los primeros datos
+
 ```{r}
-# Ver los primeros datos
-head(casen)
+# Mostrar primeras filas del dataset para conocer la estructura
+tibble::as_tibble(head(casen))
 ```
 
-## Histograma
+## Visualizaciones exploratorias
 
+### Histograma de edad
 ```{r}
-casen |> ggplot() +
-  aes(edad) +
-  geom_histogram(color = "white") 
+casen |> ggplot(aes(edad)) +
+  geom_histogram(color = "white")
 ```
 
-## Densidad
-
-Normalidad
-
+### Densidad por pertenencia a pueblo indígena
 ```{r}
-casen |> ggplot() +
-  aes(edad, colour = pueblos_indigenas) +
+casen |> ggplot(aes(edad, colour = pueblos_indigenas)) +
   geom_density()
 ```
 
-Densidad pero dándole color (literal)
-
+### Densidad de ingresos según pueblo indígena
 ```{r}
-
 casen |> 
-  mutate(pueblos_indigenas = factor(pueblos_indigenas,
-                                     levels = c(0, 1),
-                                     labels = c("No Indígena", "Indígena"))) |> 
-    filter(yautcor < 100000) |>  # 👈 eliminar outliers extremos
-  ggplot(aes(x = yautcor, 
-             fill = pueblos_indigenas,
-             color = pueblos_indigenas)) +
+  mutate(pueblos_indigenas = factor(pueblos_indigenas, levels = c(0, 1), labels = c("No Indígena", "Indígena"))) |> 
+  filter(yautcor < 100000) |>  # eliminar extremos
+  ggplot(aes(x = yautcor, fill = pueblos_indigenas, color = pueblos_indigenas)) +
   geom_density(alpha = 0.6) +
-  #facet_wrap(~ pueblos_indigenas) +
   labs(
     title = "Distribución del ingreso autónomo según pertenencia indígena",
     x = "Ingreso autónomo (yautcor)",
@@ -104,37 +95,28 @@ casen |>
     color = "Pertenencia"
   ) +
   theme_classic()
-
 ```
 
-## Gráfico puntos
-
-```{r}
-casen |> ggplot()  +
-  geom_point(aes(x = yautcor, y = edad)) 
-```
-
+### Gráfico de dispersión edad e ingreso
 ```{r}
 casen |> 
-  filter(yautcor < 1000001) |>  # 👈 eliminar outliers extremos
+  filter(yautcor < 1000001) |>  # eliminar valores extremos
   ggplot(aes(x = yautcor, y = edad, colour = as.factor(pueblos_indigenas))) +
   geom_point(alpha = 0.3) +
   labs(
-    title = "Ingreso autónomo por edad (sin valores extremos)",
+    title = "Ingreso autónomo por edad (sin extremos)",
     x = "Edad",
     y = "Ingreso autónomo (yautcor)",
     colour = "Pueblos indígenas"
   ) +
   theme_minimal()
-
 ```
 
+### Línea de tendencia sin puntos
 ```{r}
 casen |> 
-  filter(yautcor < 2000000) |>  # para evitar outliers extremos
+  filter(yautcor < 2000000) |>  # evitar outliers extremos
   ggplot(aes(x = yautcor, y = edad)) +
-  geom_point(alpha = 0.3) +
-  #geom_smooth(se = TRUE, color = "blue") +  # línea tendencial
   geom_smooth() +
   labs(
     title = "Edad según ingreso autónomo (sin extremos)",
@@ -142,111 +124,50 @@ casen |>
     y = "Edad"
   ) +
   theme_minimal()
-
-
-```
-
-```{r}
-casen |> 
-  filter(yautcor < 2000000) |>  # para evitar outliers extremos
-  ggplot(aes(x = yautcor, y = edad)) +
-  #geom_point(alpha = 0.3) +
-  #geom_smooth(se = TRUE, color = "blue") +  # línea tendencial
-  geom_smooth() +
-  labs(
-    title = "Edad según ingreso autónomo (sin extremos)",
-    x = "Ingreso autónomo (yautcor)",
-    y = "Edad"
-  ) +
-  theme_minimal()
-
 ```
 
 ## Gráfico de barras
 
-A mí juico el más eficientes.
-
+### Conteo de personas por condición indígena
 ```{r}
 casen |> 
-  ggplot(aes(x = factor(pueblos_indigenas))) +  # Convertirlo en factor 👈
-  geom_bar() 
-
-
-```
-
-```{r}
-casen |> 
-  ggplot(aes(x = factor(pueblos_indigenas))) +  # 👈 mapeo correcto dentro de aes()
+  ggplot(aes(x = factor(pueblos_indigenas))) +
   geom_bar() +
   labs(
-    title = "Distribución de personas según pertenencia a pueblo indígena",
-    x = "Pertenencia a pueblo indígena",
+    title = "Distribución según pertenencia a pueblo indígena",
+    x = "Pertenencia",
     y = "Cantidad"
   ) +
   scale_x_discrete(labels = c("0" = "No Indígena", "1" = "Indígena")) +
   theme_minimal()
-
 ```
 
+### Crear variable categórica de nivel educativo
 ```{r}
-#0.  Sin Educación Formal
-#1.  Básica incompleta
-#2.  Básica completa
-#3.  Media humanista incompleta
-#4.  Media técnica profesional incompleta
-#5.  Media humanista completa
-#6.  Media técnica profesional completa
-#7.  Técnico nivel superior incompleta
-#8.  Técnica nivel superior completo
-#9.  Profesional incompleto
-#10. Postgrado incompleto
-#11. Profesional completo
-#12. Postgrado completo
-
-casen <- casen |>  #Renombramos el objeto
+casen <- casen |> 
   mutate(
     educ_nivel = case_when(
-      educ %in% 0:1   ~ "Sin educación",
-      educ %in% 2:4   ~ "Básica",
-      educ %in% 5:6   ~ "Media",
-      educ %in% 7:8   ~ "Técnico nivel superior",
-      educ %in% 9:11  ~ "Profesional",
-      educ == 12      ~ "Postgrado",
-      TRUE            ~ NA_character_
+      educ %in% 0:1 ~ "Sin educación",
+      educ %in% 2:4 ~ "Básica",
+      educ %in% 5:6 ~ "Media",
+      educ %in% 7:8 ~ "Técnico nivel superior",
+      educ %in% 9:11 ~ "Profesional",
+      educ == 12 ~ "Postgrado",
+      TRUE ~ NA_character_
     )
   )
+```
 
-tabla_educ <-casen |> 
+### Agrupar y contar por nivel educativo y condición
+```{r}
+tabla_educ <- casen |> 
   group_by(pueblos_indigenas, educ_nivel) |> 
-  #summarise(total = n(), .groups = "drop") |> 
   count()
-
-
-
 ```
 
+### Gráfico de barras agrupadas
 ```{r}
-tabla_educ
-```
-
-```{r}
-tabla_educ  
-
-```
-
-| Opción                       | Descripción                                                                  |
-|---------------------|---------------------------------------------------|
-| `"stack"` (default)          | Las barras se apilan una sobre otra (útil para ver el total por categoría).  |
-| `"dodge"`                    | Las barras se ponen una al lado de la otra (útil para comparar grupos).      |
-| `"fill"`                     | Igual a `stack`, pero las alturas se escalan al mismo total (proporciones).  |
-| `"identity"`                 | Las barras se colocan exactamente en la posición dada (necesita precaución). |
-| `"jitter"` (en `geom_point`) | Añade ruido aleatorio para evitar sobreposición (no aplica a barras).        |
-| `"nudge"` (en `geom_text`)   | Mueve las etiquetas ligeramente en x o y.                                    |
-
-```{r}
-ggplot(tabla_educ, aes(x = educ_nivel, 
-                       y = n, 
-                       fill = factor(pueblos_indigenas))) +
+ggplot(tabla_educ, aes(x = educ_nivel, y = n, fill = factor(pueblos_indigenas))) +
   geom_col(position = "dodge") +
   labs(
     title = "Distribución por nivel educativo y pertenencia indígena",
@@ -254,128 +175,41 @@ ggplot(tabla_educ, aes(x = educ_nivel,
     y = "Cantidad de personas",
     fill = "Pueblos Indígenas"
   ) +
-  theme_minimal() +
-  scale_fill_manual(values = c("0" = "#999999", "1" = "#D95F02"),
-                    labels = c("No Indígena", "Indígena")) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-```
-
-```{r}
-library(ggplot2)
-library(scales)
-
-ggplot(tabla_educ, aes(x = educ_nivel, 
-                       y = n, 
-                       fill = factor(pueblos_indigenas))) +
-  geom_col(position = position_dodge(width = 0.9)) +
-  geom_text(aes(label = n), 
-            position = position_dodge(width = 0.9), 
-            vjust = -0.5, size = 3) +
-  labs(
-    title = "Distribución por nivel educativo y pertenencia indígena",
-    x = "Nivel educativo",
-    y = "Cantidad de personas",
-    fill = "Pueblos Indígenas"
-  ) +
-  scale_fill_manual(
-    values = c("0" = "#999999", "1" = "#D95F02"),
-    labels = c("No Indígena", "Indígena")
-  ) +
+  scale_fill_manual(values = c("0" = "#999999", "1" = "#D95F02"), labels = c("No Indígena", "Indígena")) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
-
-
 ```
 
+### Calcular proporciones dentro de cada grupo
 ```{r}
-library(dplyr)
-
 tabla_educ_por_grupo <- tabla_educ |> 
   group_by(pueblos_indigenas) |> 
   mutate(prop = n / sum(n)) |> 
   ungroup()
-
 ```
 
+### Gráfico de barras por grupo con facetas
 ```{r}
-library(ggplot2)
-library(dplyr)
-library(scales)
-
-# Calcular proporción dentro de cada grupo
-tabla_educ_por_grupo <- tabla_educ |> 
-  group_by(pueblos_indigenas) |> 
-  mutate(prop = n / sum(n)) |> 
-  ungroup()
-
-# Gráfico
 ggplot(tabla_educ_por_grupo, aes(x = educ_nivel, y = prop, fill = educ_nivel)) +
   geom_col() +
+  geom_text(aes(label = scales::percent(prop, accuracy = 1)), vjust = -0.5, size = 3) +
   facet_grid(~ pueblos_indigenas, labeller = as_labeller(c("0" = "No Indígena", "1" = "Indígena"))) +
-  scale_y_continuous(labels = percent_format()) +
+  scale_y_continuous(labels = scales::percent_format()) +
   labs(
     title = "Distribución del nivel educativo dentro de cada grupo",
     x = "Nivel educativo",
-    y = "Proporción dentro del grupo",
+    y = "Proporción",
     fill = "Nivel educativo"
   ) +
   theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "none"
-  )
-
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-```{r}
-library(ggplot2)
-library(dplyr)
-library(scales)
-
-# Gráfico
-ggplot(tabla_educ_por_grupo, aes(x = educ_nivel, y = prop, fill = educ_nivel)) +
-  geom_col() +
-  geom_text(aes(label = percent(prop, accuracy = 1)),
-            vjust = -0.5, color = "black", size = 3) +  # 👈 etiquetas sobre las barras
-  facet_grid(~ pueblos_indigenas, labeller = as_labeller(c("0" = "No Indígena", "1" = "Indígena"))) +
-  scale_y_continuous(labels = percent_format(), limits = c(0, max(tabla_educ_por_grupo$prop) + 0.05)) +
-  labs(
-    title = "Distribución del nivel educativo dentro de cada grupo",
-    x = "Nivel educativo",
-    y = "Proporción dentro del grupo",
-    fill = "Nivel educativo"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "none"
-  )
-
-```
-
-## Gráfico de tendencias
+## Gráfico de tendencia con GSS
 
 ```{r}
+library(forcats)
 
-gss_cat |> glimpse()
-
-
-```
-
-```{r}
-gss_cat |> select(year, race, partyid)
-```
-
-```{r}
-unique(gss_cat$race)
-unique(gss_cat$partyid)
-```
-
-```{r}
-library(tidyverse)
-
-# Cálculo de proporciones por año y grupo racial
 gss_party_race <- gss_cat |> 
   filter(!is.na(partyid), !is.na(race)) |> 
   group_by(year, race, partyid) |> 
@@ -384,69 +218,23 @@ gss_party_race <- gss_cat |>
   mutate(prop = n / sum(n)) |> 
   ungroup()
 
-
-voto_duro <-gss_party_race |> filter(partyid == "Strong democrat")
+voto_duro <- gss_party_race |> filter(partyid == "Strong democrat")
 ```
 
-```{r}
-voto_duro
-```
-
-```{r}
-
-ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
-  geom_line(size = 1) +
-  geom_point() +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  labs(
-    title = "Proporción que se identifica como 'Strong Democrat' por raza y año",
-    x = "Año",
-    y = "Proporción",
-    color = "Raza"
-  ) 
-
-```
-
+### Gráfico de tendencia final estilo BBC
 ```{r}
 ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
-  geom_line(size = 1) +
-  geom_point() +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) +
-  labs(
-    title = "Proporción que se identifica como 'Strong Democrat' por raza y año",
-    x = "Año",
-    y = "Proporción",
-    color = "Raza"
-  ) +
-  theme_minimal() # se puede cambiar
-```
-
-## Preguntémosle a ChatGpt 😳
-
-Prompt: Hazme un gráfico tipo BBC News.
-
-```{r}
-g1 <- ggplot()
-```
-
-```{r}
-#| echo: false
-#| eval: true
-library(ggplot2)
-library(scales)
-
-g2 <-ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
   geom_line(size = 1.2) +
   geom_point(size = 2) +
-  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
   scale_color_brewer(palette = "Dark2") +
   labs(
     title = "Voto duro demócrata en EE.UU.",
     subtitle = "Proporción que se identifica como 'Strong Democrat', por raza y año",
+    caption = "Fuente: GSS (General Social Survey)",
     x = "Año",
     y = "Proporción",
-    color = "Raza",
-    caption = "Fuente: GSS (General Social Survey)"
+    color = "Raza"
   ) +
   theme_minimal(base_size = 13) +
   theme(
@@ -457,39 +245,14 @@ g2 <-ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
     legend.title = element_text(face = "bold"),
     axis.text.x = element_text(angle = 45, hjust = 1)
   )
-
 ```
 
-```{r}
-g2
-```
-
-```{r}
- # Guardar
-getwd()
-ggsave("images/voto_duro_race.png", plot = g1,
-       width = 8,
-       height = 5, 
-       dpi = 300)
-1
-```
-
-```{r}
- # Guardar
-getwd()
-ggsave("images/voto_duro_race.png", plot = g1,
-       width = 8,
-       height = 5, 
-       dpi = 300)
-1
-```
-
+### Guardar gráfico con dimensiones de PowerPoint
 ```{r}
 ggsave("images/voto_duro_race_ppt.png",
-       plot = g1,
+       plot = last_plot(),
        width = 29.21,
        height = 12.09,
        units = "cm",
        dpi = 300)
 
-```
