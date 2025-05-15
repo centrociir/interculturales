@@ -17,16 +17,16 @@
     <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
     <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
     <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
-    <meta name="description" content="InteRculturales, Pontificia Universidad Católica de Chile, Enero 10, 2025"/>
+    <meta name="description" content="InteRculturales, Pontificia Universidad Católica de Chile, 2025"/>
     <meta name="twitter:title" content="InteRculturales"/>
-    <meta name="twitter:description" content="InteRculturales, Pontificia Universidad Católica de Chile, Enero 10, 2025"/>
+    <meta name="twitter:description" content="InteRculturales, Pontificia Universidad Católica de Chile, 2025"/>
     <meta name="twitter:url" content=""/>
     <meta name="twitter:image" content=""/>
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:creator" content="matdknu"/>
     <meta name="twitter:site" content="matdknu"/>
     <meta property="og:title" content="InteRculturales"/>
-    <meta property="og:description" content="InteRculturales, Pontificia Universidad Católica de Chile, Enero 10, 2025"/>
+    <meta property="og:description" content="InteRculturales, Pontificia Universidad Católica de Chile, 2025"/>
     <meta property="og:url" content=""/>
     <meta property="og:image" content=""/>
     <meta property="og:type" content="website"/>
@@ -67,7 +67,7 @@ background-position: left
 .title-where[
 ### **InteRculturales &lt;br&gt; Introducción a técnicas de &lt;br&gt; ciencias sociales computacionales **
 Centro de Estudios Interculturales e Indígenas &lt;br&gt;
-Sesión 1 - 2025
+Sesión 2 - 2025
 ]
 
 &lt;style type="text/css"&gt;
@@ -222,11 +222,142 @@ top:1em;right:1em;
   document.addEventListener('DOMContentLoaded', addLogo)
 })()</script>
 </div>
+---
+
+## Recapitulando...📝
+
+**Tidyverse**
+
+Conjunto de paquetes de R diseñados para ciencia de datos. Incluye herramientas como ggplot2, dplyr, tidyr, readr, entre otros, que comparten una sintaxis coherente y principios comunes (funciones pipe ( `|&gt;` o `%&gt;%` ) y manipulación de datos "ordenados").
+
+
+
+``` r
+head(starwars)
+```
+
+
+``` r
+names(starwars)
+```
+
+```
+##  [1] "name"       "height"     "mass"       "hair_color" "skin_color"
+##  [6] "eye_color"  "birth_year" "sex"        "gender"     "homeworld" 
+## [11] "species"    "films"      "vehicles"   "starships"
+```
+
+
 
 
 ---
 
+## Recapitulando...📝
+
+**Tidyverse: `Select` **
+
+Sirve para elegir columnas específicas de un data frame.
+
+
+``` r
+starwars %&gt;%
+  select(name, species, height, mass) |&gt; head(3)
+```
+
+```
+## # A tibble: 3 × 4
+##   name           species height  mass
+##   &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
+## 1 Luke Skywalker Human      172    77
+## 2 C-3PO          Droid      167    75
+## 3 R2-D2          Droid       96    32
+```
+
 ---
+
+## Recapitulando...📝
+
+**Tidyverse: `Filter` **
+
+Permite filtrar filas según condiciones lógicas.
+
+
+``` r
+starwars %&gt;% filter(species == "Human", mass &gt; 80)
+```
+
+```
+## # A tibble: 6 × 14
+##   name      height  mass hair_color skin_color eye_color birth_year sex   gender
+##   &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+## 1 Darth Va…    202   136 none       white      yellow          41.9 male  mascu…
+## 2 Owen Lars    178   120 brown, gr… light      blue            52   male  mascu…
+## 3 Biggs Da…    183    84 black      light      brown           24   male  mascu…
+## 4 Anakin S…    188    84 blond      fair       blue            41.9 male  mascu…
+## 5 Qui-Gon …    193    89 brown      fair       blue            92   male  mascu…
+## 6 Mace Win…    188    84 none       dark       brown           72   male  mascu…
+## # ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+## #   vehicles &lt;list&gt;, starships &lt;list&gt;
+```
+
+---
+
+## Recapitulando...📝
+
+**Tidyverse: `Mutate` **
+
+Crea nuevas columnas o modifica variables existentes.
+
+
+``` r
+starwars %&gt;%
+  mutate(imc_ficticio = mass / (height / 100)^2) %&gt;%
+  select(name, imc_ficticio) %&gt;%
+  arrange(desc(imc_ficticio)) |&gt; 
+  head(3)
+```
+
+```
+## # A tibble: 3 × 2
+##   name                  imc_ficticio
+##   &lt;chr&gt;                        &lt;dbl&gt;
+## 1 Jabba Desilijic Tiure        443. 
+## 2 Dud Bolt                      50.9
+## 3 Yoda                          39.0
+```
+
+
+---
+
+## Recapitulando...📝
+
+**Tidyverse: `Group_by` + `summarise` **
+
+`Group_by`: Crea nuevas columnas o modifica variables existentes y `Summarise`: Genera resúmenes estadísticos por grupo (si se usó group_by()) o para todo el conjunto.
+
+
+``` r
+starwars %&gt;% group_by(species) %&gt;%
+  summarise(
+    promedio_altura = mean(height, na.rm = TRUE)
+  ) %&gt;%
+  arrange(desc(promedio_altura)) |&gt;  # Ordenar por número de personajes
+  head(3)
+```
+
+```
+## # A tibble: 3 × 2
+##   species  promedio_altura
+##   &lt;chr&gt;              &lt;dbl&gt;
+## 1 Quermian             264
+## 2 Wookiee              231
+## 3 Kaminoan             221
+```
+
+
+---
+
+
 
 ## Hoy veremos...📊
 
@@ -343,7 +474,7 @@ g1 &lt;- ggplot(resumen,
 ]
 
 .pull-right[
-![](presentacion-2_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
 ]
 
 
@@ -372,6 +503,8 @@ La librería **{ggplot2}** permite crear gráficos sumando capas. Cada capa cump
 
 ---
 # 📦 Recursos esenciales para trabajar con `ggplot2`
+
+&lt;img src="images/archivo.gif" width="50%" /&gt;
 
 ---
 
@@ -437,7 +570,7 @@ library(palmerpenguins)
 penguins |&gt; ggplot()
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -453,7 +586,7 @@ penguins |&gt;
       y = bill_depth_mm)
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-15-1.png)&lt;!-- --&gt;
 
 ---
 #### **Vamos al Ggplot2**: Definimos los puntos
@@ -469,7 +602,7 @@ penguins |&gt;
   geom_point() # geometría de puntos
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 
 ---
@@ -488,7 +621,7 @@ penguins |&gt;
   geom_point() # geometría de puntos
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 
 ---
 #### **Vamos al Ggplot2**: Histograma
@@ -501,7 +634,7 @@ penguins  |&gt; # datos
   geom_histogram() # histograma
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
 
 ---
 #### **Vamos al Ggplot2**: Densidad
@@ -515,7 +648,22 @@ penguins  |&gt; # datos
   geom_density() # histograma
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+#### **Vamos al Ggplot2**: Densidad y fondo
+
+
+
+``` r
+penguins  |&gt; # datos
+  ggplot() + # iniciar
+  aes(x = flipper_length_mm) + # variable horizontal
+   geom_density(fill = "black")
+```
+
+![](presentacion-2_files/figure-html/unnamed-chunk-20-1.png)&lt;!-- --&gt;
+
 
 ---
 #### **Vamos al Ggplot2**: Densidad y fondo
@@ -529,7 +677,25 @@ penguins  |&gt; # datos
    geom_density(fill = "black", alpha = 0.6)
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+---
+
+#### **Vamos al Ggplot2**: Densidad y colores por species
+
+
+
+``` r
+penguins |&gt; 
+  ggplot() +
+  aes(x = flipper_length_mm, 
+      color = species) + # bordes de la figura
+  geom_density() +
+  # tema
+  theme_classic() 
+```
+
+![](presentacion-2_files/figure-html/unnamed-chunk-22-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -548,7 +714,8 @@ penguins |&gt;
   theme_classic() 
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-23-1.png)&lt;!-- --&gt;
+
 
 ---
 #### **Vamos al Ggplot2**: Densidad y colores por species
@@ -576,7 +743,7 @@ g1 &lt;-penguins |&gt;
 
 .pull-right[
 
-![](presentacion-2_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-25-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -616,7 +783,7 @@ ggplot(resumen, aes(x = species, y = promedio_aleta, fill = species)) +
   theme_minimal()
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-27-1.png)&lt;!-- --&gt;
 ---
 
 #### **Vamos al Ggplot2**: Hagamos algunos ajustes
@@ -632,7 +799,7 @@ ggplot(resumen, aes(x = species, y = promedio_aleta, fill = species)) +
   theme_minimal()
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
 
 ---
 #### **Ajustes**
@@ -683,7 +850,7 @@ ggplot(aes(x = species, y = promedio_aleta, fill = species)) +
 ajustes
 ```
 
-![](presentacion-2_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
 
 ---
 
@@ -739,7 +906,7 @@ g1 &lt;- tabla_pinguino |&gt;
 
 .pull-right[
 
-![](presentacion-2_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-35-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -758,7 +925,7 @@ g1 &lt;- tabla_pinguino |&gt;
 ]
 
 .pull-right[
-![](presentacion-2_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-37-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -784,7 +951,7 @@ g1 &lt;- tabla_pinguino |&gt;
 ]
 
 .pull-right[
-![](presentacion-2_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-39-1.png)&lt;!-- --&gt;
 ]
 
 ---
@@ -813,8 +980,9 @@ g1 &lt;-tabla_pinguino |&gt;
 ]
 
 .pull-right[
-![](presentacion-2_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-41-1.png)&lt;!-- --&gt;
 ]
+
 ---
 
 #### ** Grafico de tendencia **
@@ -843,8 +1011,9 @@ g1 &lt;-tabla_pinguino |&gt;
 ]
 
 .pull-right[
-![](presentacion-2_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-43-1.png)&lt;!-- --&gt;
 ]
+
 ---
 #### ** Grafico de tendencia **
 
@@ -872,11 +1041,13 @@ g1 &lt;-tabla_pinguino |&gt;
 ]
 
 .pull-right[
-![](presentacion-2_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
-]
----
+![](presentacion-2_files/figure-html/unnamed-chunk-45-1.png)&lt;!-- --&gt;
 
+]
+
+---
 #### ** Grafico de tendencia **
+
 
 .pull-left[
 
@@ -902,10 +1073,43 @@ g1 &lt;-tabla_pinguino |&gt;
 ]
 
 .pull-right[
-![](presentacion-2_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
+![](presentacion-2_files/figure-html/unnamed-chunk-47-1.png)&lt;!-- --&gt;
 ]
+
 ---
 
+#### ** Grafico de tendencia **
+
+
+.pull-left[
+
+``` r
+g1 &lt;-tabla_pinguino |&gt; 
+  mutate(year = as.numeric(year)) |&gt; 
+  ggplot(aes(year, # identificación del eje.
+             promedio_aleta,# identificación del eje.
+             color = species)) +
+  geom_line(size = 1) +
+  geom_point(size = 1.5) +
+  scale_x_continuous(breaks =
+  unique(tabla_pinguino$year)) +  # 👈 Mostrar solo los años sin decimales
+  labs(
+    title = "Tendencia del largo de
+    aleta por especie",
+    x = "Año", 
+    y = "Largo promedio (mm)", 
+    color = "Especie"
+  ) +
+  theme_minimal(base_size = 15) 
+```
+]
+
+.pull-right[
+![](presentacion-2_files/figure-html/unnamed-chunk-49-1.png)&lt;!-- --&gt;
+]
+
+
+---
 
 ### **La necesaria creatividad de la visualización**
 

@@ -34,6 +34,7 @@ format:
 execute:
   warning: false
   message: false
+  cache: false
 editor: visual
 reference-location: margin
 citation-location: margin
@@ -84,7 +85,7 @@ El histograma permite visualizar la distribución de la variable numérica edad 
 
 ```{r}
 casen |> ggplot(aes(edad)) +
-  geom_histogram(color = "white")
+  geom_histogram(color = "white") 
 ```
 
 ### Densidad por pertenencia a pueblo indígena

@@ -1,6 +1,6 @@
 ---
 title: "InteRculturales"
-subtitle: "Sesión 1"
+subtitle: "Sesión 2"
 author: "Matías Deneken"
 date: ''
 output:
@@ -99,7 +99,7 @@ xaringanExtra::use_extra_styles()
 ```{r metadata, echo=FALSE}
 library(metathis)
 meta() %>% 
-  meta_description("InteRculturales, Pontificia Universidad Católica de Chile, Enero 10, 2025") %>% 
+  meta_description("InteRculturales, Pontificia Universidad Católica de Chile, 2025") %>% 
   meta_social(
     title = "InteRculturales",
     url = "",
@@ -164,7 +164,7 @@ background-position: left
 .title-where[
 ### **InteRculturales <br> Introducción a técnicas de <br> ciencias sociales computacionales **
 Centro de Estudios Interculturales e Indígenas <br>
-Sesión 1 - 2025
+Sesión 2 - 2025
 ]
 
 ```{css echo=FALSE}
@@ -293,12 +293,93 @@ use_logo(
   exclude_class = c("title-slide","hide_logo","inverse"),
   width = "150px",
   height = "150px")
+``` 
+---
+
+## Recapitulando...📝
+
+**Tidyverse**
+
+Conjunto de paquetes de R diseñados para ciencia de datos. Incluye herramientas como ggplot2, dplyr, tidyr, readr, entre otros, que comparten una sintaxis coherente y principios comunes (funciones pipe ( `|>` o `%>%` ) y manipulación de datos "ordenados").
+
+
+```{r eval=FALSE}
+head(starwars)
+```
+
+```{r}
+names(starwars)
+```
+
+
+
+
+---
+
+## Recapitulando...📝
+
+**Tidyverse: `Select` **
+
+Sirve para elegir columnas específicas de un data frame.
+
+```{r}
+starwars %>%
+  select(name, species, height, mass) |> head(3)
+```
+
+---
+
+## Recapitulando...📝
+
+**Tidyverse: `Filter` **
+
+Permite filtrar filas según condiciones lógicas.
+
+```{r}
+starwars %>% filter(species == "Human", mass > 80)
+```
+
+---
+
+## Recapitulando...📝
+
+**Tidyverse: `Mutate` **
+
+Crea nuevas columnas o modifica variables existentes.
+
+```{r}
+starwars %>%
+  mutate(imc_ficticio = mass / (height / 100)^2) %>%
+  select(name, imc_ficticio) %>%
+  arrange(desc(imc_ficticio)) |> 
+  head(3)
+
 ```
 
 
 ---
 
+## Recapitulando...📝
+
+**Tidyverse: `Group_by` + `summarise` **
+
+`Group_by`: Crea nuevas columnas o modifica variables existentes y `Summarise`: Genera resúmenes estadísticos por grupo (si se usó group_by()) o para todo el conjunto.
+
+```{r}
+starwars %>% group_by(species) %>%
+  summarise(
+    promedio_altura = mean(height, na.rm = TRUE)
+  ) %>%
+  arrange(desc(promedio_altura)) |>  # Ordenar por número de personajes
+  head(3)
+
+
+```
+
+
 ---
+
+
 
 ## Hoy veremos...📊
 
@@ -431,6 +512,10 @@ La librería **{ggplot2}** permite crear gráficos sumando capas. Cada capa cump
 
 ---
 # 📦 Recursos esenciales para trabajar con `ggplot2`
+
+```{r, echo=FALSE, out.width='50%'}
+knitr::include_graphics("images/archivo.gif")
+```
 
 ---
 
@@ -567,7 +652,34 @@ penguins  |> # datos
 penguins  |> # datos
   ggplot() + # iniciar
   aes(x = flipper_length_mm) + # variable horizontal
+   geom_density(fill = "black")
+```
+
+
+---
+#### **Vamos al Ggplot2**: Densidad y fondo
+
+
+```{r  echo=TRUE, warning=FALSE, message=FALSE, fig.height=4}
+penguins  |> # datos
+  ggplot() + # iniciar
+  aes(x = flipper_length_mm) + # variable horizontal
    geom_density(fill = "black", alpha = 0.6)
+```
+
+---
+
+#### **Vamos al Ggplot2**: Densidad y colores por species
+
+
+```{r  echo=TRUE, warning=FALSE, message=FALSE, fig.height=4}
+penguins |> 
+  ggplot() +
+  aes(x = flipper_length_mm, 
+      color = species) + # bordes de la figura
+  geom_density() +
+  # tema
+  theme_classic() 
 ```
 
 ---
@@ -585,6 +697,7 @@ penguins |>
   # tema
   theme_classic() 
 ```
+
 
 ---
 #### **Vamos al Ggplot2**: Densidad y colores por species
@@ -845,6 +958,7 @@ g1 <-tabla_pinguino |>
 g1
 ```
 ]
+
 ---
 
 #### ** Grafico de tendencia **
@@ -879,6 +993,7 @@ g1 <-tabla_pinguino |>
 g1
 ```
 ]
+
 ---
 #### ** Grafico de tendencia **
 
@@ -911,10 +1026,12 @@ g1 <-tabla_pinguino |>
 ```{r, echo=FALSE}
 g1
 ```
-]
----
 
+]
+
+---
 #### ** Grafico de tendencia **
+
 
 .pull-left[
 ```{r}
@@ -946,8 +1063,45 @@ g1 <-tabla_pinguino |>
 g1
 ```
 ]
+
 ---
 
+#### ** Grafico de tendencia **
+
+
+.pull-left[
+```{r}
+
+g1 <-tabla_pinguino |> 
+  mutate(year = as.numeric(year)) |> 
+  ggplot(aes(year, # identificación del eje.
+             promedio_aleta,# identificación del eje.
+             color = species)) +
+  geom_line(size = 1) +
+  geom_point(size = 1.5) +
+  scale_x_continuous(breaks =
+  unique(tabla_pinguino$year)) +  # 👈 Mostrar solo los años sin decimales
+  labs(
+    title = "Tendencia del largo de
+    aleta por especie",
+    x = "Año", 
+    y = "Largo promedio (mm)", 
+    color = "Especie"
+  ) +
+  theme_minimal(base_size = 15) 
+
+
+```
+]
+
+.pull-right[
+```{r, echo=FALSE}
+g1
+```
+]
+
+
+---
 
 ### **La necesaria creatividad de la visualización**
 
