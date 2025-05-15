@@ -14,7 +14,7 @@ format:
       text: |
         <style>
           body::before {
-            content: url('pres/images/logo_ciir.jpg');
+            content: url('images/logo_ciir.jpg');
             display: block;
             text-align: left;
             margin-bottom: 5px;
