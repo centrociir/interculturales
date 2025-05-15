@@ -69,18 +69,53 @@ tibble::as_tibble(head(casen))
 ## Visualizaciones exploratorias
 
 ### Histograma de edad
+
+El histograma permite visualizar la distribución de la variable numérica edad dentro del conjunto de datos. Esta es una de las formas más directas de explorar cómo se distribuyen los valores de una variable continua.
+
+**Pasos del código:**
+
+-   `casen |> ggplot(aes(edad))`: inicia el gráfico utilizando la base de datos casen y mapea la variable edad al eje X.
+
+-   `geom_histogram(color = "white")`: agrega una capa de histograma (barras), usando el color blanco para el borde de las barras.
+
 ```{r}
 casen |> ggplot(aes(edad)) +
   geom_histogram(color = "white")
 ```
 
 ### Densidad por pertenencia a pueblo indígena
+
+Este gráfico muestra la **distribución de la edad** usando curvas de densidad, diferenciadas por el grupo de pertenencia indígena. A diferencia del histograma, las curvas de densidad suavizan la forma de la distribución y permiten comparar grupos más claramente.
+
+**Pasos del código:**
+
+1.  `casen |> ggplot(aes(edad, colour = pueblos_indigenas))`: se define el gráfico base, mapeando la variable `edad` al eje X y asignando un color distinto según la variable `pueblos_indigenas`.
+
+2.  `geom_density()`: añade la geometría de densidad, que estima la distribución de la variable `edad`.
+
 ```{r}
 casen |> ggplot(aes(edad, colour = pueblos_indigenas)) +
   geom_density()
 ```
 
 ### Densidad de ingresos según pueblo indígena
+
+Este gráfico permite observar cómo se distribuye el **ingreso autónomo (`yautcor`)** en la población, distinguiendo entre personas indígenas y no indígenas. Se utiliza una curva de densidad para facilitar la comparación entre ambos grupos.
+
+**Pasos del código:**
+
+1.  `mutate(...)`: convierte la variable `pueblos_indigenas` en un **factor con etiquetas legibles**: `"No Indígena"` y `"Indígena"`.
+
+2.  `filter(yautcor < 100000)`: **excluye valores extremos** de ingreso para evitar que distorsionen el gráfico.
+
+3.  `ggplot(...)`: inicia el gráfico asignando la variable `yautcor` al eje X, y diferenciando los grupos por `fill` y `color`.
+
+4.  `geom_density(alpha = 0.6)`: genera curvas de densidad con cierta transparencia (`alpha = 0.6`) para que se puedan ver las superposiciones.
+
+5.  `labs(...)`: define título y etiquetas de los ejes.
+
+6.  `theme_classic()`: aplica un tema con fondo blanco y sin cuadrículas para una presentación más limpia.
+
 ```{r}
 casen |> 
   mutate(pueblos_indigenas = factor(pueblos_indigenas, levels = c(0, 1), labels = c("No Indígena", "Indígena"))) |> 
@@ -98,6 +133,23 @@ casen |>
 ```
 
 ### Gráfico de dispersión edad e ingreso
+
+Este gráfico muestra la relación entre la edad de las personas y su ingreso autónomo (`yautcor`), con una **distinción por pertenencia indígena**. Se utiliza un gráfico de puntos para visualizar la dispersión de los datos individuales.
+
+**Pasos del código:**
+
+1.  `filter(yautcor < 1000001)`: **filtra valores extremos** de ingreso para mantener solo observaciones dentro de un rango razonable.
+
+2.  `ggplot(...)`: inicializa el gráfico asignando `yautcor` al eje X y `edad` al eje Y.
+
+3.  `colour = as.factor(pueblos_indigenas)`: transforma la variable `pueblos_indigenas` en factor para colorear los puntos por grupo.
+
+4.  `geom_point(alpha = 0.3)`: agrega puntos con transparencia (`alpha = 0.3`) para **evitar saturación visual** en zonas densas.
+
+5.  `labs(...)`: agrega un título claro y etiquetas a los ejes.
+
+6.  `theme_minimal()`: aplica un diseño limpio con fondo blanco y sin bordes.
+
 ```{r}
 casen |> 
   filter(yautcor < 1000001) |>  # eliminar valores extremos
@@ -113,6 +165,21 @@ casen |>
 ```
 
 ### Línea de tendencia sin puntos
+
+Este gráfico representa la **tendencia general entre el ingreso autónomo y la edad**, sin mostrar los puntos individuales. Es útil para detectar patrones globales cuando hay muchos datos.
+
+**Pasos del código:**
+
+1.  `filter(yautcor < 2000000)`: elimina outliers con ingresos extremadamente altos para evitar que afecten la tendencia.
+
+2.  `ggplot(...)`: define el mapeo estético con `yautcor` en el eje X y `edad` en el eje Y.
+
+3.  `geom_smooth()`: agrega una **línea suavizada** que estima la relación entre ambas variables, utilizando por defecto un modelo de regresión local (*loess*).
+
+4.  `labs(...)`: define el título del gráfico y los nombres de los ejes.
+
+5.  `theme_minimal()`: aplica un tema visual limpio.
+
 ```{r}
 casen |> 
   filter(yautcor < 2000000) |>  # evitar outliers extremos
@@ -129,6 +196,21 @@ casen |>
 ## Gráfico de barras
 
 ### Conteo de personas por condición indígena
+
+Este gráfico muestra **cuántas personas en la muestra se identifican o no con un pueblo indígena**. Es útil para visualizar la distribución de esta variable categórica.
+
+**Pasos del código:**
+
+1.  `ggplot(aes(x = factor(pueblos_indigenas)))`: se transforma la variable `pueblos_indigenas` en un **factor**, para que `ggplot2` la trate como una categoría en el eje X.
+
+2.  `geom_bar()`: genera un gráfico de barras contando automáticamente las observaciones por categoría.
+
+3.  `labs(...)`: define el título del gráfico y los nombres de los ejes.
+
+4.  `scale_x_discrete(...)`: reemplaza las etiquetas "0" y "1" por **"No Indígena"** e **"Indígena"**.
+
+5.  `theme_minimal()`: aplica un tema limpio y moderno al gráfico.
+
 ```{r}
 casen |> 
   ggplot(aes(x = factor(pueblos_indigenas))) +
@@ -143,6 +225,7 @@ casen |>
 ```
 
 ### Crear variable categórica de nivel educativo
+
 ```{r}
 casen <- casen |> 
   mutate(
@@ -159,6 +242,7 @@ casen <- casen |>
 ```
 
 ### Agrupar y contar por nivel educativo y condición
+
 ```{r}
 tabla_educ <- casen |> 
   group_by(pueblos_indigenas, educ_nivel) |> 
@@ -166,6 +250,34 @@ tabla_educ <- casen |>
 ```
 
 ### Gráfico de barras agrupadas
+
+Este gráfico de barras compara **la cantidad de personas por nivel educativo**, diferenciando entre quienes **se identifican como indígenas y quienes no**. Al usar `position = "dodge"`, las barras se colocan una al lado de la otra, permitiendo comparar los grupos dentro de cada nivel educativo.
+
+**Explicación paso a paso:**
+
+1.  `ggplot(tabla_educ, aes(...))`: se define la base del gráfico con la tabla `tabla_educ`, especificando:
+
+    -   `x = educ_nivel`: eje X representa los niveles educativos.
+
+    -   `y = n`: eje Y representa la cantidad de personas.
+
+    -   `fill = factor(pueblos_indigenas)`: las barras se rellenan según la pertenencia indígena.
+
+2.  `geom_col(position = "dodge")`: crea un gráfico de columnas usando los valores exactos (no conteos automáticos), y separa las barras por grupo.
+
+3.  `labs(...)`: agrega título y etiquetas a los ejes y leyenda.
+
+4.  `scale_fill_manual(...)`: personaliza los colores de cada grupo:
+
+    -   Gris para "No Indígena"
+
+    -   Naranja para "Indígena"\
+        También se cambian las etiquetas para que sean legibles.
+
+5.  `theme_minimal()`: aplica un tema claro y limpio.
+
+6.  `theme(...)`: rota las etiquetas del eje X 45 grados para mejorar su legibilidad
+
 ```{r}
 ggplot(tabla_educ, aes(x = educ_nivel, y = n, fill = factor(pueblos_indigenas))) +
   geom_col(position = "dodge") +
@@ -181,6 +293,7 @@ ggplot(tabla_educ, aes(x = educ_nivel, y = n, fill = factor(pueblos_indigenas)))
 ```
 
 ### Calcular proporciones dentro de cada grupo
+
 ```{r}
 tabla_educ_por_grupo <- tabla_educ |> 
   group_by(pueblos_indigenas) |> 
@@ -189,6 +302,7 @@ tabla_educ_por_grupo <- tabla_educ |>
 ```
 
 ### Gráfico de barras por grupo con facetas
+
 ```{r}
 ggplot(tabla_educ_por_grupo, aes(x = educ_nivel, y = prop, fill = educ_nivel)) +
   geom_col() +
@@ -207,23 +321,36 @@ ggplot(tabla_educ_por_grupo, aes(x = educ_nivel, y = prop, fill = educ_nivel)) +
 
 ## Gráfico de tendencia con GSS
 
+Este bloque de código **procesa la base de datos `gss_cat`** del paquete `forcats`, con el fin de calcular la **proporción de personas que se identifican como "Strong Democrat"** en EE.UU., desagregado por raza y año.
+
 ```{r}
 library(forcats)
 
 gss_party_race <- gss_cat |> 
-  filter(!is.na(partyid), !is.na(race)) |> 
-  group_by(year, race, partyid) |> 
-  summarise(n = n(), .groups = "drop") |> 
-  group_by(year, race) |> 
-  mutate(prop = n / sum(n)) |> 
-  ungroup()
+  filter(!is.na(partyid), !is.na(race)) |>     # 1. Elimina valores perdidos en partido y raza
+  group_by(year, race, partyid) |>             # 2. Agrupa por año, raza y afiliación partidaria
+  summarise(n = n(), .groups = "drop") |>      # 3. Cuenta el número de casos por combinación
+  group_by(year, race) |>                      # 4. Reagrupa por año y raza
+  mutate(prop = n / sum(n)) |>                 # 5. Calcula la proporción que representa cada partido
+  ungroup()                                    # 6. Elimina agrupaciones
+
 
 voto_duro <- gss_party_race |> filter(partyid == "Strong democrat")
 ```
 
-### Gráfico de tendencia final estilo BBC
+### Gráfico de tendencia final
+
 ```{r}
 ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+```
+
+### Gráfico bonito (ChatGPT 😳)
+
+```{r, echo=FALSE}
+ g2 <-ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
   geom_line(size = 1.2) +
   geom_point(size = 2) +
   scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
@@ -244,15 +371,11 @@ ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
     legend.position = "bottom",
     legend.title = element_text(face = "bold"),
     axis.text.x = element_text(angle = 45, hjust = 1)
-  )
+  ); g2
 ```
 
 ### Guardar gráfico con dimensiones de PowerPoint
-```{r}
-ggsave("images/voto_duro_race_ppt.png",
-       plot = last_plot(),
-       width = 29.21,
-       height = 12.09,
-       units = "cm",
-       dpi = 300)
 
+```{r}
+ ggsave("images/voto_duro_race_ppt.png", plot = last_plot(), width = 29.21, height = 12.09, units = "cm", dpi = 300)
+```

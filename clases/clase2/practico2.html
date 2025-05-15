@@ -122,8 +122,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#gráfico-de-tendencia-con-gss" id="toc-gráfico-de-tendencia-con-gss" class="nav-link" data-scroll-target="#gráfico-de-tendencia-con-gss"><span class="header-section-number">6</span> Gráfico de tendencia con GSS</a>
   <ul class="collapse">
-  <li><a href="#gráfico-de-tendencia-final-estilo-bbc" id="toc-gráfico-de-tendencia-final-estilo-bbc" class="nav-link" data-scroll-target="#gráfico-de-tendencia-final-estilo-bbc"><span class="header-section-number">6.1</span> Gráfico de tendencia final estilo BBC</a></li>
-  <li><a href="#guardar-gráfico-con-dimensiones-de-powerpoint" id="toc-guardar-gráfico-con-dimensiones-de-powerpoint" class="nav-link" data-scroll-target="#guardar-gráfico-con-dimensiones-de-powerpoint"><span class="header-section-number">6.2</span> Guardar gráfico con dimensiones de PowerPoint</a></li>
+  <li><a href="#gráfico-de-tendencia-final" id="toc-gráfico-de-tendencia-final" class="nav-link" data-scroll-target="#gráfico-de-tendencia-final"><span class="header-section-number">6.1</span> Gráfico de tendencia final</a></li>
+  <li><a href="#gráfico-bonito-chatgpt" id="toc-gráfico-bonito-chatgpt" class="nav-link" data-scroll-target="#gráfico-bonito-chatgpt"><span class="header-section-number">6.2</span> Gráfico bonito (ChatGPT 😳)</a></li>
+  <li><a href="#guardar-gráfico-con-dimensiones-de-powerpoint" id="toc-guardar-gráfico-con-dimensiones-de-powerpoint" class="nav-link" data-scroll-target="#guardar-gráfico-con-dimensiones-de-powerpoint"><span class="header-section-number">6.3</span> Guardar gráfico con dimensiones de PowerPoint</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -220,6 +221,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4" class="anchored" data-anchor-id="visualizaciones-exploratorias"><span class="header-section-number">4</span> Visualizaciones exploratorias</h2>
 <section id="histograma-de-edad" class="level3" data-number="4.1">
 <h3 data-number="4.1" class="anchored" data-anchor-id="histograma-de-edad"><span class="header-section-number">4.1</span> Histograma de edad</h3>
+<p>El histograma permite visualizar la distribución de la variable numérica edad dentro del conjunto de datos. Esta es una de las formas más directas de explorar cómo se distribuyen los valores de una variable continua.</p>
+<p><strong>Pasos del código:</strong></p>
+<ul>
+<li><p><code>casen |&gt; ggplot(aes(edad))</code>: inicia el gráfico utilizando la base de datos casen y mapea la variable edad al eje X.</p></li>
+<li><p><code>geom_histogram(color = "white")</code>: agrega una capa de histograma (barras), usando el color blanco para el borde de las barras.</p></li>
+</ul>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(edad)) <span class="sc">+</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -237,6 +244,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="densidad-por-pertenencia-a-pueblo-indígena" class="level3" data-number="4.2">
 <h3 data-number="4.2" class="anchored" data-anchor-id="densidad-por-pertenencia-a-pueblo-indígena"><span class="header-section-number">4.2</span> Densidad por pertenencia a pueblo indígena</h3>
+<p>Este gráfico muestra la&nbsp;<strong>distribución de la edad</strong>&nbsp;usando curvas de densidad, diferenciadas por el grupo de pertenencia indígena. A diferencia del histograma, las curvas de densidad suavizan la forma de la distribución y permiten comparar grupos más claramente.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>casen |&gt; ggplot(aes(edad, colour = pueblos_indigenas))</code>: se define el gráfico base, mapeando la variable&nbsp;<code>edad</code>&nbsp;al eje X y asignando un color distinto según la variable&nbsp;<code>pueblos_indigenas</code>.</p></li>
+<li><p><code>geom_density()</code>: añade la geometría de densidad, que estima la distribución de la variable&nbsp;<code>edad</code>.</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(edad, <span class="at">colour =</span> pueblos_indigenas)) <span class="sc">+</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -259,6 +272,16 @@ colour.
 </section>
 <section id="densidad-de-ingresos-según-pueblo-indígena" class="level3" data-number="4.3">
 <h3 data-number="4.3" class="anchored" data-anchor-id="densidad-de-ingresos-según-pueblo-indígena"><span class="header-section-number">4.3</span> Densidad de ingresos según pueblo indígena</h3>
+<p>Este gráfico permite observar cómo se distribuye el&nbsp;<strong>ingreso autónomo (<code>yautcor</code>)</strong>&nbsp;en la población, distinguiendo entre personas indígenas y no indígenas. Se utiliza una curva de densidad para facilitar la comparación entre ambos grupos.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>mutate(...)</code>: convierte la variable&nbsp;<code>pueblos_indigenas</code>&nbsp;en un&nbsp;<strong>factor con etiquetas legibles</strong>:&nbsp;<code>"No Indígena"</code>&nbsp;y&nbsp;<code>"Indígena"</code>.</p></li>
+<li><p><code>filter(yautcor &lt; 100000)</code>:&nbsp;<strong>excluye valores extremos</strong>&nbsp;de ingreso para evitar que distorsionen el gráfico.</p></li>
+<li><p><code>ggplot(...)</code>: inicia el gráfico asignando la variable&nbsp;<code>yautcor</code>&nbsp;al eje X, y diferenciando los grupos por&nbsp;<code>fill</code>&nbsp;y&nbsp;<code>color</code>.</p></li>
+<li><p><code>geom_density(alpha = 0.6)</code>: genera curvas de densidad con cierta transparencia (<code>alpha = 0.6</code>) para que se puedan ver las superposiciones.</p></li>
+<li><p><code>labs(...)</code>: define título y etiquetas de los ejes.</p></li>
+<li><p><code>theme_classic()</code>: aplica un tema con fondo blanco y sin cuadrículas para una presentación más limpia.</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pueblos_indigenas =</span> <span class="fu">factor</span>(pueblos_indigenas, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No Indígena"</span>, <span class="st">"Indígena"</span>))) <span class="sc">|&gt;</span> </span>
@@ -284,6 +307,16 @@ colour.
 </section>
 <section id="gráfico-de-dispersión-edad-e-ingreso" class="level3" data-number="4.4">
 <h3 data-number="4.4" class="anchored" data-anchor-id="gráfico-de-dispersión-edad-e-ingreso"><span class="header-section-number">4.4</span> Gráfico de dispersión edad e ingreso</h3>
+<p>Este gráfico muestra la relación entre la edad de las personas y su ingreso autónomo (<code>yautcor</code>), con una&nbsp;<strong>distinción por pertenencia indígena</strong>. Se utiliza un gráfico de puntos para visualizar la dispersión de los datos individuales.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>filter(yautcor &lt; 1000001)</code>:&nbsp;<strong>filtra valores extremos</strong>&nbsp;de ingreso para mantener solo observaciones dentro de un rango razonable.</p></li>
+<li><p><code>ggplot(...)</code>: inicializa el gráfico asignando&nbsp;<code>yautcor</code>&nbsp;al eje X y&nbsp;<code>edad</code>&nbsp;al eje Y.</p></li>
+<li><p><code>colour = as.factor(pueblos_indigenas)</code>: transforma la variable&nbsp;<code>pueblos_indigenas</code>&nbsp;en factor para colorear los puntos por grupo.</p></li>
+<li><p><code>geom_point(alpha = 0.3)</code>: agrega puntos con transparencia (<code>alpha = 0.3</code>) para&nbsp;<strong>evitar saturación visual</strong>&nbsp;en zonas densas.</p></li>
+<li><p><code>labs(...)</code>: agrega un título claro y etiquetas a los ejes.</p></li>
+<li><p><code>theme_minimal()</code>: aplica un diseño limpio con fondo blanco y sin bordes.</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yautcor <span class="sc">&lt;</span> <span class="dv">1000001</span>) <span class="sc">|&gt;</span>  <span class="co"># eliminar valores extremos</span></span>
@@ -307,6 +340,15 @@ colour.
 </section>
 <section id="línea-de-tendencia-sin-puntos" class="level3" data-number="4.5">
 <h3 data-number="4.5" class="anchored" data-anchor-id="línea-de-tendencia-sin-puntos"><span class="header-section-number">4.5</span> Línea de tendencia sin puntos</h3>
+<p>Este gráfico representa la&nbsp;<strong>tendencia general entre el ingreso autónomo y la edad</strong>, sin mostrar los puntos individuales. Es útil para detectar patrones globales cuando hay muchos datos.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>filter(yautcor &lt; 2000000)</code>: elimina outliers con ingresos extremadamente altos para evitar que afecten la tendencia.</p></li>
+<li><p><code>ggplot(...)</code>: define el mapeo estético con&nbsp;<code>yautcor</code>&nbsp;en el eje X y&nbsp;<code>edad</code>&nbsp;en el eje Y.</p></li>
+<li><p><code>geom_smooth()</code>: agrega una&nbsp;<strong>línea suavizada</strong>&nbsp;que estima la relación entre ambas variables, utilizando por defecto un modelo de regresión local (<em>loess</em>).</p></li>
+<li><p><code>labs(...)</code>: define el título del gráfico y los nombres de los ejes.</p></li>
+<li><p><code>theme_minimal()</code>: aplica un tema visual limpio.</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yautcor <span class="sc">&lt;</span> <span class="dv">2000000</span>) <span class="sc">|&gt;</span>  <span class="co"># evitar outliers extremos</span></span>
@@ -335,6 +377,15 @@ colour.
 <h2 data-number="5" class="anchored" data-anchor-id="gráfico-de-barras"><span class="header-section-number">5</span> Gráfico de barras</h2>
 <section id="conteo-de-personas-por-condición-indígena" class="level3" data-number="5.1">
 <h3 data-number="5.1" class="anchored" data-anchor-id="conteo-de-personas-por-condición-indígena"><span class="header-section-number">5.1</span> Conteo de personas por condición indígena</h3>
+<p>Este gráfico muestra&nbsp;<strong>cuántas personas en la muestra se identifican o no con un pueblo indígena</strong>. Es útil para visualizar la distribución de esta variable categórica.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>ggplot(aes(x = factor(pueblos_indigenas)))</code>: se transforma la variable&nbsp;<code>pueblos_indigenas</code>&nbsp;en un&nbsp;<strong>factor</strong>, para que&nbsp;<code>ggplot2</code>&nbsp;la trate como una categoría en el eje X.</p></li>
+<li><p><code>geom_bar()</code>: genera un gráfico de barras contando automáticamente las observaciones por categoría.</p></li>
+<li><p><code>labs(...)</code>: define el título del gráfico y los nombres de los ejes.</p></li>
+<li><p><code>scale_x_discrete(...)</code>: reemplaza las etiquetas “0” y “1” por&nbsp;<strong>“No Indígena”</strong>&nbsp;e&nbsp;<strong>“Indígena”</strong>.</p></li>
+<li><p><code>theme_minimal()</code>: aplica un tema limpio y moderno al gráfico.</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(pueblos_indigenas))) <span class="sc">+</span></span>
@@ -382,6 +433,26 @@ colour.
 </section>
 <section id="gráfico-de-barras-agrupadas" class="level3" data-number="5.4">
 <h3 data-number="5.4" class="anchored" data-anchor-id="gráfico-de-barras-agrupadas"><span class="header-section-number">5.4</span> Gráfico de barras agrupadas</h3>
+<p>Este gráfico de barras compara&nbsp;<strong>la cantidad de personas por nivel educativo</strong>, diferenciando entre quienes&nbsp;<strong>se identifican como indígenas y quienes no</strong>. Al usar&nbsp;<code>position = "dodge"</code>, las barras se colocan una al lado de la otra, permitiendo comparar los grupos dentro de cada nivel educativo.</p>
+<p><strong>Explicación paso a paso:</strong></p>
+<ol type="1">
+<li><p><code>ggplot(tabla_educ, aes(...))</code>: se define la base del gráfico con la tabla&nbsp;<code>tabla_educ</code>, especificando:</p>
+<ul>
+<li><p><code>x = educ_nivel</code>: eje X representa los niveles educativos.</p></li>
+<li><p><code>y = n</code>: eje Y representa la cantidad de personas.</p></li>
+<li><p><code>fill = factor(pueblos_indigenas)</code>: las barras se rellenan según la pertenencia indígena.</p></li>
+</ul></li>
+<li><p><code>geom_col(position = "dodge")</code>: crea un gráfico de columnas usando los valores exactos (no conteos automáticos), y separa las barras por grupo.</p></li>
+<li><p><code>labs(...)</code>: agrega título y etiquetas a los ejes y leyenda.</p></li>
+<li><p><code>scale_fill_manual(...)</code>: personaliza los colores de cada grupo:</p>
+<ul>
+<li><p>Gris para “No Indígena”</p></li>
+<li><p>Naranja para “Indígena”<br>
+También se cambian las etiquetas para que sean legibles.</p></li>
+</ul></li>
+<li><p><code>theme_minimal()</code>: aplica un tema claro y limpio.</p></li>
+<li><p><code>theme(...)</code>: rota las etiquetas del eje X 45 grados para mejorar su legibilidad</p></li>
+</ol>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabla_educ, <span class="fu">aes</span>(<span class="at">x =</span> educ_nivel, <span class="at">y =</span> n, <span class="at">fill =</span> <span class="fu">factor</span>(pueblos_indigenas))) <span class="sc">+</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
@@ -440,44 +511,28 @@ colour.
 </section>
 <section id="gráfico-de-tendencia-con-gss" class="level2" data-number="6">
 <h2 data-number="6" class="anchored" data-anchor-id="gráfico-de-tendencia-con-gss"><span class="header-section-number">6</span> Gráfico de tendencia con GSS</h2>
+<p>Este bloque de código&nbsp;<strong>procesa la base de datos&nbsp;<code>gss_cat</code></strong>&nbsp;del paquete&nbsp;<code>forcats</code>, con el fin de calcular la&nbsp;<strong>proporción de personas que se identifican como “Strong Democrat”</strong>&nbsp;en EE.UU., desagregado por raza y año.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>gss_party_race <span class="ot">&lt;-</span> gss_cat <span class="sc">|&gt;</span> </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(partyid), <span class="sc">!</span><span class="fu">is.na</span>(race)) <span class="sc">|&gt;</span> </span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, race, partyid) <span class="sc">|&gt;</span> </span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, race) <span class="sc">|&gt;</span> </span>
-<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span> </span>
-<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(partyid), <span class="sc">!</span><span class="fu">is.na</span>(race)) <span class="sc">|&gt;</span>     <span class="co"># 1. Elimina valores perdidos en partido y raza</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, race, partyid) <span class="sc">|&gt;</span>             <span class="co"># 2. Agrupa por año, raza y afiliación partidaria</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span>      <span class="co"># 3. Cuenta el número de casos por combinación</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, race) <span class="sc">|&gt;</span>                      <span class="co"># 4. Reagrupa por año y raza</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span>                 <span class="co"># 5. Calcula la proporción que representa cada partido</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()                                    <span class="co"># 6. Elimina agrupaciones</span></span>
 <span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>voto_duro <span class="ot">&lt;-</span> gss_party_race <span class="sc">|&gt;</span> <span class="fu">filter</span>(partyid <span class="sc">==</span> <span class="st">"Strong democrat"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>voto_duro <span class="ot">&lt;-</span> gss_party_race <span class="sc">|&gt;</span> <span class="fu">filter</span>(partyid <span class="sc">==</span> <span class="st">"Strong democrat"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="gráfico-de-tendencia-final-estilo-bbc" class="level3" data-number="6.1">
-<h3 data-number="6.1" class="anchored" data-anchor-id="gráfico-de-tendencia-final-estilo-bbc"><span class="header-section-number">6.1</span> Gráfico de tendencia final estilo BBC</h3>
+<section id="gráfico-de-tendencia-final" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="gráfico-de-tendencia-final"><span class="header-section-number">6.1</span> Gráfico de tendencia final</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(voto_duro, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> prop, <span class="at">color =</span> race)) <span class="sc">+</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span></span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Voto duro demócrata en EE.UU."</span>,</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Proporción que se identifica como 'Strong Democrat', por raza y año"</span>,</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Fuente: GSS (General Social Survey)"</span>,</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Año"</span>,</span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Proporción"</span>,</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Raza"</span></span>
-<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
-<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
-<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">10</span>)),</span>
-<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">size =</span> <span class="dv">9</span>),</span>
-<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
-<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
-<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
-<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning: Using `size` aesthetic for lines was deprecated in ggplot2 3.4.0.
 ℹ Please use `linewidth` instead.</code></pre>
@@ -491,9 +546,23 @@ colour.
 </div>
 </div>
 </section>
-<section id="guardar-gráfico-con-dimensiones-de-powerpoint" class="level3" data-number="6.2">
-<h3 data-number="6.2" class="anchored" data-anchor-id="guardar-gráfico-con-dimensiones-de-powerpoint"><span class="header-section-number">6.2</span> Guardar gráfico con dimensiones de PowerPoint</h3>
-<p>ggsave(“images/voto_duro_race_ppt.png”, plot = last_plot(), width = 29.21, height = 12.09, units = “cm”, dpi = 300)</p>
+<section id="gráfico-bonito-chatgpt" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="gráfico-bonito-chatgpt"><span class="header-section-number">6.2</span> Gráfico bonito (ChatGPT 😳)</h3>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="guardar-gráfico-con-dimensiones-de-powerpoint" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="guardar-gráfico-con-dimensiones-de-powerpoint"><span class="header-section-number">6.3</span> Guardar gráfico con dimensiones de PowerPoint</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggsave</span>(<span class="st">"images/voto_duro_race_ppt.png"</span>, <span class="at">plot =</span> <span class="fu">last_plot</span>(), <span class="at">width =</span> <span class="fl">29.21</span>, <span class="at">height =</span> <span class="fl">12.09</span>, <span class="at">units =</span> <span class="st">"cm"</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 </section>
 
