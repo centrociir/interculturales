@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>InteRculturales</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Matías Deneken" />
+    <script src="libs/header-attrs/header-attrs.js"></script>
+    <link href="libs/panelset/panelset.css" rel="stylesheet" />
+    <script src="libs/panelset/panelset.js"></script>
+    <link href="libs/tile-view/tile-view.css" rel="stylesheet" />
+    <script src="libs/tile-view/tile-view.js"></script>
+    <link href="libs/animate.css/animate.xaringan.css" rel="stylesheet" />
+    <link href="libs/tachyons/tachyons.min.css" rel="stylesheet" />
+    <script src="libs/clipboard/clipboard.min.js"></script>
+    <link href="libs/shareon/shareon.min.css" rel="stylesheet" />
+    <script src="libs/shareon/shareon.min.js"></script>
+    <link href="libs/xaringanExtra-shareagain/shareagain.css" rel="stylesheet" />
+    <script src="libs/xaringanExtra-shareagain/shareagain.js"></script>
+    <link href="libs/xaringanExtra-extra-styles/xaringanExtra-extra-styles.css" rel="stylesheet" />
+    <meta name="description" content="InteRculturales, Pontificia Universidad Católica de Chile, Enero 10, 2025"/>
+    <meta name="twitter:title" content="InteRculturales"/>
+    <meta name="twitter:description" content="InteRculturales, Pontificia Universidad Católica de Chile, Enero 10, 2025"/>
+    <meta name="twitter:url" content=""/>
+    <meta name="twitter:image" content=""/>
+    <meta name="twitter:card" content="summary_large_image"/>
+    <meta name="twitter:creator" content="matdknu"/>
+    <meta name="twitter:site" content="matdknu"/>
+    <meta property="og:title" content="InteRculturales"/>
+    <meta property="og:description" content="InteRculturales, Pontificia Universidad Católica de Chile, Enero 10, 2025"/>
+    <meta property="og:url" content=""/>
+    <meta property="og:image" content=""/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:locale" content="en_US"/>
+    <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
+  </head>
+  <body>
+    <textarea id="source">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+class: left title-slide
+background-image: url('images/red.jpg')
+background-size: cover
+background-position: left
+
+
+[matdknu]: https://twitter.com/matdknu
+[github]: https://matdknu.github.io
+
+
+
+.side-text[
+[&amp;commat;matdknu][matdknu] | [matdknu.github.io][github]
+]
+
+.title-where[
+### **InteRculturales &lt;br&gt; Introducción a técnicas de &lt;br&gt; ciencias sociales computacionales **
+Centro de Estudios Interculturales e Indígenas &lt;br&gt;
+Sesión 2 - 2025
+]
+
+&lt;style type="text/css"&gt;
+.title-slide h1 {
+  font-size: 80px;
+  font-family: Jost, sans;
+  color: #960606;  /* Cambio del color del texto a morado */
+   position: absolute;
+  top: 150px; /* Ajusta este valor para mover verticalmente */
+  left: 50px; /* Ajusta este valor para mover horizontalmente */
+}
+
+.side-text {
+  color: #960606;  /* Cambio del color del texto lateral a morado */
+  transform: rotate(90deg);
+  position: absolute;
+  font-size: 22px;
+  top: 150px;
+  right: -130px;
+}
+
+.side-text a {
+  color: #960606;  /* Cambio del color de los enlaces a morado */
+}
+
+.title-where {
+  font-family: Jost, sans;
+  font-size: 25px;
+  position: absolute;
+  bottom: 10px;
+  color: #960606;  /* Cambio del color del texto de ubicación a morado */
+}
+
+/******************
+ * 
+ * Coloured content boxes
+ *
+ ****************/
+
+
+.content-box { 
+    box-sizing: content-box;
+    	background-color: #e2e2e2;
+  /* Total width: 160px + (2 * 20px) + (2 * 8px) = 216px
+     Total height: 80px + (2 * 20px) + (2 * 8px) = 136px
+     Content box width: 160px
+     Content box height: 80px */
+}
+
+.content-box-primary,
+.content-box-secondary,
+.content-box-blue,
+.content-box-gray,
+.content-box-grey,
+.content-box-army,
+.content-box-green,
+.content-box-purple,
+.content-box-red,
+.content-box-yellow {
+    /*border-radius: 15px; */
+    margin: 0 0 25px;
+    overflow: hidden;
+    padding: 20px;
+    width: 100%;
+}
+
+
+.content-box-primary {
+	background-color: var(--primary);
+
+}
+
+
+.content-box-secondary {
+	background-color: var(--secondary);
+
+}
+
+.content-box-blue {
+    background-color: #F0F8FF;
+
+}
+
+.content-box-gray {
+    background-color: #e2e2e2;
+}
+
+.content-box-grey {
+	background-color: #F5F5F5;
+}
+
+.content-box-army {
+	background-color: #737a36;
+}
+
+.content-box-green {
+	background-color: #d9edc2;
+}
+
+.content-box-purple {
+	background-color: #e2e2f9;
+}
+
+.content-box-red {
+	background-color: #f9dbdb;
+}
+
+.content-box-yellow {
+	background-color: #fef5c4;
+}
+
+
+.full-width {
+    display: flex;
+    width: 100%;
+    flex: 1 1 auto;
+}
+
+&lt;/style&gt;
+
+
+<div>
+<style type="text/css">.xaringan-extra-logo {
+width: 150px;
+height: 150px;
+z-index: 0;
+background-image: url(images/logo_ciir.jpg);
+background-size: contain;
+background-repeat: no-repeat;
+position: absolute;
+top:1em;right:1em;
+}
+</style>
+<script>(function () {
+  let tries = 0
+  function addLogo () {
+    if (typeof slideshow === 'undefined') {
+      tries += 1
+      if (tries < 10) {
+        setTimeout(addLogo, 100)
+      }
+    } else {
+      document.querySelectorAll('.remark-slide-content:not(.title-slide):not(.hide_logo):not(.inverse)')
+        .forEach(function (slide) {
+          const logo = document.createElement('div')
+          logo.classList = 'xaringan-extra-logo'
+          logo.href = null
+          slide.appendChild(logo)
+        })
+    }
+  }
+  document.addEventListener('DOMContentLoaded', addLogo)
+})()</script>
+</div>
+
+
+---
+
+## Hoy veremos...📊
+
+- ¿Qué es `ggplot2` y cómo funciona?
+- Visualizaciones básicas: puntos, densidades, barras
+- Transformación de datos antes de graficar
+- Facetas y estética
+- Guardar gráficos con `ggsave()`
+- Buenas prácticas en visualización
+
+
+---
+
+#### **ggplot2: un nueva forma de pensar y visualizar datos**
+
+
+&lt;div class="pull-left" style="width:45%;"&gt;
+  &lt;img src="images/tidyverso.png" alt="tidyverso" style="max-width: 40%;"&gt;
+&lt;/div&gt;
+
+
+.pull-right[
+`tidyr` permite:
+
+- "Traduce" datos en elementos visuales 
+
+]
+
+
+---
+
+####  **Bases de datos ordenadas ("tidy")** 
+
+- El punto de partida de un gráfico en `ggplot` es una base de datos "tidy".
+
+- Si los datos no existen en el formato necesario para visualizarlos, necesitamos primero "darles forma". 
+
+
+---
+
+#### **Bases de datos ordenadas ("tidy")**
+
+
+``` r
+datos &lt;- data.frame(
+  region = c("Norte", "Centro", "Sur"),
+  hombres = c(50000, 70000, 60000),
+  mujeres = c(52000, 68000, 63000)
+)
+
+datos
+```
+
+```
+##   region hombres mujeres
+## 1  Norte   50000   52000
+## 2 Centro   70000   68000
+## 3    Sur   60000   63000
+```
+
+
+---
+
+#### **Bases de datos ordenadas ("tidy")**
+
+
+
+``` r
+library(tidyverse)
+
+resumen &lt;- datos %&gt;%
+  summarise(
+    hombres = mean(hombres),
+    mujeres = mean(mujeres)
+  ) %&gt;%
+  t() %&gt;%                      # transponer
+  as.data.frame() %&gt;%
+  mutate(sexo = rownames(.),   # pasar nombres de fila a columna
+         promedio = V1) %&gt;%
+  select(sexo, promedio); resumen
+```
+
+```
+##            sexo promedio
+## hombres hombres    60000
+## mujeres mujeres    61000
+```
+
+
+---
+
+#### **Bases de datos ordenadas ("tidy")** 
+
+
+.pull-left[
+
+``` r
+library(ggplot2)
+
+resumen &lt;- data.frame(
+  sexo = c("hombres", "mujeres"),
+  promedio = c(60000, 61000)
+)
+
+g1 &lt;- ggplot(resumen, 
+             aes(x = sexo, 
+                y = promedio, 
+                fill = sexo)) +
+  geom_col() +
+  labs(title = "Promedio de población por sexo", 
+       y = "Personas") 
+```
+
+]
+
+.pull-right[
+![](UntitledRMD_files/figure-html/unnamed-chunk-5-1.png)&lt;!-- --&gt;
+]
+
+
+---
+#### **Sobre Ggplot2 **
+
+{ggplot2} es una librería de visualización de datos bastante popular en el mundo de la ciencia de datos. Sus principales características son su atractivo, su conveniencia para la exploración de datos, un gran potencial de personalización, y un extenso ecosistema de extensiones que nos permiten generar visualizaciones prácticamente de cualquier tipo
+
+---
+
+#### **Sistema de capas en `ggplot2`**
+
+La librería **{ggplot2}** permite crear gráficos sumando capas. Cada capa cumple una función específica y se puede agregar según lo que se quiera comunicar o refinar.
+
+.left[
+**Capas principales**:
+
+- **Datos**: base a graficar.
+- **Estéticas (`aes()`)**: asigna variables a ejes, color, forma, etc.
+- **Geometrías (`geom_`)**: define el tipo de gráfico (puntos, líneas, barras...).
+- **Escalas (`scale_`)**: ajusta rangos, paletas, límites.
+- **Coordenadas (`coord_`)**: define el sistema de ejes y límites espaciales.
+- **Facetas (`facet_`)**: divide datos en subgráficos según una variable.
+- **Temas (`theme()`)**: controla apariencia visual (texto, fondo, grillas...).
+]
+
+---
+# 📦 Recursos esenciales para trabajar con `ggplot2`
+
+---
+
+## **📚 Documentación oficial y Cheatsheets**
+
+1.  🔗 [ggplot2.tidyverse.org](https://ggplot2.tidyverse.org)
+- Sitio oficial del paquete `ggplot2`.
+- Contiene documentación completa, funciones ordenadas por categoría, ejemplos y novedades del desarrollo.
+
+2. 📄 [Cheatsheet oficial de ggplot2 (PDF)](https://posit.co/resources/cheatsheets/)
+- Publicado por RStudio (ahora Posit).
+- Muy útil para tener a mano todas las funciones esenciales y su sintaxis.
+- Descargable en PDF.
+
+---
+
+## 🎨 **Galerías de gráficos y ejemplos prácticos**
+
+1.  🖼 [The R Graph Gallery](https://r-graph-gallery.com/ggplot2-package.html)
+- Gran repositorio de gráficos creados con `ggplot2`.
+- Incluye código, ejemplos con datos simulados y personalizaciones.
+- Organizado por tipo de gráfico (líneas, barras, mapas, etc.)
+
+2.  📊 [Data to Viz](https://www.data-to-viz.com/)
+- Recurso que ayuda a elegir el tipo de gráfico según tu tipo de variable (categórica, continua, etc.)
+- Cada recomendación incluye un ejemplo hecho con `ggplot2`.
+- Gran puente entre teoría visual y aplicación práctica.
+
+---
+
+## 🛠 **Personalización de gráficos y temas visuales**
+
+### 🎨 [ggthemes (temas pre-hechos)](https://yutannihilation.github.io/allYourFigureAreBelongToUs/ggthemes/)
+- Reproduce estilos como Wall Street Journal, The Economist, FiveThirtyEight, Excel y más.
+- Permite una personalización estética muy rápida.
+
+### 🗞 [BBC style plot – bbplot](https://github.com/bbc/bbplot)
+- Tema y funciones auxiliares creadas por la BBC.
+- Genera gráficos que cumplen con sus estándares editoriales (claridad, color, tipografía).
+
+
+---
+
+## **Vamos al Ggplot2**
+
+
+.pull-left[
+
+
+``` r
+library(ggplot2)
+library(palmerpenguins)
+```
+]
+
+---
+
+## **Vamos al Ggplot2**: Ejemplo vacío
+
+
+
+``` r
+penguins |&gt; ggplot()
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-7-1.png)&lt;!-- --&gt;
+
+
+---
+#### **Vamos al Ggplot2**: Pongamos lo ejes
+
+
+
+``` r
+penguins |&gt; 
+  ggplot() + # iniciar el gráfico
+  # definir el mapeo de variables a características estéticas del gráfico
+  aes(x = flipper_length_mm , # eje x (horizontal)
+      y = bill_depth_mm)
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-8-1.png)&lt;!-- --&gt;
+
+---
+#### **Vamos al Ggplot2**: Definimos los puntos
+
+
+``` r
+penguins |&gt; 
+  ggplot() + # iniciar el gráfico
+  # definir el mapeo de variables a características estéticas del gráfico
+  aes(x = flipper_length_mm , # eje x (horizontal)
+      y = bill_depth_mm) + # eje y (vertical)
+  # agregar una capa de geometría
+  geom_point() # geometría de puntos
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-9-1.png)&lt;!-- --&gt;
+
+
+---
+
+#### **Vamos al Ggplot2**: Definimos los puntos y el color
+
+
+``` r
+penguins |&gt; 
+  ggplot() + # iniciar el gráfico
+  # definir el mapeo de variables a características estéticas del gráfico
+  aes(x = flipper_length_mm , # eje x (horizontal)
+      y = bill_depth_mm,  # eje y (vertical)
+      color = species) + # color por especie
+  # agregar una capa de geometría
+  geom_point() # geometría de puntos
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-10-1.png)&lt;!-- --&gt;
+
+---
+#### **Vamos al Ggplot2**: Histograma
+
+
+``` r
+penguins  |&gt; # datos
+  ggplot() + # iniciar
+  aes(x = flipper_length_mm) + # variable horizontal
+  geom_histogram() # histograma
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-11-1.png)&lt;!-- --&gt;
+
+---
+#### **Vamos al Ggplot2**: Densidad
+
+
+
+``` r
+penguins  |&gt; # datos
+  ggplot() + # iniciar
+  aes(x = flipper_length_mm) + # variable horizontal
+  geom_density() # histograma
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-12-1.png)&lt;!-- --&gt;
+
+---
+#### **Vamos al Ggplot2**: Densidad y fondo
+
+
+
+``` r
+penguins  |&gt; # datos
+  ggplot() + # iniciar
+  aes(x = flipper_length_mm) + # variable horizontal
+   geom_density(fill = "black", alpha = 0.6)
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-13-1.png)&lt;!-- --&gt;
+
+---
+
+#### **Vamos al Ggplot2**: Densidad y colores por species
+
+
+
+``` r
+penguins |&gt; 
+  ggplot() +
+  aes(x = flipper_length_mm, 
+      fill = species, # relleno de la figura
+      color = species) + # bordes de la figura
+  geom_density(alpha = 0.6) +
+  # tema
+  theme_classic() 
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-14-1.png)&lt;!-- --&gt;
+
+---
+#### **Vamos al Ggplot2**: Densidad y colores por species
+
+.pull-left[
+
+
+``` r
+g1 &lt;-penguins |&gt; 
+  ggplot() +
+  aes(x = flipper_length_mm, 
+      fill = species,
+      color = species) +
+  geom_density(alpha = 0.6) +
+  facet_wrap(~ island) +  # 👈 Facet
+  theme_classic() +
+  labs(
+    title = "Distribución del largo de aleta por isla",
+    x = "Largo de aleta (mm)",
+    y = "Densidad"
+  )
+```
+]
+
+
+.pull-right[
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
+]
+
+---
+#### **Vamos al Ggplot2**: Retomemos lo Tidy
+
+
+``` r
+# Transformar: seleccionar columnas relevantes, eliminar NA, y resumir
+resumen &lt;- penguins %&gt;%
+  select(species, flipper_length_mm) %&gt;%
+  filter(!is.na(flipper_length_mm)) %&gt;%
+  group_by(species) %&gt;%
+  summarise(promedio_aleta = mean(flipper_length_mm))
+
+resumen
+```
+
+```
+## # A tibble: 3 × 2
+##   species   promedio_aleta
+##   &lt;fct&gt;              &lt;dbl&gt;
+## 1 Adelie              190.
+## 2 Chinstrap           196.
+## 3 Gentoo              217.
+```
+
+---
+#### **Vamos al Ggplot2**: Retomemos lo Tidy
+
+
+``` r
+ggplot(resumen, aes(x = species, y = promedio_aleta, fill = species)) +
+  geom_col() +
+  labs(title = "Promedio de largo de aleta por especie",
+       x = "Especie",
+       y = "Largo promedio (mm)") +
+  theme_minimal()
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+---
+
+#### **Vamos al Ggplot2**: Hagamos algunos ajustes
+
+
+``` r
+ggplot(resumen, aes(x = species, y = promedio_aleta, fill = species)) +
+  geom_col() +
+  geom_text(aes(label = round(promedio_aleta, 1)), vjust = -0.5) +  # 👈 etiquetas numéricas
+  labs(title = "Promedio de largo de aleta por especie",
+       x = "Especie",
+       y = "Largo promedio (mm)") +
+  theme_minimal()
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-19-1.png)&lt;!-- --&gt;
+
+---
+#### **Ajustes**
+
+En ggplot2, el uso de theme() permite personalizar la apariencia visual del gráfico, modificando elementos como:
+
+Texto: tamaño, color, fuente, posición (centrado, cursiva, negrita).
+
+1. Títulos y subtítulos.
+2. Fondos.
+3. Posición de leyendas.
+4. Márgenes, ejes, etiquetas, bordes, etc.
+
+---
+#### **Ajustes**
+
+``` r
+ajustes &lt;-resumen |&gt; 
+ggplot(aes(x = species, y = promedio_aleta, fill = species)) +
+  geom_col() +
+  geom_text(aes(label = round(promedio_aleta, 1)), vjust = -0.5) +
+  labs(
+    title = "Promedio de largo de aleta por especie",
+    subtitle = "Datos del paquete palmerpenguins",
+    caption = "Fuente: Gorman et al. (2020)",
+    x = "Especie",
+    y = "Largo promedio (mm)"
+  ) +
+  theme_minimal(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold", size = 18),      # Centrado, negrita
+    plot.subtitle = element_text(hjust = 0.5, face = "italic", color = "gray40"), # Cursiva, color
+    axis.title.x = element_text(face = "bold", color = "#2c8475"),
+    axis.title.y = element_text(face = "italic", color = "#2c8475"),
+    legend.position = "none",   # Ocultar leyenda
+    plot.caption = element_text(size = 8, hjust = 1, face = "italic", color = "gray60"),
+    panel.grid.major = element_line(color = "gray90"),
+    panel.grid.minor = element_blank()
+  )
+```
+
+---
+
+#### **Resultados de los Ajustes**
+
+
+``` r
+ajustes
+```
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-21-1.png)&lt;!-- --&gt;
+
+---
+
+#### **Retomemos lo Tidy** 
+
+
+``` r
+penguins |&gt; select(year, species, flipper_length_mm) |&gt; head(1)
+```
+
+```
+## # A tibble: 1 × 3
+##    year species flipper_length_mm
+##   &lt;int&gt; &lt;fct&gt;               &lt;int&gt;
+## 1  2007 Adelie                181
+```
+
+
+``` r
+penguins %&gt;%
+  filter(!is.na(flipper_length_mm)) %&gt;%
+  group_by(species, year) %&gt;%
+  summarise(promedio_aleta = mean(flipper_length_mm)) 
+```
+
+
+Table: Promedio de largo de aleta por especie y año
+
+|species   | year|    media|
+|:---------|----:|--------:|
+|Adelie    | 2007| 186.5918|
+|Adelie    | 2008| 191.0400|
+|Adelie    | 2009| 192.0769|
+|Chinstrap | 2007| 192.4231|
+|Chinstrap | 2008| 197.7222|
+|Chinstrap | 2009| 198.0833|
+
+---
+
+#### **Grafico de tendencia**
+
+.pull-left[
+
+``` r
+g1 &lt;- tabla_pinguino |&gt; 
+  ggplot(aes(x = year,
+             y = promedio_aleta,
+             color = species)) +
+  geom_line(size = 1.2) 
+```
+
+]
+
+.pull-right[
+
+![](UntitledRMD_files/figure-html/unnamed-chunk-26-1.png)&lt;!-- --&gt;
+]
+
+---
+#### **Grafico de tendencia**
+
+.pull-left[
+
+``` r
+g1 &lt;- tabla_pinguino |&gt; 
+  ggplot(aes(x = year,
+             y = promedio_aleta,
+             color = species)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) 
+```
+]
+
+.pull-right[
+![](UntitledRMD_files/figure-html/unnamed-chunk-28-1.png)&lt;!-- --&gt;
+]
+
+---
+
+#### ** Grafico de tendencia **
+
+.pull-left[
+
+``` r
+g1 &lt;- tabla_pinguino |&gt; 
+  ggplot(aes(x = year,
+             y = promedio_aleta,
+             color = species)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  labs(
+    title = "Tendencia del largo de aleta por especie",
+    x = "Año",
+    y = "Largo promedio de aleta (mm)",
+    color = "Especie"
+  ) 
+```
+]
+
+.pull-right[
+![](UntitledRMD_files/figure-html/unnamed-chunk-30-1.png)&lt;!-- --&gt;
+]
+
+---
+#### ** Grafico de tendencia **
+
+.pull-left[
+
+``` r
+g1 &lt;-tabla_pinguino |&gt; 
+  mutate(year = as.numeric(year)) |&gt; 
+  ggplot(aes(year, # identificación del eje.
+             promedio_aleta,# identificación del eje.
+             color = species)) +
+  geom_line(size = 1) +
+  geom_point(size = 1.5) +
+  scale_x_continuous(breaks =
+  unique(tabla_pinguino$year)) +  # 👈 Mostrar solo los años sin decimales
+  labs(
+    title = "Tendencia del largo de
+    aleta por especie",
+    x = "Año", 
+    y = "Largo promedio (mm)", 
+    color = "Especie"
+  )
+```
+]
+
+.pull-right[
+![](UntitledRMD_files/figure-html/unnamed-chunk-32-1.png)&lt;!-- --&gt;
+]
+---
+
+#### ** Grafico de tendencia **
+
+.pull-left[
+
+``` r
+g1 &lt;-tabla_pinguino |&gt; 
+  mutate(year = as.numeric(year)) |&gt; 
+  ggplot(aes(year, # identificación del eje.
+             promedio_aleta,# identificación del eje.
+             color = species)) +
+  geom_line(size = 1) +
+  geom_point(size = 1.5) +
+  scale_x_continuous(breaks =
+  unique(tabla_pinguino$year)) +  # 👈 Mostrar solo los años sin decimales
+  labs(
+    title = "Tendencia del largo de
+    aleta por especie",
+    x = "Año", 
+    y = "Largo promedio (mm)", 
+    color = "Especie"
+  ) +
+  theme_bw()
+```
+]
+
+.pull-right[
+![](UntitledRMD_files/figure-html/unnamed-chunk-34-1.png)&lt;!-- --&gt;
+]
+---
+#### ** Grafico de tendencia **
+
+.pull-left[
+
+``` r
+g1 &lt;-tabla_pinguino |&gt; 
+  mutate(year = as.numeric(year)) |&gt; 
+  ggplot(aes(year, # identificación del eje.
+             promedio_aleta,# identificación del eje.
+             color = species)) +
+  geom_line(size = 1) +
+  geom_point(size = 1.5) +
+  scale_x_continuous(breaks =
+  unique(tabla_pinguino$year)) +  # 👈 Mostrar solo los años sin decimales
+  labs(
+    title = "Tendencia del largo de
+    aleta por especie",
+    x = "Año", 
+    y = "Largo promedio (mm)", 
+    color = "Especie"
+  ) +
+  theme_classic()
+```
+]
+
+.pull-right[
+![](UntitledRMD_files/figure-html/unnamed-chunk-36-1.png)&lt;!-- --&gt;
+]
+---
+
+#### ** Grafico de tendencia **
+
+.pull-left[
+
+``` r
+g1 &lt;-tabla_pinguino |&gt; 
+  mutate(year = as.numeric(year)) |&gt; 
+  ggplot(aes(year, # identificación del eje.
+             promedio_aleta,# identificación del eje.
+             color = species)) +
+  geom_line(size = 1) +
+  geom_point(size = 1.5) +
+  scale_x_continuous(breaks =
+  unique(tabla_pinguino$year)) +  # 👈 Mostrar solo los años sin decimales
+  labs(
+    title = "Tendencia del largo de
+    aleta por especie",
+    x = "Año", 
+    y = "Largo promedio (mm)", 
+    color = "Especie"
+  ) +
+  theme_minimal()
+```
+]
+
+.pull-right[
+![](UntitledRMD_files/figure-html/unnamed-chunk-38-1.png)&lt;!-- --&gt;
+]
+---
+
+
+### **La necesaria creatividad de la visualización**
+
+* Ojo con la sobreinformación gráfica
+* Entender que cada gráfico tiene limitancias y ventajas
+* No todo los datos son realmentes necesarios (Por ej: bajo 1% o NA)
+
+![errorez_ggplot](images/errores_viz.png)
+---
+### **La necesaria creatividad de la visualización**
+
+* Definición correcta de los ejes
+* Resaltar lo que nos parece interesante
+
+![errorez_ggplot](images/pinera-foto.jpeg)
+
+---
+
+### **Hice todo en Ggplot2, ¿y ahora me piden crear gráficos Excel?**
+
+ggsave() es la función de ggplot2 que se usa para guardar gráficos como archivos en tu computador (por ejemplo, PNG, PDF, JPG, etc.).
+
+Es muy útil cuando quieres exportar un gráfico generado con ggplot() para usarlo en:
+
+* Informes 
+* Diapositivas 
+* Publicaciones 
+* Sitios web
+
+
+
+``` r
+ggsave("grafico_alta_calidad.png",
+       plot = g1,             # tu gráfico
+       width = 20,            # en centímetros
+       height = 12,
+       units = "cm",
+       dpi = 600)             # alta resolución
+```
+
+
+
+---
+
+class: middle right
+background-image: url('d-koi-GQJY4UPR21U-unsplash.jpg')
+background-size: cover
+
+# **Muchas Gracias**
+### **Vamos al código!**
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="libs/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+  "highlightStyle": "github",
+  "highlightLines": true,
+  "countIncrementalSlides": true,
+  "ratio": "16:9",
+  "slideNumberFormat": "%current%"
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// add `data-at-shortcutkeys` attribute to <body> to resolve conflicts with JAWS
+// screen reader (see PR #262)
+(function(d) {
+  let res = {};
+  d.querySelectorAll('.remark-help-content table tr').forEach(tr => {
+    const t = tr.querySelector('td:nth-child(2)').innerText;
+    tr.querySelectorAll('td:first-child .key').forEach(key => {
+      const k = key.innerText;
+      if (/^[a-z]$/.test(k)) res[k] = t;  // must be a single letter (key)
+    });
+  });
+  d.body.setAttribute('data-at-shortcutkeys', JSON.stringify(res));
+})(document);
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
