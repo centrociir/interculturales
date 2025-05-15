@@ -1,5 +1,5 @@
 ---
-title: "Introducción a R" 
+title: "Introducción a R"
 subtitle: "Documento de trabajo"
 author: "Matías Deneken"
 date: today
@@ -14,7 +14,7 @@ format:
       text: |
         <style>
           body::before {
-            content: url('logo_ciir.jpg');
+            content: url('pres/images/logo_ciir.jpg');
             display: block;
             text-align: left;
             margin-bottom: 5px;
@@ -31,10 +31,14 @@ format:
             margin-top: 0;
           }
         </style>
+execute:
+  warning: false
+  message: false
 editor: visual
 reference-location: margin
 citation-location: margin
 ---
+
 
 ## Cargar librerías necesarias
 
