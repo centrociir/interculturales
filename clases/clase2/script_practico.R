@@ -1,0 +1,176 @@
+## ========================================
+## CARGA DE LIBRERÍAS
+## ========================================
+
+library(tidyverse)  # Manipulación y visualización de datos
+library(ggplot2)    # Sistema de gráficos basado en capas
+library(scales)     # Para formatos como porcentaje
+library(forcats)    # Para manejo de factores (si es necesario)
+
+## ========================================
+## DESCARGA Y CARGA DE DATOS CASEN
+## ========================================
+
+url <- "https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase1/bbdd/casen2022_sample.csv"
+destfile <- "casen2022_sample.csv"
+download.file(url, destfile, mode = "wb")  # Descarga
+casen <- read.csv(destfile, encoding = "UTF-8")  # Lectura
+
+## ========================================
+## EXPLORACIÓN BÁSICA
+## ========================================
+
+head(casen)  # Ver los primeros registros
+
+# Histograma de edad
+ggplot(casen, aes(edad)) +
+  geom_histogram(color = "white")
+
+# Densidad por edad y pertenencia indígena
+ggplot(casen, aes(edad, colour = pueblos_indigenas)) +
+  geom_density()
+
+## ========================================
+## DENSIDAD DE INGRESO AUTÓNOMO POR PERTENENCIA INDÍGENA
+## ========================================
+
+casen |> 
+  mutate(pueblos_indigenas = factor(pueblos_indigenas, levels = c(0, 1), labels = c("No Indígena", "Indígena"))) |>
+  filter(yautcor < 100000) |>  # Eliminar outliers
+  ggplot(aes(x = yautcor, fill = pueblos_indigenas, color = pueblos_indigenas)) +
+  geom_density(alpha = 0.6) +
+  labs(title = "Distribución del ingreso autónomo según pertenencia indígena",
+       x = "Ingreso autónomo (yautcor)", y = "Densidad") +
+  theme_classic()
+
+## ========================================
+## GRÁFICOS DE DISPERSIÓN ENTRE EDAD E INGRESO
+## ========================================
+
+# Dispersión básica
+ggplot(casen, aes(x = yautcor, y = edad)) +
+  geom_point()
+
+# Dispersión con filtro y color por etnicidad
+casen |> 
+  filter(yautcor < 1000000) |>
+  ggplot(aes(x = yautcor, y = edad, colour = as.factor(pueblos_indigenas))) +
+  geom_point(alpha = 0.3) +
+  labs(title = "Ingreso autónomo por edad (sin extremos)",
+       x = "Edad", y = "Ingreso autónomo", colour = "Pueblos indígenas") +
+  theme_minimal()
+
+# Con línea de tendencia
+casen |> 
+  filter(yautcor < 2000000) |>
+  ggplot(aes(x = yautcor, y = edad)) +
+  geom_smooth() +
+  labs(title = "Edad según ingreso autónomo (sin extremos)",
+       x = "Ingreso autónomo", y = "Edad") +
+  theme_minimal()
+
+## ========================================
+## GRÁFICO DE BARRAS DE PUEBLOS INDÍGENAS
+## ========================================
+
+ggplot(casen, aes(x = factor(pueblos_indigenas))) +
+  geom_bar() +
+  labs(title = "Distribución por pertenencia indígena",
+       x = "Pertenencia", y = "Cantidad") +
+  scale_x_discrete(labels = c("0" = "No Indígena", "1" = "Indígena")) +
+  theme_minimal()
+
+## ========================================
+## CATEGORIZACIÓN DE NIVEL EDUCATIVO
+## ========================================
+
+casen <- casen |> 
+  mutate(
+    educ_nivel = case_when(
+      educ %in% 0:1   ~ "Sin educación",
+      educ %in% 2:4   ~ "Básica",
+      educ %in% 5:6   ~ "Media",
+      educ %in% 7:8   ~ "Técnico nivel superior",
+      educ %in% 9:11  ~ "Profesional",
+      educ == 12      ~ "Postgrado",
+      TRUE            ~ NA_character_
+    )
+  )
+
+## ========================================
+## TABLA DE EDUCACIÓN POR PUEBLO INDÍGENA
+## ========================================
+
+tabla_educ <- casen |>
+  group_by(pueblos_indigenas, educ_nivel) |>
+  count()
+
+## ========================================
+## VISUALIZACIÓN: EDUCACIÓN POR PERTENENCIA INDÍGENA
+## ========================================
+
+# Gráfico de barras con barras lado a lado
+ggplot(tabla_educ, aes(x = educ_nivel, y = n, fill = factor(pueblos_indigenas))) +
+  geom_col(position = "dodge") +
+  labs(title = "Nivel educativo por pertenencia indígena",
+       x = "Nivel educativo", y = "Cantidad de personas") +
+  scale_fill_manual(values = c("0" = "#999999", "1" = "#D95F02"),
+                    labels = c("No Indígena", "Indígena")) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+# Añadir proporciones
+tabla_educ_prop <- tabla_educ |>
+  group_by(pueblos_indigenas) |>
+  mutate(prop = n / sum(n)) |>
+  ungroup()
+
+ggplot(tabla_educ_prop, aes(x = educ_nivel, y = prop, fill = educ_nivel)) +
+  geom_col() +
+  geom_text(aes(label = percent(prop, accuracy = 1)), vjust = -0.5) +
+  facet_grid(~ pueblos_indigenas, labeller = as_labeller(c("0" = "No Indígena", "1" = "Indígena"))) +
+  scale_y_continuous(labels = percent_format()) +
+  labs(title = "Distribución educativa dentro de cada grupo",
+       x = "Nivel educativo", y = "Proporción dentro del grupo") +
+  theme_minimal()
+
+## ========================================
+## GSS: TENDENCIA DE IDENTIFICACIÓN POLÍTICA POR RAZA
+## ========================================
+
+gss_party_race <- gss_cat |> 
+  filter(!is.na(partyid), !is.na(race)) |> 
+  group_by(year, race, partyid) |> 
+  summarise(n = n(), .groups = "drop") |> 
+  group_by(year, race) |> 
+  mutate(prop = n / sum(n)) |> 
+  ungroup()
+
+voto_duro <- gss_party_race |> filter(partyid == "Strong democrat")
+
+g1 <- ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
+  geom_line(size = 1) +
+  geom_point() +
+  scale_y_continuous(labels = percent_format(accuracy = 1)) +
+  labs(title = "Identificación como 'Strong Democrat' por raza",
+       x = "Año", y = "Proporción", color = "Raza") +
+  theme_minimal(); g1
+
+## ========================================
+## GUARDAR GRÁFICO EN ARCHIVO
+## ========================================
+
+getwd()
+
+ggsave("clases/clase2/images/voto_duro_race.png",
+       plot = last_plot(),  # último gráfico generado
+       width = 8, height = 5, dpi = 300)
+
+
+ggsave("clases/clase2/images/grafico_final.png",
+       plot = g1,           # o el nombre del gráfico que generaste
+       width = 29.21,       # en centímetros
+       height = 12.09,
+       units = "cm",
+       dpi = 300)           # resolución alta para impresión o presentación
+
