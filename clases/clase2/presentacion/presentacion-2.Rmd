@@ -285,7 +285,6 @@ Sesión 2 - 2025
 
 ```
 
-
 ```{r logo, echo=FALSE}
 library(xaringanExtra)
 use_logo(
@@ -294,10 +293,10 @@ use_logo(
   width = "150px",
   height = "150px")
 ``` 
+
 ---
 
 ## Recapitulando...📝
-
 **Tidyverse**
 
 Conjunto de paquetes de R diseñados para ciencia de datos. Incluye herramientas como ggplot2, dplyr, tidyr, readr, entre otros, que comparten una sintaxis coherente y principios comunes (funciones pipe ( `|>` o `%>%` ) y manipulación de datos "ordenados").
@@ -756,6 +755,7 @@ ggplot(resumen, aes(x = species, y = promedio_aleta, fill = species)) +
        y = "Largo promedio (mm)") +
   theme_minimal()
 ```
+
 ---
 
 #### **Vamos al Ggplot2**: Hagamos algunos ajustes
