@@ -14,7 +14,7 @@ format:
       text: |
         <style>
           body::before {
-            content: url('images/logo_ciir.jpg');
+            content: url('logo_ciir.jpg');
             display: block;
             text-align: left;
             margin-bottom: 5px;
@@ -39,7 +39,6 @@ editor: visual
 reference-location: margin
 citation-location: margin
 ---
-
 
 ## Cargar librerías necesarias
 
@@ -354,7 +353,7 @@ ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
 
 ### Gráfico bonito (ChatGPT 😳)
 
-```{r, echo=FALSE}
+```{r}
  g2 <-ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
   geom_line(size = 1.2) +
   geom_point(size = 2) +
@@ -383,4 +382,5 @@ ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
 
 ```{r}
  ggsave("images/voto_duro_race_ppt.png", plot = last_plot(), width = 29.21, height = 12.09, units = "cm", dpi = 300)
+ 
 ```
