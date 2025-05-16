@@ -21,13 +21,22 @@ casen <- read.csv(destfile, encoding = "UTF-8")  # Lectura
 ## ========================================
 
 head(casen)  # Ver los primeros registros
+as_tibble(casen) 
+names(casen)
 
 # Histograma de edad
 ggplot(casen, aes(edad)) +
   geom_histogram(color = "white")
 
+
+
 # Densidad por edad y pertenencia indígena
-ggplot(casen, aes(edad, colour = pueblos_indigenas)) +
+
+casen$pueblos_indigenas2 <- factor(casen$pueblos_indigenas, 
+                                  levels = c(0, 1), 
+                                  labels = c("No Indígena", "Indígena"))
+
+casen |> ggplot(aes(edad, colour = pueblos_indigenas2)) +
   geom_density()
 
 ## ========================================
@@ -35,10 +44,13 @@ ggplot(casen, aes(edad, colour = pueblos_indigenas)) +
 ## ========================================
 
 casen |> 
-  mutate(pueblos_indigenas = factor(pueblos_indigenas, levels = c(0, 1), labels = c("No Indígena", "Indígena"))) |>
-  filter(yautcor < 100000) |>  # Eliminar outliers
+  mutate(pueblos_indigenas = factor(pueblos_indigenas,
+                                    levels = c(0, 1), 
+                                    labels = c("No Indígena", "Indígena"))) |>
+  filter(yautcor < 1500000) |>  # Eliminar outliers
   ggplot(aes(x = yautcor, fill = pueblos_indigenas, color = pueblos_indigenas)) +
   geom_density(alpha = 0.6) +
+  #facet_grid(~ sexo) +  # Facet por región
   labs(title = "Distribución del ingreso autónomo según pertenencia indígena",
        x = "Ingreso autónomo (yautcor)", y = "Densidad") +
   theme_classic()
@@ -48,7 +60,8 @@ casen |>
 ## ========================================
 
 # Dispersión básica
-ggplot(casen, aes(x = yautcor, y = edad)) +
+
+casen |> ggplot(aes(x = yautcor, y = edad)) +
   geom_point()
 
 # Dispersión con filtro y color por etnicidad
@@ -62,7 +75,7 @@ casen |>
 
 # Con línea de tendencia
 casen |> 
-  filter(yautcor < 2000000) |>
+  filter(yautcor < 1000000) |>
   ggplot(aes(x = yautcor, y = edad)) +
   geom_smooth() +
   labs(title = "Edad según ingreso autónomo (sin extremos)",
@@ -73,7 +86,7 @@ casen |>
 ## GRÁFICO DE BARRAS DE PUEBLOS INDÍGENAS
 ## ========================================
 
-ggplot(casen, aes(x = factor(pueblos_indigenas))) +
+casen |> ggplot(aes(x = factor(pueblos_indigenas))) +
   geom_bar() +
   labs(title = "Distribución por pertenencia indígena",
        x = "Pertenencia", y = "Cantidad") +
@@ -83,6 +96,8 @@ ggplot(casen, aes(x = factor(pueblos_indigenas))) +
 ## ========================================
 ## CATEGORIZACIÓN DE NIVEL EDUCATIVO
 ## ========================================
+
+casen$educ
 
 casen <- casen |> 
   mutate(
@@ -97,6 +112,8 @@ casen <- casen |>
     )
   )
 
+casen |> select(educ, educ_nivel)
+
 ## ========================================
 ## TABLA DE EDUCACIÓN POR PUEBLO INDÍGENA
 ## ========================================
@@ -105,12 +122,16 @@ tabla_educ <- casen |>
   group_by(pueblos_indigenas, educ_nivel) |>
   count()
 
+tabla_educ
+
 ## ========================================
 ## VISUALIZACIÓN: EDUCACIÓN POR PERTENENCIA INDÍGENA
 ## ========================================
 
 # Gráfico de barras con barras lado a lado
-ggplot(tabla_educ, aes(x = educ_nivel, y = n, fill = factor(pueblos_indigenas))) +
+tabla_educ |> ggplot(aes(x = educ_nivel, y = n, fill = factor(pueblos_indigenas))) +
+  #geom_col(position = "dodge") +
+  #geom_col(position = "fill") +
   geom_col(position = "dodge") +
   labs(title = "Nivel educativo por pertenencia indígena",
        x = "Nivel educativo", y = "Cantidad de personas") +
@@ -119,11 +140,15 @@ ggplot(tabla_educ, aes(x = educ_nivel, y = n, fill = factor(pueblos_indigenas)))
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+tabla_educ
+
 # Añadir proporciones
 tabla_educ_prop <- tabla_educ |>
   group_by(pueblos_indigenas) |>
   mutate(prop = n / sum(n)) |>
   ungroup()
+
+tabla_educ_prop
 
 ggplot(tabla_educ_prop, aes(x = educ_nivel, y = prop, fill = educ_nivel)) +
   geom_col() +
@@ -131,12 +156,17 @@ ggplot(tabla_educ_prop, aes(x = educ_nivel, y = prop, fill = educ_nivel)) +
   facet_grid(~ pueblos_indigenas, labeller = as_labeller(c("0" = "No Indígena", "1" = "Indígena"))) +
   scale_y_continuous(labels = percent_format()) +
   labs(title = "Distribución educativa dentro de cada grupo",
-       x = "Nivel educativo", y = "Proporción dentro del grupo") +
+       x = "Nivel educativo", 
+       y = "Proporción dentro del grupo",
+       caption = "casen") +
   theme_minimal()
 
 ## ========================================
 ## GSS: TENDENCIA DE IDENTIFICACIÓN POLÍTICA POR RAZA
 ## ========================================
+
+gss_cat
+
 
 gss_party_race <- gss_cat |> 
   filter(!is.na(partyid), !is.na(race)) |> 
@@ -148,26 +178,55 @@ gss_party_race <- gss_cat |>
 
 voto_duro <- gss_party_race |> filter(partyid == "Strong democrat")
 
-g1 <- ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
+voto_duro
+
+ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
   geom_line(size = 1) +
   geom_point() +
   scale_y_continuous(labels = percent_format(accuracy = 1)) +
   labs(title = "Identificación como 'Strong Democrat' por raza",
        x = "Año", y = "Proporción", color = "Raza") +
-  theme_minimal(); g1
+  theme_minimal()
 
+
+g1 <- ggplot(voto_duro, aes(x = year, y = prop, color = race)) +
+  geom_line(size = 1.2) +
+  geom_point(size = 2) +
+  scale_y_continuous(labels = scales::percent_format(accuracy = 1)) +
+  scale_color_brewer(palette = "Dark2") +
+  labs(
+    title = "Voto duro demócrata en EE.UU.",
+    subtitle = "Proporción que se identifica como 'Strong Democrat', por raza y año",
+    caption = "Fuente: GSS (General Social Survey)",
+    x = "Año",
+    y = "Proporción",
+    color = "Raza"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(
+    plot.title = element_text(face = "bold", size = 16),
+    plot.subtitle = element_text(margin = margin(b = 10)),
+    plot.caption = element_text(color = "gray40", size = 9),
+    legend.position = "bottom",
+    legend.title = element_text(face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+casen
+g1
 ## ========================================
 ## GUARDAR GRÁFICO EN ARCHIVO
 ## ========================================
 
 getwd()
+#setwd()
 
-ggsave("clases/clase2/images/voto_duro_race.png",
-       plot = last_plot(),  # último gráfico generado
+ggsave("clases/clase2/images/voto_duro_race_no.png",
+       plot = g1,  # último gráfico generado
        width = 8, height = 5, dpi = 300)
 
 
-ggsave("clases/clase2/images/grafico_final.png",
+ggsave("clases/clase2/images/grafico_final_ppt.png",
        plot = g1,           # o el nombre del gráfico que generaste
        width = 29.21,       # en centímetros
        height = 12.09,
