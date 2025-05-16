@@ -3,7 +3,7 @@
   <head>
     <title>InteRculturales</title>
     <meta charset="utf-8" />
-    <meta name="author" content="Matías Deneken" />
+    <meta name="author" content="Matías J. Deneken" />
     <script src="libs/header-attrs/header-attrs.js"></script>
     <link href="libs/panelset/panelset.css" rel="stylesheet" />
     <script src="libs/panelset/panelset.js"></script>
@@ -723,7 +723,7 @@ penguins |&gt;
 
 
 ``` r
-g1 &lt;-penguins |&gt; 
+g5 &lt;-penguins |&gt; 
   ggplot() +
   aes(x = flipper_length_mm, 
       fill = species,
@@ -895,7 +895,7 @@ Table: Promedio de largo de aleta por especie y año
 .pull-left[
 
 ``` r
-g1 &lt;- tabla_pinguino |&gt; 
+g6 &lt;- tabla_pinguino |&gt; 
   ggplot(aes(x = year,
              y = promedio_aleta,
              color = species)) +
@@ -915,7 +915,7 @@ g1 &lt;- tabla_pinguino |&gt;
 .pull-left[
 
 ``` r
-g1 &lt;- tabla_pinguino |&gt; 
+g7 &lt;- tabla_pinguino |&gt; 
   ggplot(aes(x = year,
              y = promedio_aleta,
              color = species)) +
@@ -935,7 +935,7 @@ g1 &lt;- tabla_pinguino |&gt;
 .pull-left[
 
 ``` r
-g1 &lt;- tabla_pinguino |&gt; 
+g8 &lt;- tabla_pinguino |&gt; 
   ggplot(aes(x = year,
              y = promedio_aleta,
              color = species)) +
@@ -960,7 +960,7 @@ g1 &lt;- tabla_pinguino |&gt;
 .pull-left[
 
 ``` r
-g1 &lt;-tabla_pinguino |&gt; 
+g9 &lt;-tabla_pinguino |&gt; 
   mutate(year = as.numeric(year)) |&gt; 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -990,7 +990,7 @@ g1 &lt;-tabla_pinguino |&gt;
 .pull-left[
 
 ``` r
-g1 &lt;-tabla_pinguino |&gt; 
+g10 &lt;-tabla_pinguino |&gt; 
   mutate(year = as.numeric(year)) |&gt; 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -1020,7 +1020,7 @@ g1 &lt;-tabla_pinguino |&gt;
 .pull-left[
 
 ``` r
-g1 &lt;-tabla_pinguino |&gt; 
+g12 &lt;-tabla_pinguino |&gt; 
   mutate(year = as.numeric(year)) |&gt; 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -1052,7 +1052,7 @@ g1 &lt;-tabla_pinguino |&gt;
 .pull-left[
 
 ``` r
-g1 &lt;-tabla_pinguino |&gt; 
+g13 &lt;-tabla_pinguino |&gt; 
   mutate(year = as.numeric(year)) |&gt; 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -1084,7 +1084,7 @@ g1 &lt;-tabla_pinguino |&gt;
 .pull-left[
 
 ``` r
-g1 &lt;-tabla_pinguino |&gt; 
+g14 &lt;-tabla_pinguino |&gt; 
   mutate(year = as.numeric(year)) |&gt; 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.

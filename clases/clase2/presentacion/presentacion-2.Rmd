@@ -1,7 +1,7 @@
 ---
 title: "InteRculturales"
 subtitle: "Sesión 2"
-author: "Matías Deneken"
+author: "Matías J. Deneken"
 date: ''
 output:
   xaringan::moon_reader:
@@ -705,7 +705,7 @@ penguins |>
 
 ```{r  echo=TRUE, warning=FALSE, message=FALSE, fig.height=5}
 
-g1 <-penguins |> 
+g5 <-penguins |> 
   ggplot() +
   aes(x = flipper_length_mm, 
       fill = species,
@@ -725,7 +725,7 @@ g1 <-penguins |>
 .pull-right[
 
 ```{r, echo=FALSE}
-g1
+g5
 ```
 ]
 
@@ -859,7 +859,7 @@ penguins |>
 .pull-left[
 ```{r}
 
-g1 <- tabla_pinguino |> 
+g6 <- tabla_pinguino |> 
   ggplot(aes(x = year,
              y = promedio_aleta,
              color = species)) +
@@ -872,7 +872,7 @@ g1 <- tabla_pinguino |>
 .pull-right[
 
 ```{r, echo=FALSE}
-g1
+g6
 ```
 ]
 
@@ -882,7 +882,7 @@ g1
 .pull-left[
 ```{r}
 
-g1 <- tabla_pinguino |> 
+g7 <- tabla_pinguino |> 
   ggplot(aes(x = year,
              y = promedio_aleta,
              color = species)) +
@@ -893,7 +893,7 @@ g1 <- tabla_pinguino |>
 
 .pull-right[
 ```{r, echo=FALSE}
-g1
+g7
 ```
 ]
 
@@ -904,7 +904,7 @@ g1
 .pull-left[
 ```{r}
 
-g1 <- tabla_pinguino |> 
+g8 <- tabla_pinguino |> 
   ggplot(aes(x = year,
              y = promedio_aleta,
              color = species)) +
@@ -922,7 +922,7 @@ g1 <- tabla_pinguino |>
 
 .pull-right[
 ```{r, echo=FALSE}
-g1
+g8
 ```
 ]
 
@@ -932,7 +932,7 @@ g1
 .pull-left[
 ```{r}
 
-g1 <-tabla_pinguino |> 
+g9 <-tabla_pinguino |> 
   mutate(year = as.numeric(year)) |> 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -955,7 +955,7 @@ g1 <-tabla_pinguino |>
 
 .pull-right[
 ```{r, echo=FALSE}
-g1
+g9
 ```
 ]
 
@@ -966,7 +966,7 @@ g1
 .pull-left[
 ```{r}
 
-g1 <-tabla_pinguino |> 
+g10 <-tabla_pinguino |> 
   mutate(year = as.numeric(year)) |> 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -990,7 +990,7 @@ g1 <-tabla_pinguino |>
 
 .pull-right[
 ```{r, echo=FALSE}
-g1
+g10
 ```
 ]
 
@@ -1000,7 +1000,7 @@ g1
 .pull-left[
 ```{r}
 
-g1 <-tabla_pinguino |> 
+g12 <-tabla_pinguino |> 
   mutate(year = as.numeric(year)) |> 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -1024,7 +1024,7 @@ g1 <-tabla_pinguino |>
 
 .pull-right[
 ```{r, echo=FALSE}
-g1
+g12
 ```
 
 ]
@@ -1036,7 +1036,7 @@ g1
 .pull-left[
 ```{r}
 
-g1 <-tabla_pinguino |> 
+g13 <-tabla_pinguino |> 
   mutate(year = as.numeric(year)) |> 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -1060,7 +1060,7 @@ g1 <-tabla_pinguino |>
 
 .pull-right[
 ```{r, echo=FALSE}
-g1
+g13
 ```
 ]
 
@@ -1072,7 +1072,7 @@ g1
 .pull-left[
 ```{r}
 
-g1 <-tabla_pinguino |> 
+g14 <-tabla_pinguino |> 
   mutate(year = as.numeric(year)) |> 
   ggplot(aes(year, # identificación del eje.
              promedio_aleta,# identificación del eje.
@@ -1096,7 +1096,7 @@ g1 <-tabla_pinguino |>
 
 .pull-right[
 ```{r, echo=FALSE}
-g1
+g14
 ```
 ]
 
