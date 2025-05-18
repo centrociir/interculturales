@@ -1,0 +1,440 @@
+---
+title: "Introducción a R"
+subtitle: "Documento de trabajo"
+author: "Matías Deneken"
+date: today
+format:
+  html:
+    toc-title: "Contenidos"
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    include-in-header:
+      text: |
+        <style>
+          body::before {
+            content: url('pres/images/logo_ciir.jpg');
+            display: block;
+            text-align: left;
+            margin-bottom: 5px;
+            transform: scale(0.5);
+          }
+          body::before img {
+            max-width: 100px;
+            height: auto;
+          }
+          #title-block-header {
+            margin-top: 0;
+          }
+          .quarto-title {
+            margin-top: 0;
+          }
+        </style>
+execute:
+  warning: false
+  message: false
+editor: visual
+reference-location: margin
+citation-location: margin
+---
+
+# Introducción
+
+El presente código práctico aplicará las funciones fundamentales de Tidyverse a la Encuesta de Caracterización Socioeconómica Nacional (CASEN) de la edición 2022 reducida en su N. En función de los objetivos del curso, una variable fundamental será la pertencia a Pueblos Originarios. En particular, interesa describir las estadísticas a nivel educativo, ingreso autónomo, pobreza, entre otras.
+
+La base oficial se puede encontrar [En la página del Observatorio del Ministerio de Desarrollo Social](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022).
+
+# Nociones previas: R Base
+
+Estos son los tres tipos de datos más básicos en R: numéricos, texto (caracter) y lógicos. Todo lo que trabajemos en R parte desde estas formas elementales.
+
+```{r, eval=FALSE}
+# Numéricos
+1
+2
+3.1
+
+# Caracter o texto
+"hola"
+
+# Lógicos
+TRUE
+FALSE
+
+```
+
+
+R funciona como una calculadora: puedes hacer operaciones directamente.
+
+
+```{r, eval=FALSE}
+2 + 2        # suma
+50 * 100     # multiplicación
+4556 - 1000  # resta
+6565 / 89    # división
+
+```
+
+Los operadores lógicos nos permiten hacer comparaciones entre valores.
+El resultado siempre será un valor lógico: TRUE o FALSE. Esto es fundamental para filtros y condicionales en análisis de datos.
+
+```{r, eval=FALSE}
+1 == 1       # igualdad
+1 == 2
+40 != 30     # desigualdad
+40 != 40
+31 > 18      # mayor que
+40 < 80      # menor que
+40 >= 40     # mayor o igual
+50 >= 40
+4 <= 5       # menor o igual
+
+```
+
+R es un lenguaje basado en objetos. Podemos crear objetos (variables) con <- y luego reutilizarlos en operaciones. Esto es clave para construir flujos de trabajo limpios y organizados.
+
+```{r, eval=FALSE}
+# Crear objeto
+año <- 1993
+año
+
+# Operaciones con objetos
+año + 10
+2024 - año
+
+# Crear nuevo objeto a partir de un cálculo
+edad <- 2024 - año
+edad
+
+```
+
+
+
+# Vamos a la CASEN desde Tidyverse
+
+## Cargar base de datos
+
+Cargamos la base de datos directamente desde GitHub. Para hacerlo, solo hay que correr el código con `Control/Command` + `Enter.`
+
+```{r}
+url <- "https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase1/bbdd/casen2022_sample.csv"
+destfile <- "casen2022_sample.csv"
+
+# Leerla directamente en R
+casen <- read.csv(destfile, encoding = "UTF-8")
+head(casen)
+
+```
+
+## Cargar librería necesaria
+
+```{r}
+#install.packages(tidyverse) En caso de no estar instalado
+library(tidyverse)
+library(dplyr)
+```
+
+## Examinamos base de datos
+
+¿Qué se hace acá? Se explora la estructura y el resumen estadístico de las variables de la base casen. Se identifican tipos de variables y rangos de valores.
+
+```{r}
+casen |> glimpse() 
+```
+
+```{r}
+summary(casen) #Función de R base
+```
+
+# Empecemos a procesar!
+
+## Mutate y select: Crear, recodificar y seleccionar.
+
+`mutate()` sirve para crear nuevas variables o transformar variables existentes.
+
+`select()` permite elegir columnas específicas para inspeccionarlas o trabajar solo con ellas.
+
+Ambas funciones son parte del flujo de trabajo de dplyr (Tidyverse), y se usan en cadena con el operador \|\> (pipe) para aplicar transformaciones claras y ordenadas.
+
+Para saber la etiqueta correspondiente de las variables debemos acudir al libro de códigos de la Encuesta Casen que se encuentra aquí [bajo el nombre "Libro de códigos Base de datos Casen 2022 (versión 18 marzo 2024)"](https://observatorio.ministeriodesarrollosocial.gob.cl/encuesta-casen-2022).
+
+La variable educación posee las siguientes etiquetas.
+
+0.  Sin Educación Formal
+1.  Básica incompleta
+2.  Básica completa
+3.  Media humanista incompleta
+4.  Media técnica profesional incompleta
+5.  Media humanista completa
+6.  Media técnica profesional completa
+7.  Técnico nivel superior incompleta
+8.  Técnica nivel superior completo
+9.  Profesional incompleto
+10. Postgrado incompleto
+11. Profesional completo
+12. Postgrado completo
+
+En base a lo que aprendimos con la función `mutate` podemos realizar la siguiente recodificación:
+
+```{r}
+casen <- casen |>  #Renombramos el objeto
+  dplyr::mutate(
+    educ_nivel = dplyr::case_when(
+      educ %in% 0:1   ~ "Sin educación",
+      educ %in% 2:4   ~ "Básica",
+      educ %in% 5:6   ~ "Media",
+      educ %in% 7:8   ~ "Técnico nivel superior",
+      educ %in% 9:11  ~ "Profesional",
+      educ == 12      ~ "Postgrado",
+      TRUE            ~ NA_character_
+    ),
+    educ_nivel = factor(educ_nivel, levels = c(
+      "Sin educación", "Básica", "Media", 
+      "Técnico nivel superior", "Profesional", "Postgrado"
+    ), ordered = TRUE)
+  )
+
+```
+
+Se usa `mutate()` junto con `case_when()` para crear una nueva variable categórica llamada `educ_nivel` a partir de `educ`, agrupando los valores numéricos en tramos más comprensibles.\
+
+Luego se convierte esa variable a un **factor ordenado**, lo que es útil para análisis y visualizaciones en orden lógico (por ejemplo, del nivel más bajo al más alto).
+
+Una forma de cerciorarse de que esta bien recodificado, es aplicar un `select` de las variables (sin convertirla en objeto).
+
+```{r}
+casen |> select(educ, educ_nivel) |> head(5)
+```
+
+Una recodificación se puedo aplicar yautco (Ingereso autónomo corregido) en base los quintiles.
+
+```{r}
+quantile(casen$yautcor, na.rm = TRUE)
+```
+
+Una forma más sofisticada de pedir los deciles
+
+```{r}
+quantile(casen$yautcor, probs = seq(0, 1, 0.1), na.rm = TRUE)
+
+```
+
+Se crea una nueva variable llamada `decil_yautcor`, que clasifica a cada persona dentro del decil que le corresponde según su ingreso autónomo. Se usa `cut()` junto con los puntos de corte entregados por `quantile()`.
+
+```{r}
+casen <- casen |> 
+  mutate(
+    decil_yautcor = cut(
+      yautcor,
+      breaks = quantile(yautcor, probs = seq(0, 1, 0.1), na.rm = TRUE),
+      include.lowest = TRUE,
+      labels = paste0("Decil ", 1:10)
+    )
+  )
+```
+
+```{r}
+
+casen <- casen %>%
+  mutate(decil_yautcor2 = case_when(
+    yautcor <= 120000 ~ "decil1",
+    yautcor <= 200000 ~ "decil2",
+    yautcor <= 300000 ~ "decil3",
+    yautcor <= 400000 ~ "decil4",
+    yautcor <= 439167 ~ "decil5",
+    yautcor <= 500000 ~ "decil6",
+    yautcor <= 600000 ~ "decil7",
+    yautcor <= 804666.4 ~ "decil8",
+    yautcor <= 1205499.8 ~ "decil9",
+    yautcor <= 11518333 ~ "decil10",
+    TRUE ~ NA_character_
+  ))
+
+```
+
+```{r}
+casen |> select(yautcor, decil_yautcor, decil_yautcor2) |> 
+  head(5)
+```
+
+## Group_by y summarise: Transmitir la información
+
+### Variables númericas: Ingreso autónomo corregido (yautcor).
+
+> ✏️ **¿Qué estamos haciendo aquí?**\
+> Estamos agrupando la base según la variable `pueblos_indigenas`, que indica si una persona se identifica o no con un pueblo originario. Luego, dentro de cada grupo, calculamos el **promedio de ingreso autónomo corregido** (`yautcor`).\
+> El parámetro `na.rm = TRUE` sirve para **ignorar los datos perdidos** (valores `NA`).
+
+✅ ¡Y así de simple! Ya estamos haciendo análisis comparativo entre grupos.
+
+```{r}
+casen |> group_by(pueblos_indigenas) |> 
+  summarise(salario = mean(yautcor, na.rm = TRUE)) #Borrar valores perdidos.
+```
+
+> ✏️ **¿Y ahora qué hicimos?**\
+> Hemos agregado otra dimensión de análisis: `sexo`. Ahora no solo vemos si hay diferencias entre personas indígenas y no indígenas, sino también **dentro de cada grupo según si son hombres o mujeres**.
+
+Además, calculamos no solo el **promedio**, sino también la **mediana**, que es un excelente complemento, especialmente cuando hay ingresos muy extremos que distorsionan los promedios.
+
+```{r}
+casen |> group_by(pueblos_indigenas, sexo) |>  # Veámoslo con sexo. 
+  summarise(salario_mean = mean(yautcor, na.rm = TRUE), 
+            salaria_median = median(yautcor, na.rm = TRUE)) # Agregamos otro estadístico
+```
+
+```{r}
+casen |> group_by(pueblos_indigenas, sexo) |>  # Veámoslo con sexo. 
+  summarise(salario_mean = mean(yautcor, na.rm = TRUE), 
+            salario_median = median(yautcor, na.rm = TRUE)) |> # Agregamos otro estadístico
+  mutate(ratio = salario_mean/salario_median) #un ratio alto puede sugerir que dentro del grupo hay mucha dispersión o desigualdad
+```
+
+**La mayor desigualdad relativa está en hombres no indígenas**, donde el ingreso promedio supera en un 45% a la mediana. Esto indica la presencia de personas con ingresos muy altos dentro del grupo.
+
+### Variables categóricas
+
+✏️ **¿Qué estamos haciendo?**\
+Aquí creamos una tabla con **frecuencias y porcentajes** de nivel educativo (`educ_nivel`) dentro de cada grupo (`pueblos_indigenas`).
+
+\
+Luego, usamos `DT::datatable()` para convertir la tabla en un formato **interactivo**, donde podemos ordenar, buscar y exportar la información.
+
+```{r}
+
+library(DT) #Tabla dinámica
+
+casen_tabla <- casen |> 
+  filter(!is.na(educ_nivel)) |>
+  count(pueblos_indigenas, educ_nivel, name = "n") |> 
+  group_by(pueblos_indigenas) |>
+  mutate(
+    total = sum(n),
+    porcentaje = round(100 * n / total, 1)
+  ) |>
+  arrange(pueblos_indigenas, educ_nivel)
+
+DT::datatable(casen_tabla)
+
+
+```
+
+Veamos cómo asegurarnos de que **todos los niveles de educación aparezcan**, incluso si un grupo no tiene personas en algún nivel.
+
+```{r}
+
+casen_tabla2 <- casen |> 
+  filter(!is.na(educ_nivel)) |>
+  count(pueblos_indigenas, educ_nivel, name = "n") |> 
+  complete(pueblos_indigenas, educ_nivel, fill = list(n = 0)) |> # Completar el postgrado
+  group_by(pueblos_indigenas) |>
+  mutate(
+    total = sum(n),
+    porcentaje = round(100 * n / total, 1)
+  ) |>
+  arrange(pueblos_indigenas, educ_nivel)
+
+DT::datatable(casen_tabla2)
+
+
+```
+
+## Encadenar las funciones
+
+```{r}
+
+
+# Seleccionamos solo las variables necesarias para el análisis:
+# - pueblos_indigenas: para identificar si una persona se reconoce indígena
+# - sexo: para distinguir entre hombres y mujeres
+# - yautcor: ingreso autónomo corregido, nuestra variable de interés numérica
+casen_tabla3 <- casen |>
+  select(pueblos_indigenas, sexo, yautcor) |> 
+  
+  # Reemplazamos los valores codificados por etiquetas legibles.
+  # 0 será "No indígena" y 1 será "Indígena"
+  mutate(
+    pueblos_indigenas = case_when(
+      pueblos_indigenas == 0 ~ "No indígena",
+      pueblos_indigenas == 1 ~ "Indígena",
+      TRUE ~ NA_character_ # Por si hubiera algún valor extraño o NA
+    ),
+    
+    # Hacemos lo mismo con la variable sexo:
+    # 1 será "Hombre", 2 será "Mujer"
+    sexo = case_when(
+      sexo == 1 ~ "Hombre",
+      sexo == 2 ~ "Mujer",
+      TRUE ~ NA_character_
+    ),
+    
+    # Creamos una nueva variable que combine ambos grupos:
+    # Por ejemplo: "Indígena - Mujer", "No indígena - Hombre", etc.
+    colapsa = paste(pueblos_indigenas, sexo, sep = " - ")
+  ) |>
+  
+  # Agrupamos por esta nueva variable combinada (colapsa)
+  group_by(colapsa) |>
+  
+  # Calculamos los dos estadísticos principales:
+  # - El ingreso promedio (mean)
+  # - El ingreso mediano (median)
+  # Ignoramos los NA con `na.rm = TRUE`
+  summarise(
+    salario_mean = mean(yautcor, na.rm = TRUE),
+    salaria_median = median(yautcor, na.rm = TRUE),
+    .groups = "drop" # Para evitar que el resultado quede agrupado
+  )
+
+
+
+DT::datatable(casen_tabla3)
+
+```
+
+## Exportar resultados a Excel
+
+Una vez que hemos creado una tabla limpia y legible, puede ser útil exportarla para compartir con otras personas, usarla en un informe o guardarla como respaldo. Aquí usaremos dos paquetes adicionales:
+
+-   `scales`: para formatear los números y eliminar la notación científica (por ejemplo, mostrar 599,336 en vez de 599336.4444444445).
+-   `writexl`: para guardar la tabla directamente en formato `.xlsx` (compatible con Excel).
+
+```{r}
+# Cargamos las librerías necesarias
+library(scales)
+library(writexl)
+
+# Usamos mutate() para formatear las columnas numéricas:
+# 'comma()' agrega separadores de miles y elimina notación científica
+# 'accuracy = 1' indica que redondearemos al número entero más cercano
+casen_tabla_excel <- casen_tabla3 |>
+  mutate(
+    salario_mean = comma(salario_mean, accuracy = 1),      # Ej: 1.234.567
+    salaria_median = comma(salaria_median, accuracy = 1)   # Ej: 1.100.000
+  )
+
+# Finalmente, guardamos la tabla en un archivo Excel
+# Este se guarda dentro de la carpeta 'bbdd' con el nombre 'casen_tabla.xlsx'
+write_xlsx(casen_tabla_excel, "bbdd/casen_tabla.xlsx")
+
+
+```
+
+![Tabla comunicable](images/comunicable.png)
+
+# Cierre
+
+A partir de los análisis de la Encuesta CASEN, hemos recorrido los elementos fundamentales para comenzar a trabajar con datos en R. Si bien este fue solo un primer acercamiento, ya contamos con herramientas suficientes para **importar, explorar, transformar, resumir y comunicar información** de manera clara y reproducible.
+
+Durante este recorrido, es importante distinguir:
+
+R base nos ofrece funciones fundamentales para manipular datos (`summary()`, `read.csv()`, `mean()`, etc.), pero muchas veces estas son limitadas en términos de legibilidad y eficiencia cuando trabajamos con grandes volúmenes de datos o flujos de trabajo complejos. Las librerías son herramientas externas.
+
+Por eso, incorporamos librerías como:
+
+-   **`tidyverse`**, que nos permitió usar funciones más intuitivas (`mutate`, `select`, `filter`, `group_by`, `summarise`), y trabajar de forma encadenada con el operador `|>`.
+
+-   **`DT`**, que transformó tablas estáticas en objetos interactivos.
+
+-   **`scales`** y **`writexl`**, que nos ayudaron a mejorar la comunicación de resultados y a exportar datos en formatos más accesibles.

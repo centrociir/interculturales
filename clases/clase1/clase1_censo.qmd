@@ -1,0 +1,174 @@
+---
+title: "Introducción a R" 
+subtitle: "Documento de trabajo"
+author: "Matías Deneken"
+date: today
+format:
+  html:
+    toc-title: "Contenidos"
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    include-in-header:
+      text: |
+        <style>
+          body::before {
+            content: url('img/ciir_en-negro-vertical.jpg');
+            display: block;
+            text-align: left;
+            margin-bottom: 5px; /* Reducido a 5px para un espacio mínimo */
+            transform: scale(0.5);
+          }
+          body::before img {
+            max-width: 100px;
+            height: auto;
+          }
+          #title-block-header {
+            margin-top: 0; /* Eliminado el margen superior */
+          }
+          .quarto-title {
+            margin-top: 0; /* Asegura que no haya espacio extra arriba del título */
+          }
+        </style>
+editor: visual
+reference-location: margin
+citation-location: margin
+---
+
+## Cargar paquete de datos.
+
+```{r}
+#| message: false
+#| warning: false
+
+library(dplyr) # manipulación de datos
+library(readxl) # carga de archivos Excel
+```
+
+```{r}
+censo <- read_excel("bbdd/censo_proyeccion_2024.xlsx")
+```
+
+```{r}
+censo
+```
+
+```{r}
+print(censo, n = 20)
+```
+
+```{r}
+censo |> # comando + shift + M
+  select(comuna, población)
+```
+
+```{r}
+censo |> 
+  select(-cut_provincia, -cut_comuna, -cut_region)
+```
+
+```{r}
+censo |> 
+  select(-contains("cut"))
+```
+
+```{r}
+censo |> 
+  select(1:3, población)
+```
+
+```{r}
+censo |>
+  arrange(población) |>
+  select(comuna, población)
+```
+
+```{r}
+censo |> 
+  arrange(desc(población)) |> 
+  select(region, comuna, población)
+```
+
+```{r}
+censo |> 
+  arrange(region, desc(población)) |> 
+  select(region, comuna, población) |> 
+  print(n = 20)
+```
+
+```{r}
+censo |> filter(comuna == "Providencia")
+```
+
+```{r}
+censo |> filter(comuna != "Alto Hospicio")
+```
+
+```{r}
+censo |> filter(población > 300000)
+```
+
+```{r}
+censo |> 
+  filter(población < 1000) |> 
+  select(comuna, población) |> 
+  arrange(población)
+```
+
+```{r}
+censo |> 
+  filter(población == min(población)) |> 
+  select(region, comuna, provincia, población)
+```
+
+```{r}
+censo |> 
+  filter(población >= mean(población)) |> 
+  select(region, comuna, provincia, población)
+```
+
+```{r}
+min_pob <- 25000
+max_pob <- 30000
+
+censo |> 
+  filter(población > min_pob,
+         población < max_pob) |> 
+  select(población, comuna, provincia, region)
+```
+
+```{r}
+promedio <- mean(censo$población)
+
+censo |> 
+  filter(población > promedio)
+```
+
+```{r}
+censo |> 
+  slice(200:220) # filas del 200 al 220
+```
+
+```{r}
+censo |> 
+  slice_max(población)
+```
+
+```{r}
+censo |> 
+  slice_min(población)
+```
+
+```{r}
+censo |> 
+  slice_sample(n = 5) |> 
+  select(comuna)
+```
+
+```{r}
+censo |> 
+  group_by(region) |> 
+  slice_max(población) |> 
+  select(region, comuna, población)
+```
