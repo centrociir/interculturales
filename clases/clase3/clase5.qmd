@@ -1,0 +1,500 @@
+---
+title: "Mapas y Censo 2017 en R" 
+subtitle: "InteRculturales"
+author: "Matías Deneken"
+date: today
+format:
+  html:
+    toc-title: "Contenidos"
+    theme: cosmo
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    include-in-header:
+      text: |
+        <style>
+          body::before {
+            content: url('img/ciir_en-negro-vertical.jpg');
+            display: block;
+            text-align: left;
+            margin-bottom: 5px; /* Reducido a 5px para un espacio mínimo */
+            transform: scale(0.5);
+          }
+          body::before img {
+            max-width: 100px;
+            height: auto;
+          }
+          #title-block-header {
+            margin-top: 0; /* Eliminado el margen superior */
+          }
+          .quarto-title {
+            margin-top: 0; /* Asegura que no haya espacio extra arriba del título */
+          }
+        </style>
+editor: visual
+reference-location: margin
+citation-location: margin
+---
+
+```{r setup, include=FALSE}
+rm(list=ls())
+options(warn = -1)  # Ocultar warnings
+options(message = FALSE)  # Ocultar mensajes
+```
+
+# Introducción a ChileMapas
+
+#### Cargar paquetes
+
+```{r}
+#| warning: false
+#| message: false
+#| cache: false
+#| results: false
+
+library(chilemapas) # mapas de chile
+library(dplyr) # manipulación de datos
+library(ggplot2) # visualización de datos
+library(scales) # utilidad para visualización de datos
+library(sf) # manipulación de datos geográficos
+```
+
+#### Chile Mapas
+
+```{r}
+mapa_comunas <- chilemapas::mapa_comunas
+
+mapa_comunas
+```
+
+```{r}
+grafico_comunas <- mapa_comunas |> 
+  st_set_geometry(mapa_comunas$geometry) |> # asignar geometría
+  ggplot() + # gráfico
+  geom_sf() # capa geométrica
+
+grafico_comunas +
+  theme_classic()
+```
+
+```{r}
+grafico_comunas + 
+  coord_sf(xlim = c(-77, -65)) +
+  theme_classic()
+```
+
+Gráficos a nivel nacional
+
+```{r}
+mapa_regiones <- mapa_comunas |> 
+  group_by(codigo_region) |> 
+  summarize(geometry = st_union(geometry)) # resumir los datos agrupados uniéndolos
+
+mapa_regiones
+```
+
+Gráficos a nivel regional.
+
+```{r}
+grafico_regiones <- mapa_regiones |> 
+  st_set_geometry(mapa_regiones$geometry) |> # especificar la geometría del mapa
+  ggplot() + # graficar
+  geom_sf() + # capa geográfica
+  coord_sf(xlim = c(-77, -65)) # recortar coordenadas
+
+grafico_regiones +
+  theme_classic()
+```
+
+Necesitamos los nombres, por lo que los pegamos. Una opción puede es obtener datos de Wikipedia con funciones de Webscrapping.
+
+```{r}
+library(rvest)
+
+# dirección de wikipedia con tabla de comunas de Chile
+url <- "https://es.wikipedia.org/wiki/Anexo:Comunas_de_Chile"
+
+# obtener tabla con datos de comunas con web scraping
+tabla <- session(url) |> 
+  read_html() |> 
+  html_table(convert = FALSE)
+
+tabla[[1]]
+```
+
+Se realiza el respectivo procesamiento.
+
+```{r}
+library(janitor)
+library(stringr)
+
+# limpiar datos
+datos_comunas <- tabla[[1]] |> 
+  clean_names() |> 
+  # seleccionar y renombrar columnas
+  select(codigo_comuna = cut_codigo_unico_territorial,
+         nombre, region, superficie_km2,
+         poblacion = poblacion2020) |> 
+  # eliminar espacios de la columna de población
+  mutate(poblacion = str_remove_all(poblacion, " "),
+         poblacion = as.numeric(poblacion)) |> 
+  # eliminar los separadores de miles
+  mutate(superficie_km2 = str_remove_all(superficie_km2, "\\."),
+         # convertir comas a puntos
+         superficie_km2 = str_replace(superficie_km2, ",", "."),
+         superficie_km2 = as.numeric(superficie_km2))
+
+datos_comunas
+```
+
+```{r}
+mapa_comunas_2 <- mapa_comunas |> 
+  # adjuntar datos al mapa, coincidiendo por columna de código de comunas
+  left_join(datos_comunas,
+            by = join_by(codigo_comuna)) |> 
+  relocate(geometry, .after = 0) # tirar geometría al final
+
+mapa_comunas_2
+```
+
+```{r}
+mapa_comunas_2 |> 
+  st_set_geometry(mapa_comunas_2$geometry) |> # asignar geometría
+  ggplot() + # gráfico
+  aes(fill = poblacion) +
+  geom_sf(linewidth = 0) + # capa geométrica
+  theme_classic() +
+  scale_fill_distiller(type = "seq", palette = 12, 
+                       labels = label_comma(big.mark = ".")) + # colores
+  scale_x_continuous(breaks = seq(-76, -65, length.out = 3) |> floor()) + # escala x
+  coord_sf(xlim = c(-77, -65)) + # recortar coordenadas
+  theme(legend.key.width = unit(3, "mm"))
+```
+
+```{r}
+mapa_comunas_2 |> 
+  st_set_geometry(mapa_comunas_2$geometry) |>
+  ggplot() +
+  aes(fill = superficie_km2) + # variable de relleno
+  geom_sf(linewidth = 0) +
+  theme_classic() +
+  scale_fill_distiller(type = "seq", palette = 11,
+                       labels = label_comma(big.mark = ".")) + 
+  scale_x_continuous(breaks = seq(-76, -65, length.out = 3) |> floor()) +
+  coord_sf(xlim = c(-77, -65)) + 
+  theme(legend.key.width = unit(3, "mm"))
+```
+
+```{r}
+# filtrar datos
+mapa_comunas_filtro <- mapa_comunas_2 |> 
+  filter(codigo_region == "06")
+
+# mapa
+mapa_comunas_filtro |> 
+  st_set_geometry(mapa_comunas_filtro$geometry) |>
+  ggplot() +
+  aes(fill = poblacion) +
+  geom_sf(linewidth = 0.12, color = "white") +
+  geom_sf_text(aes(label = comma(poblacion, big.mark = ".")), 
+               size = 2, color = "white", check_overlap = T) +
+  theme_classic() +
+  scale_fill_distiller(type = "seq", palette = 12,
+                       labels = label_comma(big.mark = ".")) + 
+  theme(legend.key.width = unit(3, "mm")) +
+  theme(axis.title = element_blank())
+```
+
+```{r}
+library(rvest)
+
+# dirección del sitio del banco central
+url <- "https://si3.bcentral.cl/Siete/ES/Siete/Cuadro/CAP_CCNN/MN_CCNN76/CCNN2018_PIB_REGIONAL_N/637899740344107786"
+
+# obtener tabla con datos de comunas con web scraping
+tabla_pib <- session(url) |> 
+  read_html() |> 
+  html_table(convert = FALSE)
+```
+
+```{r}
+datos_regiones <- tabla_pib [[1]] |> 
+  janitor::clean_names() |> 
+  select(region = serie, pib = x2023) |> 
+  mutate(pib = str_remove_all(pib, "\\."),
+         pib = as.numeric(pib)) |> 
+  filter(str_detect(region, "Región"))
+
+datos_regiones
+```
+
+```{r}
+datos_regiones_2 <- datos_regiones |> 
+  mutate(codigo_region = case_when(
+    str_detect(region, "Arica") ~ 15,
+    str_detect(region, "Tarapacá") ~ 1,
+    str_detect(region, "Antofagasta") ~ 2,
+    str_detect(region, "Atacama") ~ 3,
+    str_detect(region, "Coquimbo") ~ 4,
+    str_detect(region, "Valparaíso") ~ 5,
+    str_detect(region, "Metropolitana") ~ 13,
+    str_detect(region, "Libertador General") ~ 6,
+    str_detect(region, "Maule") ~ 7,
+    str_detect(region, "Ñuble") ~ 16,
+    str_detect(region, "Biobío") ~ 8,
+    str_detect(region, "Araucanía") ~ 9,
+    str_detect(region, "Los Ríos") ~ 14,
+    str_detect(region, "Los Lagos") ~ 10,
+    str_detect(region, "Aysén") ~ 11,
+    str_detect(region, "Magallanes") ~ 12
+  )) |> 
+  rename(nombre_region = region)
+```
+
+```{r}
+mapa_regiones_2 <- mapa_regiones |> 
+  mutate(codigo_region = as.numeric(codigo_region)) |> 
+  left_join(datos_regiones_2,
+            by = join_by(codigo_region)) |> 
+  relocate(geometry, .after = 0) # tirar columna al final
+
+mapa_regiones_2
+```
+
+```{r}
+mapa_regiones_2 |> 
+  st_set_geometry(mapa_regiones_2$geometry) |> # asignar geometría
+  ggplot() + # gráfico
+  aes(fill = pib) +
+  geom_sf(linewidth = 0.12, color = "white") + # capa geométrica
+  theme_classic() +
+  scale_fill_distiller(type = "seq", palette = 18,
+                       labels = label_comma(big.mark = ".")) +
+  scale_x_continuous(breaks = seq(-76, -65, length.out = 3) |> floor()) +
+  coord_sf(expand = F, xlim = c(-77, -65)) + # recortar coordenadas
+  theme(legend.key.width = unit(3, "mm"))
+```
+
+# Censo 2017
+
+```{r}
+#install.packages('censo2017')
+library(censo2017)
+```
+
+```{r}
+#| warning: false
+#| message: false
+#| cache: false
+#| results: false
+# cargar bbdd
+
+censo_descargar()
+```
+
+```{r}
+# con la bbdd instalada
+
+variables <- censo_tabla("variables")
+variables_codificacion <- censo_tabla("variables_codificacion")
+```
+
+```{r}
+variables
+
+variables %>% filter(variable == "p16")
+variables %>% filter(variable == "p16a")
+```
+
+```{r}
+indigena_total <- tbl(censo_conectar(), "zonas") %>% 
+  mutate(
+    region = substr(as.character(geocodigo), 1, 2),
+    comuna = substr(as.character(geocodigo), 1, 5)
+  ) %>% 
+  #filter(region == "08") %>% 
+  select(comuna, geocodigo, zonaloc_ref_id, region) %>%
+  inner_join(select(tbl(censo_conectar(), "viviendas"), zonaloc_ref_id, vivienda_ref_id), by = "zonaloc_ref_id") %>%
+  inner_join(select(tbl(censo_conectar(), "hogares"), vivienda_ref_id, hogar_ref_id), by = "vivienda_ref_id") %>%
+  inner_join(select(tbl(censo_conectar(), "personas"), hogar_ref_id, indigena = p16), by = "hogar_ref_id") %>%
+  collect()
+```
+
+```{r}
+indigena_total <- indigena_total %>% 
+  group_by(comuna, indigena) %>%
+  summarise(cuenta = n()) %>%
+  group_by(comuna) %>%
+  mutate(proporcion = cuenta / sum(cuenta))
+```
+
+```{r}
+mapa <- mapa_comunas %>% 
+  filter(codigo_comuna != "05201") %>% 
+  filter(codigo_comuna != "05103") %>% 
+  filter(codigo_comuna != "05104") %>% 
+  left_join(indigena_total, by = c("codigo_comuna" = "comuna"))
+```
+
+```{r}
+colors <- c("#DCA761","#C6C16D","#8B9C94","#628CA5","#b8c5cf")
+
+g <- ggplot() +
+  geom_sf(data = mapa %>% 
+            select(codigo_comuna, geometry) %>% 
+            left_join(
+              mapa %>% 
+                filter(indigena == 1) %>% 
+                select(codigo_comuna, indigena, proporcion),
+              by = "codigo_comuna"
+            ),
+          aes(fill = proporcion, geometry = geometry),
+          size = 0.1) +
+  #geom_sf_label(aes(label = comuna, geometry = geometry)) +
+  scale_fill_gradientn(colours = rev(colors), name = "Porcentaje") +
+  labs(title = "% de Habitantes Indígenas",
+       subtitle = "Chile continental") +
+  theme_minimal(base_size = 16)
+
+g
+
+#ggsave("img/poblacionindigena_(0)total.png", width = 32, height = 25, units = "cm")
+```
+
+#### Caso práctico: Región de Atacama.
+
+```{r}
+indigena_reg3 <- tbl(censo_conectar(), "zonas") %>% 
+  mutate(
+    region = substr(as.character(geocodigo), 1, 2),
+    comuna = substr(as.character(geocodigo), 1, 5)
+  ) %>% 
+  filter(region == "03") %>% #Añadimos un Filtro
+  select(comuna, geocodigo, zonaloc_ref_id, region) %>%
+  inner_join(select(tbl(censo_conectar(), "viviendas"), zonaloc_ref_id, vivienda_ref_id), by = "zonaloc_ref_id") %>%
+  inner_join(select(tbl(censo_conectar(), "hogares"), vivienda_ref_id, hogar_ref_id), by = "vivienda_ref_id") %>%
+  inner_join(select(tbl(censo_conectar(), "personas"), hogar_ref_id, indigena = p16), by = "hogar_ref_id") %>%
+  collect()
+```
+
+```{r}
+indigena_reg3 <- indigena_reg3 %>% 
+  group_by(comuna, indigena) %>%
+  summarise(cuenta = n()) %>%
+  group_by(comuna) %>%
+  mutate(proporcion = cuenta / sum(cuenta)); indigena_reg3
+```
+
+```{r}
+mapa_atacama <- mapa_comunas %>% 
+  filter(codigo_region == "03") %>% 
+  left_join(indigena_reg3, by = c("codigo_comuna" = "comuna"))
+
+
+colors <- c("#DCA761","#C6C16D","#8B9C94","#628CA5","#b8c5cf")
+
+g <- ggplot() +
+  geom_sf(data = mapa_atacama %>% 
+            select(codigo_comuna, geometry) %>% 
+            left_join(
+              mapa_atacama %>% 
+                filter(indigena == 1) %>% 
+                select(codigo_comuna, indigena, proporcion),
+              by = "codigo_comuna"
+            ),
+          aes(fill = proporcion, geometry = geometry),
+          size = 0.1) +
+  #geom_sf_label(aes(label = comuna, geometry = geometry)) +
+  scale_fill_gradientn(colours = rev(colors), name = "Porcentaje") +
+  labs(title = "(%) Habitantes autoidentificados como indígenas",
+       subtitle = "Región de Atacama") +
+  theme_minimal(base_size = 11)
+
+g
+```
+
+# Encuesta Longitudinal de Relaciones Interculturales (ELRI)
+
+```{r}
+
+library(haven)
+library(ggrepel)
+
+
+elri <- read_dta("/Users/matdknu/Dropbox/CIIR/Encuesta-ELRI/BBDD/BBDD_ELRI_LONG_4.0.dta")
+```
+
+Procesamiento de datos
+
+```{r}
+elri_mapa <- elri |> 
+  select(comuna) |> 
+  rename(codigo_comuna = comuna) |> 
+  count(codigo_comuna)
+
+mapa <- chilemapas::mapa_comunas |> 
+  left_join(
+    chilemapas::codigos_territoriales |> 
+      select(matches("comuna")), 
+    by = "codigo_comuna")
+
+# Asegúrate de que la variable sea de tipo carácter para preservar los ceros a la izquierda
+elri_mapa$codigo_comuna <- as.character(elri_mapa$codigo_comuna)
+
+# Añadir un 0 al principio cuando el código tenga 4 dígitos
+elri_mapa$codigo_comuna <- ifelse(nchar(elri_mapa$codigo_comuna) == 4, 
+                                  paste0("0", elri_mapa$codigo_comuna), 
+                                  elri_mapa$codigo_comuna)
+
+mapa_datos_2 <- mapa |> 
+  left_join(elri_mapa, by = "codigo_comuna") 
+
+mapa_datos_2$n[is.na(mapa_datos_2$n)] <- 0
+
+mapa_datos_2 <- mapa_datos_2 |> 
+  mutate(dummy = if_else(n == 0, "Comuna NO encuestada", "Comuna encuestada"))
+```
+
+```{r data-processing}
+# Calcular las coordenadas y filtrar fuera de geom_text_repel
+mapa_datos_2 <- mapa_datos_2 |> 
+  filter(nombre_comuna != "Isla de Pascua", nombre_comuna != "Juan Fernandez") |> 
+  mutate(centroid = st_centroid(geometry)) |> 
+  mutate(x = st_coordinates(centroid)[,1], y = st_coordinates(centroid)[,2])
+```
+
+```{r}
+# Filtrar las comunas que necesitas
+datos_arica <- mapa_datos_2 |> filter(nombre_comuna == "Arica"| nombre_comuna == "Santiago"| 
+                                      nombre_comuna == "Temuco" | nombre_comuna == "Punta Arenas"|
+                                      nombre_comuna == "Antofagasta" |
+                                      nombre_comuna == "Tierra Amarilla")
+```
+
+Visualización del mapa con sus respectivas etiquetas.
+
+```{r plot-map}
+g1 <- mapa_datos_2 |> 
+  ggplot() +
+  geom_sf(aes(geometry = geometry, fill = dummy)) +
+  geom_text_repel(data = datos_arica, 
+                  aes(x = x, y = y, label = nombre_comuna),
+                  size = 3,
+                  nudge_x = -10,  # Aumenta la distancia hacia la izquierda
+                  hjust = 1,      # Alinea las etiquetas a la izquierda
+                  direction = "y",  # Mantiene las etiquetas en la misma línea vertical
+                  max.overlaps = Inf,  # Permite que todas las etiquetas se muestren
+                  force = 5,       # Aumenta la fuerza de repulsión para evitar el traslape
+                  box.padding = 0.5,  # Espaciado adicional entre las etiquetas
+                  segment.color = "black",  # Color de las líneas
+                  segment.size = 0.5,  # Tamaño de las líneas
+                  segment.curvature = 0,  # Mantiene las líneas rectas
+                  segment.ncp = 1,  # Número de puntos de control para la curva
+                  segment.angle = 180  # Ángulo para las líneas rectas hacia la izquierda
+  )  + 
+  scale_fill_manual(values = c("Comuna encuestada" = "grey", "Comuna NO encuestada" = "white"))  + 
+  theme_void() +
+  theme(legend.position = "none")  # Para eliminar la leyenda, si no la quieres
+
+g1
+```
