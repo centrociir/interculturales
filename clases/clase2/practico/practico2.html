@@ -1,0 +1,988 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.56">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Matías Deneken">
+<meta name="dcterms.date" content="2025-05-16">
+
+<title>Introducción a R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="practico2_files/libs/clipboard/clipboard.min.js"></script>
+<script src="practico2_files/libs/quarto-html/quarto.js"></script>
+<script src="practico2_files/libs/quarto-html/popper.min.js"></script>
+<script src="practico2_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="practico2_files/libs/quarto-html/anchor.min.js"></script>
+<link href="practico2_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="practico2_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="practico2_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="practico2_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="practico2_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<style>
+  body::before {
+    content: url('logo_ciir.jpg');
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+    transform: scale(0.5);
+  }
+  body::before img {
+    max-width: 100px;
+    height: auto;
+  }
+  #title-block-header {
+    margin-top: 0;
+  }
+  .quarto-title {
+    margin-top: 0;
+  }
+</style>
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article">
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Contenidos</h2>
+   
+  <ul>
+  <li><a href="#cargar-librerías-necesarias" id="toc-cargar-librerías-necesarias" class="nav-link active" data-scroll-target="#cargar-librerías-necesarias"><span class="header-section-number">1</span> Cargar librerías necesarias</a></li>
+  <li><a href="#descargar-y-cargar-datos" id="toc-descargar-y-cargar-datos" class="nav-link" data-scroll-target="#descargar-y-cargar-datos"><span class="header-section-number">2</span> Descargar y cargar datos</a></li>
+  <li><a href="#inspeccionar-los-primeros-datos" id="toc-inspeccionar-los-primeros-datos" class="nav-link" data-scroll-target="#inspeccionar-los-primeros-datos"><span class="header-section-number">3</span> Inspeccionar los primeros datos</a></li>
+  <li><a href="#visualizaciones-exploratorias" id="toc-visualizaciones-exploratorias" class="nav-link" data-scroll-target="#visualizaciones-exploratorias"><span class="header-section-number">4</span> Visualizaciones exploratorias</a>
+  <ul class="collapse">
+  <li><a href="#histograma-de-edad" id="toc-histograma-de-edad" class="nav-link" data-scroll-target="#histograma-de-edad"><span class="header-section-number">4.1</span> Histograma de edad</a></li>
+  <li><a href="#densidad-por-pertenencia-a-pueblo-indígena" id="toc-densidad-por-pertenencia-a-pueblo-indígena" class="nav-link" data-scroll-target="#densidad-por-pertenencia-a-pueblo-indígena"><span class="header-section-number">4.2</span> Densidad por pertenencia a pueblo indígena</a></li>
+  <li><a href="#densidad-de-ingresos-según-pueblo-indígena" id="toc-densidad-de-ingresos-según-pueblo-indígena" class="nav-link" data-scroll-target="#densidad-de-ingresos-según-pueblo-indígena"><span class="header-section-number">4.3</span> Densidad de ingresos según pueblo indígena</a></li>
+  <li><a href="#gráfico-de-dispersión-edad-e-ingreso" id="toc-gráfico-de-dispersión-edad-e-ingreso" class="nav-link" data-scroll-target="#gráfico-de-dispersión-edad-e-ingreso"><span class="header-section-number">4.4</span> Gráfico de dispersión edad e ingreso</a></li>
+  <li><a href="#línea-de-tendencia-sin-puntos" id="toc-línea-de-tendencia-sin-puntos" class="nav-link" data-scroll-target="#línea-de-tendencia-sin-puntos"><span class="header-section-number">4.5</span> Línea de tendencia sin puntos</a></li>
+  </ul></li>
+  <li><a href="#gráfico-de-barras" id="toc-gráfico-de-barras" class="nav-link" data-scroll-target="#gráfico-de-barras"><span class="header-section-number">5</span> Gráfico de barras</a>
+  <ul class="collapse">
+  <li><a href="#conteo-de-personas-por-condición-indígena" id="toc-conteo-de-personas-por-condición-indígena" class="nav-link" data-scroll-target="#conteo-de-personas-por-condición-indígena"><span class="header-section-number">5.1</span> Conteo de personas por condición indígena</a></li>
+  <li><a href="#crear-variable-categórica-de-nivel-educativo" id="toc-crear-variable-categórica-de-nivel-educativo" class="nav-link" data-scroll-target="#crear-variable-categórica-de-nivel-educativo"><span class="header-section-number">5.2</span> Crear variable categórica de nivel educativo</a></li>
+  <li><a href="#agrupar-y-contar-por-nivel-educativo-y-condición" id="toc-agrupar-y-contar-por-nivel-educativo-y-condición" class="nav-link" data-scroll-target="#agrupar-y-contar-por-nivel-educativo-y-condición"><span class="header-section-number">5.3</span> Agrupar y contar por nivel educativo y condición</a></li>
+  <li><a href="#gráfico-de-barras-agrupadas" id="toc-gráfico-de-barras-agrupadas" class="nav-link" data-scroll-target="#gráfico-de-barras-agrupadas"><span class="header-section-number">5.4</span> Gráfico de barras agrupadas</a></li>
+  <li><a href="#calcular-proporciones-dentro-de-cada-grupo" id="toc-calcular-proporciones-dentro-de-cada-grupo" class="nav-link" data-scroll-target="#calcular-proporciones-dentro-de-cada-grupo"><span class="header-section-number">5.5</span> Calcular proporciones dentro de cada grupo</a></li>
+  <li><a href="#gráfico-de-barras-por-grupo-con-facetas" id="toc-gráfico-de-barras-por-grupo-con-facetas" class="nav-link" data-scroll-target="#gráfico-de-barras-por-grupo-con-facetas"><span class="header-section-number">5.6</span> Gráfico de barras por grupo con facetas</a></li>
+  </ul></li>
+  <li><a href="#gráfico-de-tendencia-con-gss" id="toc-gráfico-de-tendencia-con-gss" class="nav-link" data-scroll-target="#gráfico-de-tendencia-con-gss"><span class="header-section-number">6</span> Gráfico de tendencia con GSS</a>
+  <ul class="collapse">
+  <li><a href="#gráfico-de-tendencia-final" id="toc-gráfico-de-tendencia-final" class="nav-link" data-scroll-target="#gráfico-de-tendencia-final"><span class="header-section-number">6.1</span> Gráfico de tendencia final</a></li>
+  <li><a href="#gráfico-bonito-chatgpt" id="toc-gráfico-bonito-chatgpt" class="nav-link" data-scroll-target="#gráfico-bonito-chatgpt"><span class="header-section-number">6.2</span> Gráfico bonito (ChatGPT 😳)</a></li>
+  <li><a href="#guardar-gráfico-con-dimensiones-de-powerpoint" id="toc-guardar-gráfico-con-dimensiones-de-powerpoint" class="nav-link" data-scroll-target="#guardar-gráfico-con-dimensiones-de-powerpoint"><span class="header-section-number">6.3</span> Guardar gráfico con dimensiones de PowerPoint</a></li>
+  </ul></li>
+  </ul>
+</nav>
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introducción a R</h1>
+<p class="subtitle lead">Documento de trabajo</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Matías Deneken </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">May 16, 2025</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="cargar-librerías-necesarias" class="level2" data-number="1">
+<h2 data-number="1" class="anchored" data-anchor-id="cargar-librerías-necesarias"><span class="header-section-number">1</span> Cargar librerías necesarias</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># tidyverse: manipular datos, filtrar, agrupar, resumir y visualizar</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># ggplot2: crear visualizaciones con sistema de capas</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="descargar-y-cargar-datos" class="level2" data-number="2">
+<h2 data-number="2" class="anchored" data-anchor-id="descargar-y-cargar-datos"><span class="header-section-number">2</span> Descargar y cargar datos</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Definimos la URL y el nombre del archivo</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">"https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase1/bbdd/casen2022_sample.csv"</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>destfile <span class="ot">&lt;-</span> <span class="st">"casen2022_sample.csv"</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Descargamos el archivo desde GitHub</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">download.file</span>(url, destfile, <span class="at">mode =</span> <span class="st">"wb"</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargamos el CSV descargado en un dataframe</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>casen <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(destfile, <span class="at">encoding =</span> <span class="st">"UTF-8"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="inspeccionar-los-primeros-datos" class="level2" data-number="3">
+<h2 data-number="3" class="anchored" data-anchor-id="inspeccionar-los-primeros-datos"><span class="header-section-number">3</span> Inspeccionar los primeros datos</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar primeras filas del dataset para conocer la estructura</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>tibble<span class="sc">::</span><span class="fu">as_tibble</span>(<span class="fu">head</span>(casen))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 11
+  region   nse  sexo ecivil  educ pueblos_indigenas pobreza    p9  edad yautcor
+   &lt;int&gt; &lt;int&gt; &lt;int&gt;  &lt;int&gt; &lt;int&gt;             &lt;int&gt;   &lt;int&gt; &lt;int&gt; &lt;int&gt;   &lt;int&gt;
+1      5     4     1      2     5                 0       3     3    43  200000
+2      4     2     1      2     5                 0       3     5    27  100000
+3      7     1     1      8     5                 0       3     5    26  400000
+4      4     1     2      8     4                 0       2     5    16      NA
+5      9     6     2      8     5                 0       3     3    22      NA
+6      5     4     2      1     2                 0       3     4    43   20000
+# ℹ 1 more variable: ind_hacina &lt;int&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="visualizaciones-exploratorias" class="level2" data-number="4">
+<h2 data-number="4" class="anchored" data-anchor-id="visualizaciones-exploratorias"><span class="header-section-number">4</span> Visualizaciones exploratorias</h2>
+<section id="histograma-de-edad" class="level3" data-number="4.1">
+<h3 data-number="4.1" class="anchored" data-anchor-id="histograma-de-edad"><span class="header-section-number">4.1</span> Histograma de edad</h3>
+<p>El histograma permite visualizar la distribución de la variable numérica edad dentro del conjunto de datos. Esta es una de las formas más directas de explorar cómo se distribuyen los valores de una variable continua.</p>
+<p><strong>Pasos del código:</strong></p>
+<ul>
+<li><p><code>casen |&gt; ggplot(aes(edad))</code>: inicia el gráfico utilizando la base de datos casen y mapea la variable edad al eje X.</p></li>
+<li><p><code>geom_histogram(color = "white")</code>: agrega una capa de histograma (barras), usando el color blanco para el borde de las barras.</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(edad)) <span class="sc">+</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">color =</span> <span class="st">"white"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="densidad-por-pertenencia-a-pueblo-indígena" class="level3" data-number="4.2">
+<h3 data-number="4.2" class="anchored" data-anchor-id="densidad-por-pertenencia-a-pueblo-indígena"><span class="header-section-number">4.2</span> Densidad por pertenencia a pueblo indígena</h3>
+<p>Este gráfico muestra la&nbsp;<strong>distribución de la edad</strong>&nbsp;usando curvas de densidad, diferenciadas por el grupo de pertenencia indígena. A diferencia del histograma, las curvas de densidad suavizan la forma de la distribución y permiten comparar grupos más claramente.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>casen |&gt; ggplot(aes(edad, colour = pueblos_indigenas))</code>: se define el gráfico base, mapeando la variable&nbsp;<code>edad</code>&nbsp;al eje X y asignando un color distinto según la variable&nbsp;<code>pueblos_indigenas</code>.</p></li>
+<li><p><code>geom_density()</code>: añade la geometría de densidad, que estima la distribución de la variable&nbsp;<code>edad</code>.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(edad, <span class="at">colour =</span> pueblos_indigenas)) <span class="sc">+</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="densidad-de-ingresos-según-pueblo-indígena" class="level3" data-number="4.3">
+<h3 data-number="4.3" class="anchored" data-anchor-id="densidad-de-ingresos-según-pueblo-indígena"><span class="header-section-number">4.3</span> Densidad de ingresos según pueblo indígena</h3>
+<p>Este gráfico permite observar cómo se distribuye el&nbsp;<strong>ingreso autónomo (<code>yautcor</code>)</strong>&nbsp;en la población, distinguiendo entre personas indígenas y no indígenas. Se utiliza una curva de densidad para facilitar la comparación entre ambos grupos.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>mutate(...)</code>: convierte la variable&nbsp;<code>pueblos_indigenas</code>&nbsp;en un&nbsp;<strong>factor con etiquetas legibles</strong>:&nbsp;<code>"No Indígena"</code>&nbsp;y&nbsp;<code>"Indígena"</code>.</p></li>
+<li><p><code>filter(yautcor &lt; 100000)</code>:&nbsp;<strong>excluye valores extremos</strong>&nbsp;de ingreso para evitar que distorsionen el gráfico.</p></li>
+<li><p><code>ggplot(...)</code>: inicia el gráfico asignando la variable&nbsp;<code>yautcor</code>&nbsp;al eje X, y diferenciando los grupos por&nbsp;<code>fill</code>&nbsp;y&nbsp;<code>color</code>.</p></li>
+<li><p><code>geom_density(alpha = 0.6)</code>: genera curvas de densidad con cierta transparencia (<code>alpha = 0.6</code>) para que se puedan ver las superposiciones.</p></li>
+<li><p><code>labs(...)</code>: define título y etiquetas de los ejes.</p></li>
+<li><p><code>theme_classic()</code>: aplica un tema con fondo blanco y sin cuadrículas para una presentación más limpia.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">pueblos_indigenas =</span> <span class="fu">factor</span>(pueblos_indigenas, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">1</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No Indígena"</span>, <span class="st">"Indígena"</span>))) <span class="sc">|&gt;</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yautcor <span class="sc">&lt;</span> <span class="dv">100000</span>) <span class="sc">|&gt;</span>  <span class="co"># eliminar extremos</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> yautcor, <span class="at">fill =</span> pueblos_indigenas, <span class="at">color =</span> pueblos_indigenas)) <span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribución del ingreso autónomo según pertenencia indígena"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Ingreso autónomo (yautcor)"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Densidad"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Pertenencia"</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Pertenencia"</span></span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gráfico-de-dispersión-edad-e-ingreso" class="level3" data-number="4.4">
+<h3 data-number="4.4" class="anchored" data-anchor-id="gráfico-de-dispersión-edad-e-ingreso"><span class="header-section-number">4.4</span> Gráfico de dispersión edad e ingreso</h3>
+<p>Este gráfico muestra la relación entre la edad de las personas y su ingreso autónomo (<code>yautcor</code>), con una&nbsp;<strong>distinción por pertenencia indígena</strong>. Se utiliza un gráfico de puntos para visualizar la dispersión de los datos individuales.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>filter(yautcor &lt; 1000001)</code>:&nbsp;<strong>filtra valores extremos</strong>&nbsp;de ingreso para mantener solo observaciones dentro de un rango razonable.</p></li>
+<li><p><code>ggplot(...)</code>: inicializa el gráfico asignando&nbsp;<code>yautcor</code>&nbsp;al eje X y&nbsp;<code>edad</code>&nbsp;al eje Y.</p></li>
+<li><p><code>colour = as.factor(pueblos_indigenas)</code>: transforma la variable&nbsp;<code>pueblos_indigenas</code>&nbsp;en factor para colorear los puntos por grupo.</p></li>
+<li><p><code>geom_point(alpha = 0.3)</code>: agrega puntos con transparencia (<code>alpha = 0.3</code>) para&nbsp;<strong>evitar saturación visual</strong>&nbsp;en zonas densas.</p></li>
+<li><p><code>labs(...)</code>: agrega un título claro y etiquetas a los ejes.</p></li>
+<li><p><code>theme_minimal()</code>: aplica un diseño limpio con fondo blanco y sin bordes.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yautcor <span class="sc">&lt;</span> <span class="dv">1000001</span>) <span class="sc">|&gt;</span>  <span class="co"># eliminar valores extremos</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> yautcor, <span class="at">y =</span> edad, <span class="at">colour =</span> <span class="fu">as.factor</span>(pueblos_indigenas))) <span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.3</span>) <span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Ingreso autónomo por edad (sin extremos)"</span>,</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Edad"</span>,</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Ingreso autónomo (yautcor)"</span>,</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"Pueblos indígenas"</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="línea-de-tendencia-sin-puntos" class="level3" data-number="4.5">
+<h3 data-number="4.5" class="anchored" data-anchor-id="línea-de-tendencia-sin-puntos"><span class="header-section-number">4.5</span> Línea de tendencia sin puntos</h3>
+<p>Este gráfico representa la&nbsp;<strong>tendencia general entre el ingreso autónomo y la edad</strong>, sin mostrar los puntos individuales. Es útil para detectar patrones globales cuando hay muchos datos.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>filter(yautcor &lt; 2000000)</code>: elimina outliers con ingresos extremadamente altos para evitar que afecten la tendencia.</p></li>
+<li><p><code>ggplot(...)</code>: define el mapeo estético con&nbsp;<code>yautcor</code>&nbsp;en el eje X y&nbsp;<code>edad</code>&nbsp;en el eje Y.</p></li>
+<li><p><code>geom_smooth()</code>: agrega una&nbsp;<strong>línea suavizada</strong>&nbsp;que estima la relación entre ambas variables, utilizando por defecto un modelo de regresión local (<em>loess</em>).</p></li>
+<li><p><code>labs(...)</code>: define el título del gráfico y los nombres de los ejes.</p></li>
+<li><p><code>theme_minimal()</code>: aplica un tema visual limpio.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(yautcor <span class="sc">&lt;</span> <span class="dv">2000000</span>) <span class="sc">|&gt;</span>  <span class="co"># evitar outliers extremos</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> yautcor, <span class="at">y =</span> edad)) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Edad según ingreso autónomo (sin extremos)"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Ingreso autónomo (yautcor)"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Edad"</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="gráfico-de-barras" class="level2" data-number="5">
+<h2 data-number="5" class="anchored" data-anchor-id="gráfico-de-barras"><span class="header-section-number">5</span> Gráfico de barras</h2>
+<section id="conteo-de-personas-por-condición-indígena" class="level3" data-number="5.1">
+<h3 data-number="5.1" class="anchored" data-anchor-id="conteo-de-personas-por-condición-indígena"><span class="header-section-number">5.1</span> Conteo de personas por condición indígena</h3>
+<p>Este gráfico muestra&nbsp;<strong>cuántas personas en la muestra se identifican o no con un pueblo indígena</strong>. Es útil para visualizar la distribución de esta variable categórica.</p>
+<p><strong>Pasos del código:</strong></p>
+<ol type="1">
+<li><p><code>ggplot(aes(x = factor(pueblos_indigenas)))</code>: se transforma la variable&nbsp;<code>pueblos_indigenas</code>&nbsp;en un&nbsp;<strong>factor</strong>, para que&nbsp;<code>ggplot2</code>&nbsp;la trate como una categoría en el eje X.</p></li>
+<li><p><code>geom_bar()</code>: genera un gráfico de barras contando automáticamente las observaciones por categoría.</p></li>
+<li><p><code>labs(...)</code>: define el título del gráfico y los nombres de los ejes.</p></li>
+<li><p><code>scale_x_discrete(...)</code>: reemplaza las etiquetas “0” y “1” por&nbsp;<strong>“No Indígena”</strong>&nbsp;e&nbsp;<strong>“Indígena”</strong>.</p></li>
+<li><p><code>theme_minimal()</code>: aplica un tema limpio y moderno al gráfico.</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>casen <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">factor</span>(pueblos_indigenas))) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribución según pertenencia a pueblo indígena"</span>,</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Pertenencia"</span>,</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Cantidad"</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"No Indígena"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Indígena"</span>)) <span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="crear-variable-categórica-de-nivel-educativo" class="level3" data-number="5.2">
+<h3 data-number="5.2" class="anchored" data-anchor-id="crear-variable-categórica-de-nivel-educativo"><span class="header-section-number">5.2</span> Crear variable categórica de nivel educativo</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>casen <span class="ot">&lt;-</span> casen <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">educ_nivel =</span> <span class="fu">case_when</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">0</span><span class="sc">:</span><span class="dv">1</span> <span class="sc">~</span> <span class="st">"Sin educación"</span>,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">2</span><span class="sc">:</span><span class="dv">4</span> <span class="sc">~</span> <span class="st">"Básica"</span>,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">5</span><span class="sc">:</span><span class="dv">6</span> <span class="sc">~</span> <span class="st">"Media"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">7</span><span class="sc">:</span><span class="dv">8</span> <span class="sc">~</span> <span class="st">"Técnico nivel superior"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">%in%</span> <span class="dv">9</span><span class="sc">:</span><span class="dv">11</span> <span class="sc">~</span> <span class="st">"Profesional"</span>,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>      educ <span class="sc">==</span> <span class="dv">12</span> <span class="sc">~</span> <span class="st">"Postgrado"</span>,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="agrupar-y-contar-por-nivel-educativo-y-condición" class="level3" data-number="5.3">
+<h3 data-number="5.3" class="anchored" data-anchor-id="agrupar-y-contar-por-nivel-educativo-y-condición"><span class="header-section-number">5.3</span> Agrupar y contar por nivel educativo y condición</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>tabla_educ <span class="ot">&lt;-</span> casen <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pueblos_indigenas, educ_nivel) <span class="sc">|&gt;</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">count</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="gráfico-de-barras-agrupadas" class="level3" data-number="5.4">
+<h3 data-number="5.4" class="anchored" data-anchor-id="gráfico-de-barras-agrupadas"><span class="header-section-number">5.4</span> Gráfico de barras agrupadas</h3>
+<p>Este gráfico de barras compara&nbsp;<strong>la cantidad de personas por nivel educativo</strong>, diferenciando entre quienes&nbsp;<strong>se identifican como indígenas y quienes no</strong>. Al usar&nbsp;<code>position = "dodge"</code>, las barras se colocan una al lado de la otra, permitiendo comparar los grupos dentro de cada nivel educativo.</p>
+<p><strong>Explicación paso a paso:</strong></p>
+<ol type="1">
+<li><p><code>ggplot(tabla_educ, aes(...))</code>: se define la base del gráfico con la tabla&nbsp;<code>tabla_educ</code>, especificando:</p>
+<ul>
+<li><p><code>x = educ_nivel</code>: eje X representa los niveles educativos.</p></li>
+<li><p><code>y = n</code>: eje Y representa la cantidad de personas.</p></li>
+<li><p><code>fill = factor(pueblos_indigenas)</code>: las barras se rellenan según la pertenencia indígena.</p></li>
+</ul></li>
+<li><p><code>geom_col(position = "dodge")</code>: crea un gráfico de columnas usando los valores exactos (no conteos automáticos), y separa las barras por grupo.</p></li>
+<li><p><code>labs(...)</code>: agrega título y etiquetas a los ejes y leyenda.</p></li>
+<li><p><code>scale_fill_manual(...)</code>: personaliza los colores de cada grupo:</p>
+<ul>
+<li><p>Gris para “No Indígena”</p></li>
+<li><p>Naranja para “Indígena”<br>
+También se cambian las etiquetas para que sean legibles.</p></li>
+</ul></li>
+<li><p><code>theme_minimal()</code>: aplica un tema claro y limpio.</p></li>
+<li><p><code>theme(...)</code>: rota las etiquetas del eje X 45 grados para mejorar su legibilidad</p></li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabla_educ, <span class="fu">aes</span>(<span class="at">x =</span> educ_nivel, <span class="at">y =</span> n, <span class="at">fill =</span> <span class="fu">factor</span>(pueblos_indigenas))) <span class="sc">+</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribución por nivel educativo y pertenencia indígena"</span>,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Nivel educativo"</span>,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Cantidad de personas"</span>,</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Pueblos Indígenas"</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> <span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"#999999"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"#D95F02"</span>), <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"No Indígena"</span>, <span class="st">"Indígena"</span>)) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="calcular-proporciones-dentro-de-cada-grupo" class="level3" data-number="5.5">
+<h3 data-number="5.5" class="anchored" data-anchor-id="calcular-proporciones-dentro-de-cada-grupo"><span class="header-section-number">5.5</span> Calcular proporciones dentro de cada grupo</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>tabla_educ_por_grupo <span class="ot">&lt;-</span> tabla_educ <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(pueblos_indigenas) <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span> </span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="gráfico-de-barras-por-grupo-con-facetas" class="level3" data-number="5.6">
+<h3 data-number="5.6" class="anchored" data-anchor-id="gráfico-de-barras-por-grupo-con-facetas"><span class="header-section-number">5.6</span> Gráfico de barras por grupo con facetas</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tabla_educ_por_grupo, <span class="fu">aes</span>(<span class="at">x =</span> educ_nivel, <span class="at">y =</span> prop, <span class="at">fill =</span> educ_nivel)) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">label =</span> scales<span class="sc">::</span><span class="fu">percent</span>(prop, <span class="at">accuracy =</span> <span class="dv">1</span>)), <span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="sc">~</span> pueblos_indigenas, <span class="at">labeller =</span> <span class="fu">as_labeller</span>(<span class="fu">c</span>(<span class="st">"0"</span> <span class="ot">=</span> <span class="st">"No Indígena"</span>, <span class="st">"1"</span> <span class="ot">=</span> <span class="st">"Indígena"</span>))) <span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Distribución del nivel educativo dentro de cada grupo"</span>,</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Nivel educativo"</span>,</span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Proporción"</span>,</span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Nivel educativo"</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="gráfico-de-tendencia-con-gss" class="level2" data-number="6">
+<h2 data-number="6" class="anchored" data-anchor-id="gráfico-de-tendencia-con-gss"><span class="header-section-number">6</span> Gráfico de tendencia con GSS</h2>
+<p>Este bloque de código&nbsp;<strong>procesa la base de datos&nbsp;<code>gss_cat</code></strong>&nbsp;del paquete&nbsp;<code>forcats</code>, con el fin de calcular la&nbsp;<strong>proporción de personas que se identifican como “Strong Democrat”</strong>&nbsp;en EE.UU., desagregado por raza y año.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(forcats)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>gss_party_race <span class="ot">&lt;-</span> gss_cat <span class="sc">|&gt;</span> </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(partyid), <span class="sc">!</span><span class="fu">is.na</span>(race)) <span class="sc">|&gt;</span>     <span class="co"># 1. Elimina valores perdidos en partido y raza</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, race, partyid) <span class="sc">|&gt;</span>             <span class="co"># 2. Agrupa por año, raza y afiliación partidaria</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">|&gt;</span>      <span class="co"># 3. Cuenta el número de casos por combinación</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year, race) <span class="sc">|&gt;</span>                      <span class="co"># 4. Reagrupa por año y raza</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">prop =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span>                 <span class="co"># 5. Calcula la proporción que representa cada partido</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()                                    <span class="co"># 6. Elimina agrupaciones</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>voto_duro <span class="ot">&lt;-</span> gss_party_race <span class="sc">|&gt;</span> <span class="fu">filter</span>(partyid <span class="sc">==</span> <span class="st">"Strong democrat"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="gráfico-de-tendencia-final" class="level3" data-number="6.1">
+<h3 data-number="6.1" class="anchored" data-anchor-id="gráfico-de-tendencia-final"><span class="header-section-number">6.1</span> Gráfico de tendencia final</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(voto_duro, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> prop, <span class="at">color =</span> race)) <span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="gráfico-bonito-chatgpt" class="level3" data-number="6.2">
+<h3 data-number="6.2" class="anchored" data-anchor-id="gráfico-bonito-chatgpt"><span class="header-section-number">6.2</span> Gráfico bonito (ChatGPT 😳)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a> g2 <span class="ot">&lt;-</span><span class="fu">ggplot</span>(voto_duro, <span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> prop, <span class="at">color =</span> race)) <span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">size =</span> <span class="fl">1.2</span>) <span class="sc">+</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">2</span>) <span class="sc">+</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>(<span class="at">accuracy =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_brewer</span>(<span class="at">palette =</span> <span class="st">"Dark2"</span>) <span class="sc">+</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Voto duro demócrata en EE.UU."</span>,</span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"Proporción que se identifica como 'Strong Democrat', por raza y año"</span>,</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">"Fuente: GSS (General Social Survey)"</span>,</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Año"</span>,</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Proporción"</span>,</span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">color =</span> <span class="st">"Raza"</span></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">13</span>) <span class="sc">+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>, <span class="at">size =</span> <span class="dv">16</span>),</span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">10</span>)),</span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">color =</span> <span class="st">"gray40"</span>, <span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">"bottom"</span>,</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">"bold"</span>),</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>  ); g2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practico2_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="guardar-gráfico-con-dimensiones-de-powerpoint" class="level3" data-number="6.3">
+<h3 data-number="6.3" class="anchored" data-anchor-id="guardar-gráfico-con-dimensiones-de-powerpoint"><span class="header-section-number">6.3</span> Guardar gráfico con dimensiones de PowerPoint</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a> <span class="fu">ggsave</span>(<span class="st">"images/voto_duro_race_ppt.png"</span>, <span class="at">plot =</span> <span class="fu">last_plot</span>(), <span class="at">width =</span> <span class="fl">29.21</span>, <span class="at">height =</span> <span class="fl">12.09</span>, <span class="at">units =</span> <span class="st">"cm"</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
