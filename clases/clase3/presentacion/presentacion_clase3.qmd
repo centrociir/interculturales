@@ -6,16 +6,19 @@ logo: "images/logo_ciir.jpg"
 include-in-header:
   - text: |
       <style>
-      .reveal .slide-logo {
-        max-height: unset;
-        height: 100px;
-      }
+        .reveal .slides {
+          padding-top: 0px !important;
+        }
+        .reveal h2 {
+          margin-top: -20px !important;
+        }
       </style>
 footer: "Sesión 3: InteRculturales"
 date: "2025-05-22"
 date-format: long
 format: 
   revealjs:
+    incremental: true
     theme: simple
     width: 1600
     height: 900
@@ -26,16 +29,407 @@ format:
 callout-appearance: minimal
 ---
 
-## Introducción
+# Temario de hoy
+
+1.  Introducción al SIG
+2.  Paquetes en R
+3.  Unión de bases de datos
+4.  Práctica con datos ficticios
+5.  ChileMapas
+6.  Código práctico
+
+## Objetivo principal: Replicar estos mapas
+
+::: columns
+::: {.column width="50%"}
+#### Mapa mundial
+
+![](images/humilde-objetivo1.png){fig-align="center" width="496"}
+:::
+
+::: {.column width="50%"}
+#### Mapa Chile y regiones
+
+![](images/humilde-objetivo2.png.jpeg){fig-align="center" width="679"}
+:::
+:::
+
+```{r, eval=TRUE}
+library(tidyverse)
+library(sf)
+library(countrycode)
+```
 
 ## Recapitulando
 
 ## Sistema de Información Geográfica (SIG)
 
-## Algunos paquetes
+## Paquetes: 📦 ¿Qué es `sf`?
 
-## ¿Ahora qué?
+`sf` es un **paquete de R** para trabajar con **datos espaciales** (geográficos) de manera moderna y eficiente. Su nombre viene de **"simple features"**, un estándar internacional para representar datos espaciales (como puntos, líneas o polígonos) en bases de datos y software.
 
-## Indexación de bases de datos
+Te permite:
 
-## Verificar la similitud
+-   Leer y escribir **archivos espaciales** como Shapefiles, GeoJSON, KML, etc.
+
+-   Unir datos geográficos con datos tabulares (como una comuna con su población).
+
+-   Hacer **análisis espacial** (intersecciones, distancias, áreas, etc.).
+
+-   Visualizar mapas fácilmente con `ggplot2::geom_sf()` o `tmap`.
+
+## Paquetes: 📦 ¿Qué es `sf`?
+
+### 🧩 Tipos de geometría
+
+-   `POINT`: una ubicación (ej: una escuela).
+
+-   `LINESTRING`: una línea (ej: un río).
+
+-   `POLYGON`: una superficie cerrada (ej: una comuna o país).
+
+-   `MULTIPOLYGON`: varios polígonos juntos (ej: Chile continental + Rapa Nui).
+
+### 🔧 Funciones importantes del paquete `sf`
+
+-   `st_read()`: lee archivos espaciales (como shapefiles).
+
+-   `st_write()`: guarda archivos espaciales.
+
+-   `st_geometry()`: accede a la geometría de un objeto.
+
+-   `st_crs()`: inspecciona o define el sistema de coordenadas.
+
+-   `st_transform()`: cambia la proyección del mapa.
+
+-   `st_join()`, `st_intersection()`: operaciones espaciales.
+
+## Paquetes: 📦 ¿Qué es `sf`?
+
+### 🗺️ ¿Por qué es útil?
+
+Porque te permite combinar el mundo de la **estadística en R** con el análisis geográfico, sin salir del mismo entorno. 
+
+| Componente             | ¿Qué hace?                                              |
+|------------------------|---------------------------------------------------------|
+| **Clase especial**     | Le dice a R cómo interpretar los datos como espaciales. |
+| **Columna `geometry`** | Guarda formas como puntos, polígonos, líneas.           |
+| **`CRS` (proyección)** | Define cómo se ubica esa geometría en el planeta.       |
+| **Métodos especiales** | Permite hacer joins, distancias, transformaciones, etc. |
+
+## Paquete: countrycode
+
+El paquete `countrycode` permite convertir nombres de países entre distintos sistemas de codificación estándar. Es muy útil para unir bases de datos internacionales o conectar datos con geometrías espaciales.
+
+```{r, message=FALSE, eval=TRUE, echo=TRUE}
+library(countrycode)
+```
+
+```{r, echo=TRUE}
+countrycode("Chile", origin = "country.name", destination = "iso3c")
+```
+
+```{r, echo=TRUE}
+names(countrycode::codelist)[1:10]
+```
+
+Algunas opciones de destination que puedes usar: \*
+
+-   "iso3c" → código de 3 letras (ej: CHL)
+
+-   "iso2c" → código de 2 letras (ej: CL) \* "continent" → continente (ej: Americas)
+
+-    "region" → región del mundo según World Bank
+
+-   "un.region.name" → región según Naciones Unidas
+
+-   "cldr.short.en" → nombre corto en inglés (ej: Chile)
+
+## Paquete: countrycode
+
+```{r}
+library(countrycode)
+library(knitr)
+
+# Crear tabla con distintas codificaciones para "Chile"
+tabla_chile <- data.frame(
+  atributo = c("Nombre (original)", "Código ISO-3", "Código ISO-2", "Continente", "Región", "Región ONU", "Nombre corto en inglés"),
+  valor = c(
+    "Chile",
+    countrycode("Chile", "country.name", "iso3c"),
+    countrycode("Chile", "country.name", "iso2c"),
+    countrycode("Chile", "country.name", "continent"),
+    countrycode("Chile", "country.name", "region"),
+    countrycode("Chile", "country.name", "un.region.name"),
+    countrycode("Chile", "country.name", "cldr.short.en")
+  )
+)
+
+# Mostrar como tabla
+kable(tabla_chile, caption = "Codificaciones para 'Chile' usando countrycode()")
+
+```
+
+## Paquete: R Natural Earth.
+
+Es un paquete R que permite **descargar datos geográficos del mundo** (países, estados, líneas costeras, ríos, etc.) desde el proyecto [Natural Earth](https://www.naturalearthdata.com/). Se usa mucho para crear mapas en R, especialmente con `sf` y `ggplot2`.
+
+```{r}
+library(rnaturalearth)
+
+world <- ne_countries(scale = "medium", returnclass = "sf")
+
+world |> select(iso_a3, geometry) |> head(2)
+```
+
+**Posee estadísticas de interés:**
+
+-   Producto de Interno de Bruto
+
+-   Región económica (BRICS, OCDE, etc)
+
+-   Espera de vida
+
+## Entonces....
+
+| Paquete         | Rol en el flujo de trabajo                  | Analogía                         |
+|-----------------|---------------------------------------------|----------------------------------|
+| `sf`            | Estructura: hace que todo sea "espacial"    | Es como el "Excel" espacial de R |
+| `rnaturalearth` | Fuente de datos geográficos en formato `sf` | Es como bajar un mapa listo      |
+| `countrycode`   | Diccionario para traducir nombres de países | Es como un traductor de nombres  |
+
+# Manos a la obra
+
+## Exploremos
+
+```{r, echo=TRUE}
+world |> select(adm0_a3, geometry) |> 
+  filter(adm0_a3 == "CHL")|> head(2)
+
+```
+
+```{r, echo=TRUE}
+library(countrycode)
+
+# Vector de países (algunos con nombres en español)
+paises <- c("Chile", "Argentina", "Brazil", "Estados Unidos", "Germany", "Reino Unido")
+
+# Convertir a códigos ISO3
+codigo_iso <- countrycode(paises, 
+                          origin = "country.name", 
+                          destination = "iso3c")
+
+# Combinar en tabla
+data.frame(pais = paises, iso3c = codigo_iso)
+
+```
+
+## Pero ¿Qué nos falta? Indexación de bases de datos
+
+Cuando trabajamos con datos espaciales, es fundamental asegurarnos de que las bases compartan un mismo sistema de referencia espacial (CRS). Además, debemos usar claves geográficas comunes (ej. códigos de región, comuna o distrito) para poder hacer joins entre bases tabulares y espaciales.
+
+Verificación con `st_crs()`. Uniones con `left_join()` y `inner_join()` usando códigos comunes.
+
+*¿Coinciden los códigos geográficos? ¿Hay nombres de comunas mal escritos o duplicados? ¿Cuántos registros se pierden en el join?*
+
+**Herramientas útiles:**
+
+-   `anti_join()` para ver qué quedó fuera.
+-   `janitor::clean_names()` para estandarizar nombres de variables (mayúsculas, tildes, etc.)
+
+## Datos ficticios (1)
+
+```{r, echo=TRUE}
+
+library(dplyr)
+library(knitr)
+
+economia <- tibble(
+  pais = c("Chile", "Argentina", "Perú", "Brazil", "Colombia"),
+  pib_per_capita = c(15000, 10500, 12000, 9800, 8700)
+)
+
+educacion <- tibble(
+  pais = c("Chile", "Argentina", "Uruguay", "Brazil", "Ecuador"),
+  anios_educacion = c(11.2, 10.5, 9.8, 8.9, 8.3)
+)
+```
+
+::: columns
+::: {.column width="50%"}
+Educación
+
+```{r}
+
+kable(educacion)
+```
+:::
+
+::: {.column width="50%"}
+Economía
+
+```{r}
+kable(economia)
+```
+:::
+:::
+
+## Datos ficticios (2)
+
+Solo para los que se encuentran en el dataset: `inner_join`
+
+```{r, echo=TRUE}
+economia |> inner_join(educacion, by = "pais")
+
+```
+
+Solo para los datos que se encuentran en el dataset desde la posición en el código (left) : `left_join`
+
+```{r, echo=TRUE}
+economia |> left_join(educacion, by = "pais")
+```
+
+Solo para los datos que se encuentran en el dataset desde la posición en el código (right) : `right_join`
+
+```{r, echo=TRUE}
+economia |> right_join(educacion, by = "pais")
+
+```
+
+## Datos ficticios (3)
+
+Se unen todos, incluso los con valores NA (full): `full_join`
+
+```{r, echo=TRUE}
+economia |> full_join(educacion, by = "pais")
+```
+
+Se verifica los que no pueden ser unidos correctamente en ambas bases: `anti_join`
+
+```{r, echo=TRUE}
+economia |> anti_join(educacion, by = "pais")
+```
+
+```{r, echo=TRUE}
+educacion |> anti_join(economia, by = "pais")
+```
+
+## Datos ficticios (4)
+
+```{r, echo=TRUE}
+datos <- economia |> inner_join(educacion, by = "pais")
+```
+
+```{r, echo=TRUE}
+# Paso 3: crear columna con código ISO-3 como 'iso3c'
+datos <- datos %>%
+  mutate(iso3c = countrycode(pais, origin = "country.name", destination = "iso3c"))
+
+# Paso 4: obtener geometría mundial
+world <- ne_countries(scale = "medium", returnclass = "sf") %>%
+  select(name, iso_a3, geometry)
+
+# Paso 5: unir usando world como base principal
+datos_geo <- inner_join(world, datos, by = c("iso_a3" = "iso3c")); datos_geo
+
+
+```
+
+```{r}
+# Paso 1: Crear las bases de datos
+# Paso 2: Unir las bases por país
+
+datos <- full_join(economia, educacion, by = "pais")
+
+world <- ne_countries(scale = "medium", returnclass = "sf") %>%
+  select(name, iso_a3, geometry)
+
+
+# Paso 3: Agregar código ISO-3 para poder unir con geometría
+datos <- datos %>%
+  mutate(iso3c = countrycode(pais, origin = "country.name", destination = "iso3c")) 
+
+```
+
+## Datos ficticios (5)
+
+```{r, echo=TRUE}
+datos |> glimpse()
+world |> glimpse()
+
+world2 <-world |> rename(iso3c = iso_a3)
+datos_geo <- world2 |>  inner_join(datos, by = "iso3c")
+```
+
+```{r}
+library(kableExtra)
+
+datos_geo |> 
+  #st_drop_geometry() |>
+  kable() |>
+  kable_styling(font_size = 21)
+
+```
+
+## Datos ficticios (6)
+
+#### ✅ `geom_sf(aes(fill = pib_per_capita), color = "white")`
+
+-   `geom_sf()` es el equivalente espacial de `geom_bar()` o `geom_point()`, pero para geometría.
+
+-   `fill = pib_per_capita`: **el color del país depende del valor del PIB per cápita**.
+
+-   `color = "white"`: agrega bordes blancos entre países, para que se vean claramente separados.
+
+```{r, echo=TRUE, fig.width=6, fig.height=4}
+ggplot(datos_geo) +
+  geom_sf(aes(fill = pib_per_capita), color = "white") +
+  labs(title = "PIB per cápita en países con datos educativos",
+       fill = "PIB per cápita") +
+  theme_minimal()
+
+
+```
+
+## Datos ficticios (7)
+
+```{r, echo=TRUE}
+datos |> glimpse()
+world |> glimpse()
+
+world2 <-world |> rename(iso3c = iso_a3)
+datos_geo <- world2 |>  full_join(datos, by = "iso3c")
+```
+
+```{r}
+datos_geo |> head(5)|> 
+  #st_drop_geometry() |>
+  kable() |>
+  kable_styling(font_size = 21)
+```
+
+## Datos ficticios 8
+
+```{r}
+ggplot(datos_geo) +
+  geom_sf(aes(fill = pib_per_capita), color = "white") +
+  labs(title = "PIB per cápita en países con datos educativos",
+       fill = "PIB per cápita") +
+  theme_minimal()
+```
+
+# Hasta acá: DUDAS.
+
+## Chile Mapas
+
+::: columns
+::: {.column width="50%"}
+![](images/22775997243.jpg){fig-align="center" width="347"}
+:::
+
+::: {.column width="50%"}
+-   El paquete **`chilemapas`** es una herramienta diseñada específicamente para R que permite acceder fácilmente a **mapas oficiales y actualizados de Chile**, listos para usar con `ggplot2` y `sf`.
+
+-   Proporción información de: Provincias, Comunas, Regiones y Distrito electorales
+:::
+:::
