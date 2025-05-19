@@ -424,7 +424,7 @@ ggplot(datos_geo) +
 
 ::: columns
 ::: {.column width="50%"}
-![](images/22775997243.jpg){fig-align="center" width="347"}
+![](images/22775997243.jpg){fig-align="center" width="312"}
 :::
 
 ::: {.column width="50%"}
