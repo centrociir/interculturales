@@ -58,6 +58,7 @@ callout-appearance: minimal
 library(tidyverse)
 library(sf)
 library(countrycode)
+library(chilemapas)
 ```
 
 ## Recapitulando
@@ -424,7 +425,7 @@ ggplot(datos_geo) +
 
 ::: columns
 ::: {.column width="50%"}
-![](images/22775997243.jpg){fig-align="center" width="312"}
+![](images/geografia.jpg){fig-align="center" width="312"}
 :::
 
 ::: {.column width="50%"}
@@ -433,3 +434,93 @@ ggplot(datos_geo) +
 -   Proporción información de: Provincias, Comunas, Regiones y Distrito electorales
 :::
 :::
+
+## ChileMapas
+
+```{r, echo=TRUE}
+mapa_comunas <- chilemapas::mapa_comunas
+
+mapa_comunas |> head(10)
+```
+
+## Gráfico Chile
+
+```{r, echo=TRUE}
+grafico_comunas <- mapa_comunas |> 
+  st_set_geometry(mapa_comunas$geometry) |> # asignar geometría
+  ggplot() + # gráfico
+  geom_sf() # capa geométrica
+
+grafico_comunas +
+  theme_classic()
+```
+
+## Chile Mapas: Regiones
+
+El paquete `{sf}` facilita en gran medida el trabajo con datos geográficos, especialmente en lo que respecta a operaciones espaciales como la **fusión de polígonos adyacentes**.
+
+En este caso, utilizamos `group_by()` para agrupar las observaciones según la variable `codigo_region`, Luego, aplicamos `summarize()` junto a la función `sf::st_union()` para combinar los polígonos de las comunas dentro de cada grupo, generando así un nuevo conjunto de **polígonos regionales**
+
+```{r, echo=TRUE}
+mapa_regiones <- mapa_comunas |> 
+  group_by(codigo_region) |> 
+  summarize(geometry = st_union(geometry)) # resumir los datos agrupados uniéndolos
+
+mapa_regiones |> head(2)
+```
+
+## ChileMapas: Regiones
+
+```{r}
+grafico_regiones <- mapa_regiones |> 
+  st_set_geometry(mapa_regiones$geometry) |> # especificar la geometría del mapa
+  ggplot() + # graficar
+  geom_sf() 
+
+grafico_regiones +
+  theme_classic()
+```
+
+## ChileMapas: Filtremos
+
+```{r, echo=TRUE}
+mapa <- chilemapas::mapa_comunas |> 
+  left_join(
+    chilemapas::codigos_territoriales |> 
+      select(matches("comuna")), 
+    by = "codigo_comuna") |> 
+  filter(codigo_region=="08")
+
+mapa |> head(2)
+```
+
+```{r, echo=TRUE}
+mapa_datos <- mapa |> 
+  # crear una variable para comunas específicas
+  mutate(variable = case_when(nombre_comuna == "Chiguayante" ~ "Fui",
+                              nombre_comuna == "San Pedro de la Paz" ~ "Fui",
+                              nombre_comuna == "Coronel" ~ "Fui",
+                              nombre_comuna == "Hualpen" ~ "No fui",
+                              nombre_comuna == "Lota" ~ "Fui",
+                              nombre_comuna == "Concepcion" ~ "Ñuñoa",
+                              nombre_comuna == "Santa Juana" ~ "No fui")) |> 
+  select(nombre_comuna, codigo_comuna, variable, geometry)
+
+mapa_datos |> head(1)
+```
+
+## ChileMapas: Visualizar
+
+```{r}
+# visualizar
+mapa_datos |> 
+  ggplot() +
+  geom_sf(aes(geometry = geometry, 
+              fill = variable), #usamos la variable que creamos como relleno de las comunas
+          col = "white") +
+  theme_void()
+```
+
+## Fuente utilizadas
+
+1.  [Tutorial BastiMapache](https://rpubs.com/bastimapache/mapa_urbano_rm)

@@ -1135,7 +1135,7 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <div class="column" style="width:50%;">
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/22775997243.jpg" class="quarto-figure quarto-figure-center" width="312"></p>
+<p><img data-src="images/geografia.jpg" class="quarto-figure quarto-figure-center" width="312"></p>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
@@ -1144,6 +1144,138 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <li class="fragment"><p>Proporción información de: Provincias, Comunas, Regiones y Distrito electorales</p></li>
 </ul>
 </div></div>
+</section>
+<section id="chilemapas" class="slide level2">
+<h2>ChileMapas</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>mapa_comunas <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas</span>
+<span id="cb38-2"><a href=""></a></span>
+<span id="cb38-3"><a href=""></a>mapa_comunas <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 4
+   codigo_comuna codigo_provincia codigo_region                         geometry
+   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;                       &lt;MULTIPOLYGON [°]&gt;
+ 1 01401         014              01            (((-68.86081 -21.28512, -68.921…
+ 2 01403         014              01            (((-68.65113 -19.77188, -68.811…
+ 3 01405         014              01            (((-68.65113 -19.77188, -68.635…
+ 4 01402         014              01            (((-69.31789 -19.13651, -69.271…
+ 5 01404         014              01            (((-69.39615 -19.06125, -69.400…
+ 6 01107         011              01            (((-70.1095 -20.35131, -70.1243…
+ 7 01101         011              01            (((-70.09894 -20.08504, -70.102…
+ 8 02104         021              02            (((-68.98863 -25.38016, -68.987…
+ 9 02101         021              02            (((-70.60654 -23.43054, -70.601…
+10 02201         022              02            (((-67.94302 -22.38175, -67.955…</code></pre>
+</div>
+</div>
+</section>
+<section id="gráfico-chile" class="slide level2">
+<h2>Gráfico Chile</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a>grafico_comunas <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
+<span id="cb40-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_comunas<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="co"># asignar geometría</span></span>
+<span id="cb40-3"><a href=""></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="co"># gráfico</span></span>
+<span id="cb40-4"><a href=""></a>  <span class="fu">geom_sf</span>() <span class="co"># capa geométrica</span></span>
+<span id="cb40-5"><a href=""></a></span>
+<span id="cb40-6"><a href=""></a>grafico_comunas <span class="sc">+</span></span>
+<span id="cb40-7"><a href=""></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="chile-mapas-regiones" class="slide level2">
+<h2>Chile Mapas: Regiones</h2>
+<p>El paquete&nbsp;<code>{sf}</code>&nbsp;facilita en gran medida el trabajo con datos geográficos, especialmente en lo que respecta a operaciones espaciales como la&nbsp;<strong>fusión de polígonos adyacentes</strong>.</p>
+<p>En este caso, utilizamos&nbsp;<code>group_by()</code>&nbsp;para agrupar las observaciones según la variable&nbsp;<code>codigo_region</code>, Luego, aplicamos&nbsp;<code>summarize()</code>&nbsp;junto a la función&nbsp;<code>sf::st_union()</code>&nbsp;para combinar los polígonos de las comunas dentro de cada grupo, generando así un nuevo conjunto de&nbsp;<strong>polígonos regionales</strong></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
+<span id="cb41-2"><a href=""></a>  <span class="fu">group_by</span>(codigo_region) <span class="sc">|&gt;</span> </span>
+<span id="cb41-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geometry)) <span class="co"># resumir los datos agrupados uniéndolos</span></span>
+<span id="cb41-4"><a href=""></a></span>
+<span id="cb41-5"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  codigo_region                                                         geometry
+  &lt;chr&gt;                                                           &lt;GEOMETRY [°]&gt;
+1 01            POLYGON ((-69.93023 -21.4246, -69.92376 -21.42622, -69.91932 -2…
+2 02            MULTIPOLYGON (((-68.0676 -24.32856, -67.91698 -24.26902, -67.80…</code></pre>
+</div>
+</div>
+</section>
+<section id="chilemapas-regiones" class="slide level2">
+<h2>ChileMapas: Regiones</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-30-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="chilemapas-filtremos" class="slide level2">
+<h2>ChileMapas: Filtremos</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>mapa <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas <span class="sc">|&gt;</span> </span>
+<span id="cb43-2"><a href=""></a>  <span class="fu">left_join</span>(</span>
+<span id="cb43-3"><a href=""></a>    chilemapas<span class="sc">::</span>codigos_territoriales <span class="sc">|&gt;</span> </span>
+<span id="cb43-4"><a href=""></a>      <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">"comuna"</span>)), </span>
+<span id="cb43-5"><a href=""></a>    <span class="at">by =</span> <span class="st">"codigo_comuna"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb43-6"><a href=""></a>  <span class="fu">filter</span>(codigo_region<span class="sc">==</span><span class="st">"08"</span>)</span>
+<span id="cb43-7"><a href=""></a></span>
+<span id="cb43-8"><a href=""></a>mapa <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  codigo_comuna codigo_provincia codigo_region                          geometry
+  &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;                        &lt;MULTIPOLYGON [°]&gt;
+1 08308         083              08            (((-71.67889 -37.80871, -71.6746…
+2 08314         083              08            (((-71.20222 -37.65613, -71.1991…
+# ℹ 1 more variable: nombre_comuna &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>mapa_datos <span class="ot">&lt;-</span> mapa <span class="sc">|&gt;</span> </span>
+<span id="cb45-2"><a href=""></a>  <span class="co"># crear una variable para comunas específicas</span></span>
+<span id="cb45-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="fu">case_when</span>(nombre_comuna <span class="sc">==</span> <span class="st">"Chiguayante"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb45-4"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"San Pedro de la Paz"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb45-5"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Coronel"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb45-6"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Hualpen"</span> <span class="sc">~</span> <span class="st">"No fui"</span>,</span>
+<span id="cb45-7"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Lota"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb45-8"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Concepcion"</span> <span class="sc">~</span> <span class="st">"Ñuñoa"</span>,</span>
+<span id="cb45-9"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Santa Juana"</span> <span class="sc">~</span> <span class="st">"No fui"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb45-10"><a href=""></a>  <span class="fu">select</span>(nombre_comuna, codigo_comuna, variable, geometry)</span>
+<span id="cb45-11"><a href=""></a></span>
+<span id="cb45-12"><a href=""></a>mapa_datos <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 4
+  nombre_comuna codigo_comuna variable                                  geometry
+  &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;                           &lt;MULTIPOLYGON [°]&gt;
+1 Quilaco       08308         &lt;NA&gt;     (((-71.67889 -37.80871, -71.67466 -37.81…</code></pre>
+</div>
+</div>
+</section>
+<section id="chilemapas-visualizar" class="slide level2">
+<h2>ChileMapas: Visualizar</h2>
+<div class="cell">
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="fuente-utilizadas" class="slide level2">
+<h2>Fuente utilizadas</h2>
+<ol type="1">
+<li class="fragment"><a href="https://rpubs.com/bastimapache/mapa_urbano_rm">Tutorial BastiMapache</a></li>
+</ol>
 <div class="quarto-auto-generated-content">
 <p><img src="images/logo_ciir.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
