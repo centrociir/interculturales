@@ -513,7 +513,7 @@ mapa_datos |> head(1)
 
 ## ChileMapas: Visualizar
 
-```{r}
+```{r, echo=TRUE}
 # visualizar
 mapa_datos |> 
   ggplot() +
