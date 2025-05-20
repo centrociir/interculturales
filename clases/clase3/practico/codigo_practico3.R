@@ -113,6 +113,7 @@ mapa <- chilemapas::mapa_comunas |>
       select(matches("comuna")), 
     by = "codigo_comuna") 
 
+mapa
 
 # Cargar la base de datos de PAES:
 
@@ -204,13 +205,16 @@ colors <- colorRampPalette(c("#FF0000", "#00679E"))(3)  # Gradiente de 5 colores
 # Gráfico
 # Crear el gráfico con ajustes
 g1 <- data_consolidada |> 
+  filter(nombre_comuna != "Isla de Pascua",
+         nombre_comuna != "Juan Fernandez") |> 
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = promedio_ambas),
           col = "white") +
   scale_fill_gradientn(
     colours = colors,  # Gradiente personalizado
     labels = scales::label_number(big.mark = ".", decimal.mark = ",")
-  ) 
+  ) +
+  theme_classic()
 g1
 
 
@@ -239,6 +243,62 @@ g1 <- data_consolidada |>
     labels = scales::label_number(big.mark = ".", decimal.mark = ",")
   ) 
 g1
+
+# Ejercicio 3: Pueblos Indígenas.
+
+data_indi <- read_delim(
+  "https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase3/practico/bbdd/pueblos_indigenas_chile.csv",
+  delim = ";"
+)
+
+data_indi  |> mutate(largo = nchar(codigo_comuna)) |> 
+  count(largo)
+
+
+data_indi <-data_indi |>   mutate(
+  codigo_comuna = as.character(codigo_comuna),
+  codigo_comuna = if_else(
+    nchar(codigo_comuna) == 4,
+    str_pad(codigo_comuna, width = 5, pad = "0"),
+    codigo_comuna
+  )
+)
+
+data_indi  |> mutate(largo = nchar(codigo_comuna)) |> 
+  count(largo)
+
+
+tabla_indi <-data_indi |> group_by(codigo_comuna, pueblo, poblacion_total)  |> 
+  summarise(sum = sum(n, na.rm = TRUE)) 
+
+indigenas_por_comuna <- tabla_indi |> 
+  group_by(codigo_comuna, poblacion_total) |> 
+  summarise(total_indigenas = sum(sum, na.rm = TRUE), .groups = "drop")
+
+
+p <-indigenas_por_comuna |> inner_join(mapa, by = "codigo_comuna") 
+
+p <- p |> 
+  mutate(proporcion = round((total_indigenas / poblacion_total) * 100, 2))
+
+
+colors <- colorRampPalette(c("brown", "#00679E"))(3)  # Gradiente de 5 colores
+
+
+p |> 
+  filter(proporcion > 0) |> 
+  #filter(codigo_region == "09") |> 
+  ggplot() +
+  geom_sf(aes(geometry = geometry, fill = proporcion),
+          col = "white") +
+  scale_fill_gradientn(
+    colours = colors,  # Gradiente personalizado
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",")
+  ) +
+  labs(fill = "Proporción de indígenas (%)") +
+  theme_void() +
+  coord_sf(datum = TRUE)
+
 
 
 #library(spdep)
