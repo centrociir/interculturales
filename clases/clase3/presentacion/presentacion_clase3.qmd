@@ -112,7 +112,7 @@ Te permite:
 Porque te permite combinar el mundo de la **estadística en R** con el análisis geográfico, sin salir del mismo entorno. 
 
 | Componente             | ¿Qué hace?                                              |
-|------------------------|---------------------------------------------------------|
+|----------------------|--------------------------------------------------|
 | **Clase especial**     | Le dice a R cómo interpretar los datos como espaciales. |
 | **Columna `geometry`** | Guarda formas como puntos, polígonos, líneas.           |
 | **`CRS` (proyección)** | Define cómo se ubica esa geometría en el planeta.       |
@@ -140,7 +140,7 @@ Algunas opciones de destination que puedes usar: \*
 
 -   "iso2c" → código de 2 letras (ej: CL) \* "continent" → continente (ej: Americas)
 
--    "region" → región del mundo según World Bank
+-   "region" → región del mundo según World Bank
 
 -   "un.region.name" → región según Naciones Unidas
 
@@ -194,7 +194,7 @@ world |> select(iso_a3, geometry) |> head(2)
 ## Entonces....
 
 | Paquete         | Rol en el flujo de trabajo                  | Analogía                         |
-|-----------------|---------------------------------------------|----------------------------------|
+|-----------------|--------------------------------|------------------------|
 | `sf`            | Estructura: hace que todo sea "espacial"    | Es como el "Excel" espacial de R |
 | `rnaturalearth` | Fuente de datos geográficos en formato `sf` | Es como bajar un mapa listo      |
 | `countrycode`   | Diccionario para traducir nombres de países | Es como un traductor de nombres  |
@@ -394,6 +394,8 @@ ggplot(datos_geo) +
 
 ## Datos ficticios (7)
 
+**¿Y si hubiera hecho un full_join?**
+
 ```{r, echo=TRUE}
 datos |> glimpse()
 world |> glimpse()
@@ -409,7 +411,7 @@ datos_geo |> head(5)|>
   kable_styling(font_size = 21)
 ```
 
-## Datos ficticios 8
+## Datos ficticios 8: Efecto del inner join 
 
 ```{r}
 ggplot(datos_geo) +
@@ -521,6 +523,96 @@ mapa_datos |>
   theme_void()
 ```
 
+## ChileMapas: Un ejemplo a las regiones
+
+```{r, echo=TRUE}
+mapa_regiones |> 
+  st_set_geometry(mapa_regiones$geometry) |> head(3)
+```
+
+```{r, echo=TRUE}
+mapa_regiones <- mapa_regiones %>%
+  mutate(nombre_region = case_when(
+    codigo_region == "01" ~ "Región de Tarapacá",
+    codigo_region == "02" ~ "Región de Antofagasta",
+    codigo_region == "03" ~ "Región de Atacama",
+    codigo_region == "04" ~ "Región de Coquimbo",
+    codigo_region == "05" ~ "Región de Valparaíso",
+    codigo_region == "06" ~ "Región del Libertador General Bernardo O'Higgins",
+    codigo_region == "07" ~ "Región del Maule",
+    codigo_region == "08" ~ "Región del Biobío",
+    codigo_region == "09" ~ "Región de La Araucanía",
+    codigo_region == "10" ~ "Región de Los Lagos",
+    codigo_region == "11" ~ "Región de Aysén del General Carlos Ibáñez del Campo",
+    codigo_region == "12" ~ "Región de Magallanes y de la Antártica Chilena",
+    codigo_region == "13" ~ "Región Metropolitana de Santiago",
+    codigo_region == "14" ~ "Región de Los Ríos",
+    codigo_region == "15" ~ "Región de Arica y Parinacota",
+    codigo_region == "16" ~ "Región de Ñuble",
+    TRUE ~ NA_character_
+  ))
+
+```
+
+## ChileMapas: Un ejemplo a las regiones
+
+```{r}
+library(readxl)
+perros_callejeros <- read_excel("bbdd/perros_callejeros.xlsx") |> select(-nombre_region)
+```
+
+```{r, echo=TRUE}
+perros_callejeros |> head(2)
+```
+
+```{r, echo=TRUE}
+mapa_regiones2 <- mapa_regiones |> inner_join(perros_callejeros, by = "codigo_region") |> glimpse()
+```
+
+```{r}
+mapa_regiones2 
+```
+
+## ChileMapas: Un ejemplo a las regiones
+
+::: columns
+::: {.column width="50%"}
+```{r, echo=TRUE}
+mapa_regiones2 |> 
+  st_set_geometry(mapa_regiones$geometry) |> 
+  # especificar la geometría del mapa
+  ggplot(aes(geometry = geometry,
+             fill = perros_calle_por_1000hab
+             )) + # graficar
+  geom_sf() 
+```
+:::
+
+::: {.column width="50%"}
+```{r, echo=TRUE}
+mapa_regiones2 |> 
+  st_set_geometry(mapa_regiones$geometry) |> 
+  ggplot(aes(geometry = geometry,
+             fill = perros_calle_por_1000hab)) +
+  geom_sf(color = "gray90") +
+  coord_sf(xlim = c(-77, -65)) +
+scale_fill_gradient(
+  low = "#8EC3E2",
+  high = "#BB1515",
+  name = "Perros / 1000 hab."
+) +
+  theme_minimal() +
+  labs(
+    title = "Perros callejeros",
+    subtitle = "En Chile por cada mil habitantes"
+  )
+
+```
+:::
+:::
+
 ## Fuente utilizadas
 
 1.  [Tutorial BastiMapache](https://rpubs.com/bastimapache/mapa_urbano_rm)
+
+# Vamos al código!

@@ -490,8 +490,8 @@ Matías Deneken
 <p>Porque te permite combinar el mundo de la&nbsp;<strong>estadística en R</strong>&nbsp;con el análisis geográfico, sin salir del mismo entorno.&nbsp;</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 29%">
-<col style="width: 70%">
+<col style="width: 30%">
+<col style="width: 69%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -621,9 +621,9 @@ Geodetic CRS:  WGS 84
 <h2>Entonces….</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 17%">
-<col style="width: 46%">
-<col style="width: 35%">
+<col style="width: 23%">
+<col style="width: 43%">
+<col style="width: 32%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -1030,6 +1030,7 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 </section>
 <section id="datos-ficticios-7" class="slide level2">
 <h2>Datos ficticios (7)</h2>
+<p><strong>¿Y si hubiera hecho un full_join?</strong></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>datos <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1112,8 +1113,8 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 </div>
 </div>
 </section>
-<section id="datos-ficticios-8" class="slide level2">
-<h2>Datos ficticios 8</h2>
+<section id="datos-ficticios-8-efecto-del-inner-join" class="slide level2">
+<h2>Datos ficticios 8: Efecto del inner join</h2>
 <div class="cell">
 <div class="cell-output-display">
 <div>
@@ -1271,18 +1272,159 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 </div>
 </div>
 </section>
+<section id="chilemapas-un-ejemplo-a-las-regiones" class="slide level2">
+<h2>ChileMapas: Un ejemplo a las regiones</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> </span>
+<span id="cb47-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Simple feature collection with 3 features and 1 field
+Geometry type: GEOMETRY
+Dimension:     XY
+Bounding box:  xmin: -71.58939 ymin: -29.5351 xmax: -66.9909 ymax: -18.9369
+Geodetic CRS:  SIRGAS 2000
+# A tibble: 3 × 2
+  codigo_region                                                         geometry
+  &lt;chr&gt;                                                           &lt;GEOMETRY [°]&gt;
+1 01            POLYGON ((-69.93023 -21.4246, -69.92376 -21.42622, -69.91932 -2…
+2 02            MULTIPOLYGON (((-68.0676 -24.32856, -67.91698 -24.26902, -67.80…
+3 03            MULTIPOLYGON (((-71.58497 -29.02456, -71.58844 -29.02838, -71.5…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_regiones <span class="sc">%&gt;%</span></span>
+<span id="cb49-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">nombre_region =</span> <span class="fu">case_when</span>(</span>
+<span id="cb49-3"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"01"</span> <span class="sc">~</span> <span class="st">"Región de Tarapacá"</span>,</span>
+<span id="cb49-4"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"02"</span> <span class="sc">~</span> <span class="st">"Región de Antofagasta"</span>,</span>
+<span id="cb49-5"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"03"</span> <span class="sc">~</span> <span class="st">"Región de Atacama"</span>,</span>
+<span id="cb49-6"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"04"</span> <span class="sc">~</span> <span class="st">"Región de Coquimbo"</span>,</span>
+<span id="cb49-7"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"05"</span> <span class="sc">~</span> <span class="st">"Región de Valparaíso"</span>,</span>
+<span id="cb49-8"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"06"</span> <span class="sc">~</span> <span class="st">"Región del Libertador General Bernardo O'Higgins"</span>,</span>
+<span id="cb49-9"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"07"</span> <span class="sc">~</span> <span class="st">"Región del Maule"</span>,</span>
+<span id="cb49-10"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"08"</span> <span class="sc">~</span> <span class="st">"Región del Biobío"</span>,</span>
+<span id="cb49-11"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"09"</span> <span class="sc">~</span> <span class="st">"Región de La Araucanía"</span>,</span>
+<span id="cb49-12"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"10"</span> <span class="sc">~</span> <span class="st">"Región de Los Lagos"</span>,</span>
+<span id="cb49-13"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"11"</span> <span class="sc">~</span> <span class="st">"Región de Aysén del General Carlos Ibáñez del Campo"</span>,</span>
+<span id="cb49-14"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"12"</span> <span class="sc">~</span> <span class="st">"Región de Magallanes y de la Antártica Chilena"</span>,</span>
+<span id="cb49-15"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"13"</span> <span class="sc">~</span> <span class="st">"Región Metropolitana de Santiago"</span>,</span>
+<span id="cb49-16"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"14"</span> <span class="sc">~</span> <span class="st">"Región de Los Ríos"</span>,</span>
+<span id="cb49-17"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"15"</span> <span class="sc">~</span> <span class="st">"Región de Arica y Parinacota"</span>,</span>
+<span id="cb49-18"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"16"</span> <span class="sc">~</span> <span class="st">"Región de Ñuble"</span>,</span>
+<span id="cb49-19"><a href=""></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb49-20"><a href=""></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="chilemapas-un-ejemplo-a-las-regiones-1" class="slide level2">
+<h2>ChileMapas: Un ejemplo a las regiones</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>perros_callejeros <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 2
+  codigo_region perros_calle_por_1000hab
+  &lt;chr&gt;                            &lt;dbl&gt;
+1 01                                52.8
+2 02                                42.7</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>mapa_regiones2 <span class="ot">&lt;-</span> mapa_regiones <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(perros_callejeros, <span class="at">by =</span> <span class="st">"codigo_region"</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 16
+Columns: 4
+$ codigo_region            &lt;chr&gt; "01", "02", "03", "04", "05", "06", "07", "08…
+$ geometry                 &lt;GEOMETRY [°]&gt; POLYGON ((-69.93023 -21.424..., MULT…
+$ nombre_region            &lt;chr&gt; "Región de Tarapacá", "Región de Antofagasta"…
+$ perros_calle_por_1000hab &lt;dbl&gt; 52.8, 42.7, 25.4, 41.1, 56.9, 33.5, 26.0, 73.…</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 16 × 4
+   codigo_region                   geometry nombre_region perros_calle_por_100…¹
+   &lt;chr&gt;                     &lt;GEOMETRY [°]&gt; &lt;chr&gt;                          &lt;dbl&gt;
+ 1 01            POLYGON ((-69.93023 -21.4… Región de Ta…                   52.8
+ 2 02            MULTIPOLYGON (((-68.0676 … Región de An…                   42.7
+ 3 03            MULTIPOLYGON (((-71.58497… Región de At…                   25.4
+ 4 04            MULTIPOLYGON (((-70.54551… Región de Co…                   41.1
+ 5 05            MULTIPOLYGON (((-71.33832… Región de Va…                   56.9
+ 6 06            POLYGON ((-71.5477 -34.87… Región del L…                   33.5
+ 7 07            POLYGON ((-70.41724 -35.6… Región del M…                   26  
+ 8 08            MULTIPOLYGON (((-73.53466… Región del B…                   73.9
+ 9 09            MULTIPOLYGON (((-73.35306… Región de La…                   51  
+10 10            MULTIPOLYGON (((-73.1691 … Región de Lo…                   30  
+11 11            MULTIPOLYGON (((-75.41754… Región de Ay…                   62.9
+12 12            MULTIPOLYGON (((-70.35563… Región de Ma…                   83.2
+13 13            POLYGON ((-70.47405 -33.8… Región Metro…                   41.9
+14 14            MULTIPOLYGON (((-73.39503… Región de Lo…                   52.1
+15 15            POLYGON ((-69.07223 -19.0… Región de Ar…                   25.4
+16 16            POLYGON ((-72.38553 -36.9… Región de Ñu…                   78.2
+# ℹ abbreviated name: ¹​perros_calle_por_1000hab</code></pre>
+</div>
+</div>
+</section>
+<section id="chilemapas-un-ejemplo-a-las-regiones-2" class="slide level2">
+<h2>ChileMapas: Un ejemplo a las regiones</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
+<span id="cb55-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
+<span id="cb55-3"><a href=""></a>  <span class="co"># especificar la geometría del mapa</span></span>
+<span id="cb55-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
+<span id="cb55-5"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab</span>
+<span id="cb55-6"><a href=""></a>             )) <span class="sc">+</span> <span class="co"># graficar</span></span>
+<span id="cb55-7"><a href=""></a>  <span class="fu">geom_sf</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-40-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div><div class="column" style="width:50%;">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
+<span id="cb56-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
+<span id="cb56-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
+<span id="cb56-4"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab)) <span class="sc">+</span></span>
+<span id="cb56-5"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="at">color =</span> <span class="st">"gray90"</span>) <span class="sc">+</span></span>
+<span id="cb56-6"><a href=""></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">77</span>, <span class="sc">-</span><span class="dv">65</span>)) <span class="sc">+</span></span>
+<span id="cb56-7"><a href=""></a><span class="fu">scale_fill_gradient</span>(</span>
+<span id="cb56-8"><a href=""></a>  <span class="at">low =</span> <span class="st">"#8EC3E2"</span>,</span>
+<span id="cb56-9"><a href=""></a>  <span class="at">high =</span> <span class="st">"#BB1515"</span>,</span>
+<span id="cb56-10"><a href=""></a>  <span class="at">name =</span> <span class="st">"Perros / 1000 hab."</span></span>
+<span id="cb56-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb56-12"><a href=""></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb56-13"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb56-14"><a href=""></a>    <span class="at">title =</span> <span class="st">"Perros callejeros"</span>,</span>
+<span id="cb56-15"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"En Chile por cada mil habitantes"</span></span>
+<span id="cb56-16"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-41-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</div></div>
+</section>
 <section id="fuente-utilizadas" class="slide level2">
 <h2>Fuente utilizadas</h2>
 <ol type="1">
 <li class="fragment"><a href="https://rpubs.com/bastimapache/mapa_urbano_rm">Tutorial BastiMapache</a></li>
 </ol>
+</section></section>
+<section id="vamos-al-código" class="title-slide slide level1 center">
+<h1>Vamos al código!</h1>
 <div class="quarto-auto-generated-content">
 <p><img src="images/logo_ciir.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
 <p>Sesión 3: InteRculturales</p>
 </div>
 </div>
-</section></section>
+</section>
     </div>
   </div>
 
