@@ -12,12 +12,13 @@ library(rnaturalearth)
 library(rnaturalearthdata)
 library(readxl)
 
+
 ## ========================================
 ##  Cargar base de datos
 ## ========================================
 
 bbdd <- read_excel("clases/clase3/practico/bbdd/bbdd.xlsx")
-
+world <- ne_countries(scale = "medium", returnclass = "sf")
 
 bbdd |> glimpse()
 world |> glimpse()
