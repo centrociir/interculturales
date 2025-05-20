@@ -4,7 +4,7 @@
 
 # ***InteRculturales:** Técnicas de ciencias sociales computacionales desde la relaciones interculturales.*
 
-Público objetivo: Cualquier persona interesada en aprender o interiorizarse en habilidades cuantitativas de vangurdia.
+Público objetivo: Cualquier persona interesada en aprender o interiorizarse en habilidades cuantitativas de vanguardia.
 
 **Inicio de curso: Jueves 8 de mayo 2025. Desde las 18:00**
 
