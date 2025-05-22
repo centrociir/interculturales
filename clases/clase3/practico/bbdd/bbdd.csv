@@ -1,0 +1,325 @@
+"country","fempresvictory","year"
+"Argentina",0,1999
+"Argentina",0,2003
+"Argentina",1,2007
+"Argentina",1,2011
+"Argentina",0,2015
+"Argentina",0,2019
+"Bolivia",0,1997
+"Bolivia",0,2002
+"Bolivia",0,2005
+"Bolivia",0,2009
+"Bolivia",0,2014
+"Bolivia",0,2019
+"Brazil",0,1998
+"Brazil",0,2002
+"Brazil",0,2006
+"Brazil",1,2010
+"Brazil",1,2014
+"Brazil",0,2018
+"Chile",0,1999
+"Chile",1,2005
+"Chile",0,2009
+"Chile",1,2013
+"Chile",0,2017
+"Colombia",0,1998
+"Colombia",0,2002
+"Colombia",0,2006
+"Colombia",0,2010
+"Colombia",0,2014
+"Costa Rica",0,1998
+"Costa Rica",0,2002
+"Costa Rica",0,2006
+"Costa Rica",1,2010
+"Costa Rica",0,2014
+"Costa Rica",0,2018
+"Dominican Republic",0,2000
+"Dominican Republic",0,2004
+"Dominican Republic",0,2008
+"Dominican Republic",0,2012
+"Dominican Republic",0,2016
+"Ecuador",0,1998
+"Ecuador",0,2002
+"Ecuador",0,2006
+"Ecuador",0,2009
+"Ecuador",0,2013
+"Ecuador",0,2019
+"El Salvador",0,1994
+"El Salvador",0,1999
+"El Salvador",0,2004
+"El Salvador",0,2009
+"El Salvador",0,2014
+"El Salvador",0,2019
+"Guatemala",0,1990
+"Guatemala",0,1995
+"Guatemala",0,1999
+"Guatemala",0,2003
+"Guatemala",0,2007
+"Guatemala",0,2011
+"Guatemala",0,2015
+"Guatemala",0,2019
+"Honduras",0,1993
+"Honduras",0,1997
+"Honduras",0,2001
+"Honduras",0,2005
+"Honduras",0,2009
+"Honduras",0,2013
+"Honduras",0,2017
+"Mexico",0,2000
+"Mexico",0,2006
+"Mexico",0,2012
+"Mexico",0,2018
+"Nicaragua",1,1990
+"Nicaragua",0,1996
+"Nicaragua",0,2001
+"Nicaragua",0,2006
+"Nicaragua",0,2011
+"Nicaragua",0,2016
+"Panama",0,1994
+"Panama",1,1999
+"Panama",0,2004
+"Panama",0,2009
+"Panama",0,2014
+"Paraguay",0,1993
+"Paraguay",0,1998
+"Paraguay",0,2003
+"Paraguay",0,2008
+"Paraguay",0,2013
+"Paraguay",0,2019
+"Peru",0,2001
+"Peru",0,2006
+"Peru",0,2011
+"Peru",0,2016
+"Uruguay",0,1994
+"Uruguay",0,1999
+"Uruguay",0,2004
+"Uruguay",0,2009
+"Uruguay",0,2014
+"Uruguay",0,2019
+"Venezuela",0,1993
+"Venezuela",0,1998
+"Venezuela",0,2000
+"Venezuela",0,2006
+"Venezuela",0,2012
+"Venezuela",0,2013
+"United States",0,1992
+"United States",0,1996
+"United States",0,2000
+"United States",0,2004
+"United States",0,2008
+"United States",0,2012
+"United States",0,2016
+"Armenia",0,1991
+"Armenia",0,1996
+"Armenia",0,1998
+"Armenia",0,2003
+"Armenia",0,2008
+"Armenia",0,2013
+"Austria",0,1992
+"Austria",0,1998
+"Austria",0,2004
+"Austria",0,2010
+"Austria",0,2016
+"Bulgaria",0,1992
+"Bulgaria",0,1996
+"Bulgaria",0,2001
+"Bulgaria",0,2006
+"Bulgaria",0,2011
+"Croatia",0,1992
+"Croatia",0,1997
+"Croatia",0,2000
+"Croatia",0,2005
+"Croatia",0,2009
+"Croatia",1,2014
+"Czech Republic",0,2013
+"Finland",0,1994
+"Finland",1,2000
+"Finland",1,2006
+"Finland",0,2012
+"Finland",0,2018
+"France",0,1995
+"France",0,2002
+"France",0,2007
+"France",0,2012
+"France",0,2017
+"Georgia",0,2004
+"Georgia",0,2008
+"Georgia",0,2013
+"Greek Cyprus",0,1993
+"Greek Cyprus",0,1998
+"Greek Cyprus",0,2003
+"Greek Cyprus",0,2008
+"Iceland",0,1996
+"Iceland",0,2004
+"Iceland",0,2008
+"Iceland",0,2016
+"Lithuania",0,1993
+"Lithuania",0,1997
+"Lithuania",0,2002
+"Lithuania",0,2004
+"Lithuania",1,2009
+"Lithuania",1,2014
+"Lithuania",0,2019
+"Macedonia",0,1994
+"Macedonia",0,1999
+"Macedonia",0,2004
+"Macedonia",0,2009
+"Macedonia",0,2014
+"Macedonia",0,2019
+"Moldova",0,1996
+"Poland",0,1990
+"Poland",0,1995
+"Poland",0,2000
+"Poland",0,2005
+"Poland",0,2010
+"Poland",0,2015
+"Portugal",0,1991
+"Portugal",0,1996
+"Portugal",0,2001
+"Portugal",0,2006
+"Portugal",0,2011
+"Portugal",0,2016
+"Romania",0,1990
+"Romania",0,1996
+"Romania",0,2000
+"Romania",0,2004
+"Romania",0,2009
+"Romania",0,2014
+"Serbia & Montenegro",0,2000
+"Serbia & Montenegro",0,2002
+"Serbia & Montenegro",0,2003
+"Serbia & Montenegro",0,2004
+"Slovakia",0,1999
+"Slovakia",0,2004
+"Slovakia",0,2009
+"Slovakia",0,2014
+"Slovakia",0,2019
+"Slovenia",0,1992
+"Slovenia",0,1997
+"Slovenia",0,2002
+"Slovenia",0,2007
+"Slovenia",0,2012
+"Slovenia",0,2017
+"Benin",0,1991
+"Benin",0,1996
+"Benin",0,2001
+"Benin",0,2006
+"Benin",0,2011
+"Benin",0,2016
+"Burundi",0,1993
+"Cape Verde",0,1991
+"Cape Verde",0,1996
+"Cape Verde",0,2001
+"Cape Verde",0,2006
+"Cape Verde",0,2011
+"Central African Republic",0,1993
+"Central African Republic",0,1999
+"Comoros",0,1990
+"Comoros",0,2006
+"Comoros",0,2010
+"Comoros",0,2016
+"Congo",0,1992
+"East Timor",0,2002
+"East Timor",0,2007
+"East Timor",0,2012
+"Ghana",0,2004
+"Ghana",0,2008
+"Ghana",0,2012
+"Ghana",0,2016
+"Guinea Bissau",0,2005
+"Guinea Bissau",0,2009
+"Guinea Bissau",0,2012
+"Guinea Bissau",0,2014
+"Liberia",1,2005
+"Liberia",1,2011
+"Madagascar",0,1996
+"Madagascar",0,2001
+"Madagascar",0,2006
+"Madagascar",0,2013
+"Malawi",0,1994
+"Malawi",0,1999
+"Malawi",0,2004
+"Malawi",0,2009
+"Malawi",0,2014
+"Mali",0,1992
+"Mali",0,1997
+"Mali",0,2002
+"Mali",0,2007
+"Mali",0,2013
+"Mauritania",0,2007
+"Niger",0,1993
+"Niger",0,2004
+"Niger",0,2011
+"Nigeria",0,1999
+"Nigeria",0,2003
+"Nigeria",0,2007
+"Nigeria",0,2011
+"Nigeria",0,2015
+"Nigeria",0,2019
+"Palau",0,1996
+"Palau",0,2000
+"Palau",0,2004
+"Palau",0,2008
+"Palau",0,2012
+"Palau",0,2016
+"Sao Tome and Principe",0,1991
+"Sao Tome and Principe",0,1996
+"Sao Tome and Principe",0,2001
+"Sao Tome and Principe",0,2006
+"Sao Tome and Principe",0,2011
+"Sao Tome and Principe",0,2016
+"Senegal",0,2000
+"Senegal",0,2007
+"Senegal",0,2012
+"Senegal",0,2019
+"Sierra Leone",0,1996
+"Sierra Leone",0,2002
+"Sierra Leone",0,2007
+"Sierra Leone",0,2012
+"Sierra Leone",0,2019
+"Indonesia",0,2005
+"Indonesia",0,2009
+"Indonesia",0,2014
+"Indonesia",0,2019
+"Kyrgyzstan",0,2005
+"Kyrgyzstan",0,2009
+"Kyrgyzstan",0,2011
+"Maldives",0,2008
+"Maldives",0,2013
+"Mongolia",0,1993
+"Mongolia",0,1997
+"Mongolia",0,2001
+"Mongolia",0,2005
+"Mongolia",0,2009
+"Mongolia",0,2013
+"Philippines",0,1992
+"Philippines",0,1998
+"Philippines",1,2004
+"Philippines",0,2010
+"Philippines",0,2016
+"South Korea",0,1992
+"South Korea",0,1997
+"South Korea",0,2002
+"South Korea",0,2007
+"South Korea",1,2012
+"South Korea",0,2019
+"Sri Lanka",1,1994
+"Sri Lanka",1,1999
+"Sri Lanka",0,2005
+"Sri Lanka",0,2010
+"Sri Lanka",0,2015
+"Sri Lanka",0,2020
+"Taiwan",0,1996
+"Taiwan",0,2000
+"Taiwan",0,2004
+"Taiwan",0,2008
+"Taiwan",0,2012
+"Taiwan",1,2016
+"Taiwan",1,2020
+"Ukraine",0,1991
+"Ukraine",0,1994
+"Ukraine",0,1999
+"Ukraine",0,2004
+"Ukraine",0,2010
+"Ukraine",0,2014
+"Ukraine",0,2018
