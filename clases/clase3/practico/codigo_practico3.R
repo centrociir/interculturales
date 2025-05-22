@@ -152,7 +152,7 @@ data_consolidada <- mapa |> full_join(tabla, by = "codigo_comuna")
 ## MAPA DE PUNTAJES PAES Comuna + Nacional
 ## ========================================
 
-colors <- colorRampPalette(c("#FF0000", "#00679E"))(10)
+colors <- colorRampPalette(c("#FF0000", "#00679E"))(5)
 
 g1 <- data_consolidada |> 
   filter(nombre_comuna != "Isla de Pascua", nombre_comuna != "Juan Fernandez") |> 
@@ -179,49 +179,39 @@ data_consolidada |>
   theme_classic()
 
 
-data_consolidada |>   filter(codigo_region == 13) |> select(nombre_comuna)
 
 
-data_rm <-data_consolidada |> filter( nombre_comuna != "Paine",
-                            nombre_comuna != "Buin",
-                            nombre_comuna != "Alhue",
-                             nombre_comuna != "Tiltil",
-                             nombre_comuna != "Lampa",
-                              nombre_comuna != "Colina",
-                             nombre_comuna != "Maria Pinto",
-                             nombre_comuna != "Curacavi",
-                             nombre_comuna != "Isla de Maipo",
-                             nombre_comuna != "Melipilla",
-                             nombre_comuna != "Pirque",
-                          #   nombre_comuna != "Penaflor",
-                            nombre_comuna != "Lo Barnechea",
-                       #      nombre_comuna != "Calera de Tango",
-                      #       nombre_comuna != "San Bernardo",
-                             nombre_comuna != "El Monte",
-                            nombre_comuna != "San Pedro",
-                         #   nombre_comuna != "Talagante",
-                            nombre_comuna != "San Jose de Maipo"
-                            ) |>  filter(codigo_region == 13) 
-
-
-
-
-data_rm |> ggplot() +
-  geom_sf(aes(geometry = geometry, fill = promedio_ambas), col = "white") +
-  scale_fill_gradientn(
-    colours = colors
-  ) +
-  theme_classic()
 
 ##=============
 ## Puntos
 ##============
 
+library(ggplot2)
+library(sf)
+
+# Paso 1: Crear el punto de La Moneda
+la_moneda <- st_point(c(-70.653709, -33.442197)) |>   # LONGITUD, LATITUD
+  st_sfc(crs = 4326) |>                               # Sistema de coordenadas WGS84
+  st_sf(nombre = "La Moneda", geometry = _)           # Convertir a sf con nombre
+
+campus_sj <- st_point(c(-70.614407, -33.497657)) |>  # LONG, LAT
+  st_sfc(crs = 4326) |>
+  st_sf(nombre = "Campus San Joaquín", geometry = _)
+
+
+# Paso 2: Crear el mapa base y añadir La Moneda
 
 data_consolidada |> 
-  filter(codigo_region == 13) |> 
+  filter(codigo_region == 13) |>  # Filtrar solo Región Metropolitana
   ggplot() +
-  geom_sf(aes(geometry = geometry))
+  geom_sf(aes(geometry = geometry), color = "white") +  # Mapa base de comunas
+  geom_sf(data = la_moneda, color = "red", size = 1) +                         # Punto de La Moneda
+  geom_sf(data = campus_sj, color = "red", size = 1) +                         # Punto de La Moneda
+  theme_classic() +
+  labs(title = "Mapa PAES + Punto de La Moneda")
+
+
+
 
 ## ========================================
 ## PUEBLOS INDÍGENAS
