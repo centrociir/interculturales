@@ -319,6 +319,7 @@ mapa_indi |>
   filter(proporcion > 0) |> 
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = proporcion), col = "white") +
+  coord_sf(xlim = c(-77, -65)) +
   scale_fill_gradientn(
     colours = colors,
     labels = scales::label_number(big.mark = ".", decimal.mark = ",")
