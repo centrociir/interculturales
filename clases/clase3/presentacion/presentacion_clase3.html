@@ -449,10 +449,165 @@ Matías Deneken
 </div></div>
 </section>
 <section id="recapitulando" class="slide level2">
-<h2>Recapitulando</h2>
+<h2>Recapitulando…📝</h2>
+<p><strong>Tidyverse</strong></p>
+<p>Conjunto de paquetes de R diseñados para ciencia de datos. Incluye herramientas como ggplot2, dplyr, tidyr, readr, entre otros, que comparten una sintaxis coherente y principios comunes (funciones pipe ( <code>|&gt;</code> o <code>%&gt;%</code> ) y manipulación de datos “ordenados”).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">head</span>(starwars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">names</span>(starwars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "name"       "height"     "mass"       "hair_color" "skin_color"
+ [6] "eye_color"  "birth_year" "sex"        "gender"     "homeworld" 
+[11] "species"    "films"      "vehicles"   "starships" </code></pre>
+</div>
+</div>
+</section>
+<section id="recapitulando-1" class="slide level2">
+<h2>Recapitulando…📝</h2>
+<p><strong>Tidyverse: <code>Select</code></strong></p>
+<p>Sirve para elegir columnas específicas de un data frame.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
+<span id="cb4-2"><a href=""></a>  <span class="fu">select</span>(name, species, height, mass) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 4
+  name           species height  mass
+  &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
+1 Luke Skywalker Human      172    77
+2 C-3PO          Droid      167    75</code></pre>
+</div>
+</div>
+<p><strong>Tidyverse: <code>Filter</code></strong></p>
+<p>Permite filtrar filas según condiciones lógicas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>starwars <span class="sc">%&gt;%</span> <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Human"</span>, mass <span class="sc">&gt;</span> <span class="dv">80</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 14
+  name      height  mass hair_color skin_color eye_color birth_year sex   gender
+  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
+1 Darth Va…    202   136 none       white      yellow          41.9 male  mascu…
+2 Owen Lars    178   120 brown, gr… light      blue            52   male  mascu…
+# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
+#   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="recapitulando-2" class="slide level2">
+<h2>Recapitulando…📝</h2>
+<p><strong>Tidyverse: <code>Mutate</code></strong></p>
+<p>Crea nuevas columnas o modifica variables existentes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">imc_ficticio =</span> mass <span class="sc">/</span> (height <span class="sc">/</span> <span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href=""></a>  <span class="fu">select</span>(name, imc_ficticio) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(imc_ficticio)) <span class="sc">|&gt;</span> </span>
+<span id="cb8-5"><a href=""></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  name                  imc_ficticio
+  &lt;chr&gt;                        &lt;dbl&gt;
+1 Jabba Desilijic Tiure        443. 
+2 Dud Bolt                      50.9
+3 Yoda                          39.0</code></pre>
+</div>
+</div>
+</section>
+<section id="recapitulando-3" class="slide level2">
+<h2>Recapitulando…📝</h2>
+<p><strong>Tidyverse: <code>Group_by</code> + <code>summarise</code></strong></p>
+<p><code>Group_by</code>: Crea nuevas columnas o modifica variables existentes y <code>Summarise</code>: Genera resúmenes estadísticos por grupo (si se usó group_by()) o para todo el conjunto.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>starwars <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href=""></a>  <span class="fu">summarise</span>(</span>
+<span id="cb10-3"><a href=""></a>    <span class="at">promedio_altura =</span> <span class="fu">mean</span>(height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb10-4"><a href=""></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb10-5"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(promedio_altura)) <span class="sc">|&gt;</span>  <span class="co"># Ordenar por número de personajes</span></span>
+<span id="cb10-6"><a href=""></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 2
+  species  promedio_altura
+  &lt;chr&gt;              &lt;dbl&gt;
+1 Quermian             264
+2 Wookiee              231
+3 Kaminoan             221</code></pre>
+</div>
+</div>
+</section>
+<section id="recapitulando-4" class="slide level2">
+<h2>Recapitulando …📝</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Crear el gráfico</span></span>
+<span id="cb12-2"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">imc_ficticio =</span> mass <span class="sc">/</span> (height <span class="sc">/</span> <span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href=""></a>  <span class="fu">select</span>(name, imc_ficticio) <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(imc_ficticio)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href=""></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-7"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(name, imc_ficticio), <span class="at">y =</span> imc_ficticio)) <span class="sc">+</span></span>
+<span id="cb12-8"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href=""></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb12-10"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-11"><a href=""></a>    <span class="at">title =</span> <span class="st">"Top 3 personajes con mayor IMC ficticio"</span>,</span>
+<span id="cb12-12"><a href=""></a>    <span class="at">x =</span> <span class="st">"Nombre"</span>,</span>
+<span id="cb12-13"><a href=""></a>    <span class="at">y =</span> <span class="st">"IMC"</span></span>
+<span id="cb12-14"><a href=""></a>  ) <span class="sc">+</span></span>
+<span id="cb12-15"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="recapitulando-5" class="slide level2">
+<h2>Recapitulando …📝</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(height), <span class="sc">!</span><span class="fu">is.na</span>(mass)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass)) <span class="sc">+</span></span>
+<span id="cb13-4"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"navy"</span>) <span class="sc">+</span></span>
+<span id="cb13-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relación entre estatura y peso en Star Wars"</span>,</span>
+<span id="cb13-6"><a href=""></a>       <span class="at">x =</span> <span class="st">"Estatura (cm)"</span>, <span class="at">y =</span> <span class="st">"Masa (kg)"</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="recapitulando-6" class="slide level2">
+<h2>Recapitulando …📝</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(height)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> height)) <span class="sc">+</span></span>
+<span id="cb14-4"><a href=""></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
+<span id="cb14-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución de estatura en personajes de Star Wars"</span>,</span>
+<span id="cb14-6"><a href=""></a>       <span class="at">x =</span> <span class="st">"Estatura (cm)"</span>, <span class="at">y =</span> <span class="st">"Densidad"</span>) <span class="sc">+</span></span>
+<span id="cb14-7"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
 </section>
 <section id="sistema-de-información-geográfica-sig" class="slide level2">
 <h2>Sistema de Información Geográfica (SIG)</h2>
+<p>Un&nbsp;<strong>Sistema de Información Geográfica (SIG)</strong>&nbsp;es una herramienta tecnológica que permite&nbsp;<strong>capturar, almacenar, analizar, visualizar y representar datos geográficos o espaciales</strong>.</p>
+<p>Combina información alfanumérica (como población, ingresos o acceso a servicios) con su ubicación en el espacio (como comunas, calles o regiones), lo que permite responder preguntas del tipo&nbsp;<strong>“¿Dónde ocurre qué…?”</strong>.</p>
+<ul>
+<li class="fragment"><p>Mapas temáticos (ej. pobreza por comuna)</p></li>
+<li class="fragment"><p>Análisis territorial (ej. acceso a servicios)</p></li>
+</ul>
 </section>
 <section id="paquetes-qué-es-sf" class="slide level2">
 <h2>Paquetes: 📦 ¿Qué es&nbsp;<code>sf</code>?</h2>
@@ -490,8 +645,8 @@ Matías Deneken
 <p>Porque te permite combinar el mundo de la&nbsp;<strong>estadística en R</strong>&nbsp;con el análisis geográfico, sin salir del mismo entorno.&nbsp;</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 30%">
-<col style="width: 69%">
+<col style="width: 32%">
+<col style="width: 67%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -523,16 +678,16 @@ Matías Deneken
 <h2>Paquete: countrycode</h2>
 <p>El paquete <code>countrycode</code> permite convertir nombres de países entre distintos sistemas de codificación estándar. Es muy útil para unir bases de datos internacionales o conectar datos con geometrías espaciales.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">library</span>(countrycode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">library</span>(countrycode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">countrycode</span>(<span class="st">"Chile"</span>, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">countrycode</span>(<span class="st">"Chile"</span>, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "CHL"</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">names</span>(countrycode<span class="sc">::</span>codelist)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">names</span>(countrycode<span class="sc">::</span>codelist)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1] "ar5"                   "cctld"                 "continent"            
  [4] "country.name.de"       "country.name.de.regex" "country.name.en"      
@@ -599,6 +754,11 @@ Matías Deneken
 <h2>Paquete: R Natural Earth.</h2>
 <p>Es un paquete R que permite&nbsp;<strong>descargar datos geográficos del mundo</strong>&nbsp;(países, estados, líneas costeras, ríos, etc.) desde el proyecto&nbsp;<a href="https://www.naturalearthdata.com/">Natural Earth</a>. Se usa mucho para crear mapas en R, especialmente con&nbsp;<code>sf</code>&nbsp;y&nbsp;<code>ggplot2</code>.</p>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">library</span>(rnaturalearth)</span>
+<span id="cb20-2"><a href=""></a></span>
+<span id="cb20-3"><a href=""></a>world <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
+<span id="cb20-4"><a href=""></a></span>
+<span id="cb20-5"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">select</span>(iso_a3, geometry) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 2 features and 1 field
 Geometry type: MULTIPOLYGON
@@ -614,15 +774,15 @@ Geodetic CRS:  WGS 84
 <ul>
 <li class="fragment"><p>Producto de Interno de Bruto</p></li>
 <li class="fragment"><p>Región económica (BRICS, OCDE, etc)</p></li>
-<li class="fragment"><p>Espera de vida</p></li>
+<li class="fragment"><p>Esperanza de vida</p></li>
 </ul>
 </section>
 <section id="entonces." class="slide level2">
 <h2>Entonces….</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 23%">
-<col style="width: 43%">
+<col style="width: 25%">
+<col style="width: 42%">
 <col style="width: 32%">
 </colgroup>
 <thead>
@@ -659,8 +819,8 @@ Geodetic CRS:  WGS 84
 <section id="exploremos" class="slide level2">
 <h2>Exploremos</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">select</span>(adm0_a3, geometry) <span class="sc">|&gt;</span> </span>
-<span id="cb7-2"><a href=""></a>  <span class="fu">filter</span>(adm0_a3 <span class="sc">==</span> <span class="st">"CHL"</span>)<span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">select</span>(adm0_a3, geometry) <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href=""></a>  <span class="fu">filter</span>(adm0_a3 <span class="sc">==</span> <span class="st">"CHL"</span>)<span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 1 feature and 1 field
 Geometry type: MULTIPOLYGON
@@ -672,18 +832,18 @@ Geodetic CRS:  WGS 84
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="fu">library</span>(countrycode)</span>
-<span id="cb9-2"><a href=""></a></span>
-<span id="cb9-3"><a href=""></a><span class="co"># Vector de países (algunos con nombres en español)</span></span>
-<span id="cb9-4"><a href=""></a>paises <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Brazil"</span>, <span class="st">"Estados Unidos"</span>, <span class="st">"Germany"</span>, <span class="st">"Reino Unido"</span>)</span>
-<span id="cb9-5"><a href=""></a></span>
-<span id="cb9-6"><a href=""></a><span class="co"># Convertir a códigos ISO3</span></span>
-<span id="cb9-7"><a href=""></a>codigo_iso <span class="ot">&lt;-</span> <span class="fu">countrycode</span>(paises, </span>
-<span id="cb9-8"><a href=""></a>                          <span class="at">origin =</span> <span class="st">"country.name"</span>, </span>
-<span id="cb9-9"><a href=""></a>                          <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span>
-<span id="cb9-10"><a href=""></a></span>
-<span id="cb9-11"><a href=""></a><span class="co"># Combinar en tabla</span></span>
-<span id="cb9-12"><a href=""></a><span class="fu">data.frame</span>(<span class="at">pais =</span> paises, <span class="at">iso3c =</span> codigo_iso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">library</span>(countrycode)</span>
+<span id="cb24-2"><a href=""></a></span>
+<span id="cb24-3"><a href=""></a><span class="co"># Vector de países (algunos con nombres en español)</span></span>
+<span id="cb24-4"><a href=""></a>paises <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Brazil"</span>, <span class="st">"Estados Unidos"</span>, <span class="st">"Germany"</span>, <span class="st">"Reino Unido"</span>)</span>
+<span id="cb24-5"><a href=""></a></span>
+<span id="cb24-6"><a href=""></a><span class="co"># Convertir a códigos ISO3</span></span>
+<span id="cb24-7"><a href=""></a>codigo_iso <span class="ot">&lt;-</span> <span class="fu">countrycode</span>(paises, </span>
+<span id="cb24-8"><a href=""></a>                          <span class="at">origin =</span> <span class="st">"country.name"</span>, </span>
+<span id="cb24-9"><a href=""></a>                          <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span>
+<span id="cb24-10"><a href=""></a></span>
+<span id="cb24-11"><a href=""></a><span class="co"># Combinar en tabla</span></span>
+<span id="cb24-12"><a href=""></a><span class="fu">data.frame</span>(<span class="at">pais =</span> paises, <span class="at">iso3c =</span> codigo_iso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>            pais iso3c
 1          Chile   CHL
@@ -709,18 +869,18 @@ Geodetic CRS:  WGS 84
 <section id="datos-ficticios-1" class="slide level2">
 <h2>Datos ficticios (1)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb11-2"><a href=""></a><span class="fu">library</span>(knitr)</span>
-<span id="cb11-3"><a href=""></a></span>
-<span id="cb11-4"><a href=""></a>economia <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb11-5"><a href=""></a>  <span class="at">pais =</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Perú"</span>, <span class="st">"Brazil"</span>, <span class="st">"Colombia"</span>),</span>
-<span id="cb11-6"><a href=""></a>  <span class="at">pib_per_capita =</span> <span class="fu">c</span>(<span class="dv">15000</span>, <span class="dv">10500</span>, <span class="dv">12000</span>, <span class="dv">9800</span>, <span class="dv">8700</span>)</span>
-<span id="cb11-7"><a href=""></a>)</span>
-<span id="cb11-8"><a href=""></a></span>
-<span id="cb11-9"><a href=""></a>educacion <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb11-10"><a href=""></a>  <span class="at">pais =</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Uruguay"</span>, <span class="st">"Brazil"</span>, <span class="st">"Ecuador"</span>),</span>
-<span id="cb11-11"><a href=""></a>  <span class="at">anios_educacion =</span> <span class="fu">c</span>(<span class="fl">11.2</span>, <span class="fl">10.5</span>, <span class="fl">9.8</span>, <span class="fl">8.9</span>, <span class="fl">8.3</span>)</span>
-<span id="cb11-12"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb26-2"><a href=""></a><span class="fu">library</span>(knitr)</span>
+<span id="cb26-3"><a href=""></a></span>
+<span id="cb26-4"><a href=""></a>economia <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb26-5"><a href=""></a>  <span class="at">pais =</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Peru"</span>, <span class="st">"Brazil"</span>, <span class="st">"Colombia"</span>),</span>
+<span id="cb26-6"><a href=""></a>  <span class="at">pib_per_capita =</span> <span class="fu">c</span>(<span class="dv">15000</span>, <span class="dv">10500</span>, <span class="dv">12000</span>, <span class="dv">9800</span>, <span class="dv">8700</span>)</span>
+<span id="cb26-7"><a href=""></a>)</span>
+<span id="cb26-8"><a href=""></a></span>
+<span id="cb26-9"><a href=""></a>educacion <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb26-10"><a href=""></a>  <span class="at">pais =</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Uruguay"</span>, <span class="st">"Brazil"</span>, <span class="st">"Ecuador"</span>),</span>
+<span id="cb26-11"><a href=""></a>  <span class="at">anios_educacion =</span> <span class="fu">c</span>(<span class="fl">11.2</span>, <span class="fl">10.5</span>, <span class="fl">9.8</span>, <span class="fl">8.9</span>, <span class="fl">8.3</span>)</span>
+<span id="cb26-12"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="columns">
 <div class="column" style="width:50%;">
@@ -780,7 +940,7 @@ Geodetic CRS:  WGS 84
 <td style="text-align: right;">10500</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">Perú</td>
+<td style="text-align: left;">Peru</td>
 <td style="text-align: right;">12000</td>
 </tr>
 <tr class="even">
@@ -801,7 +961,7 @@ Geodetic CRS:  WGS 84
 <h2>Datos ficticios (2)</h2>
 <p>Solo para los que se encuentran en el dataset: <code>inner_join</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   pais      pib_per_capita anios_educacion
@@ -813,21 +973,21 @@ Geodetic CRS:  WGS 84
 </div>
 <p>Solo para los datos que se encuentran en el dataset desde la posición en el código (left) : <code>left_join</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">left_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">left_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
   pais      pib_per_capita anios_educacion
   &lt;chr&gt;              &lt;dbl&gt;           &lt;dbl&gt;
 1 Chile              15000            11.2
 2 Argentina          10500            10.5
-3 Perú               12000            NA  
+3 Peru               12000            NA  
 4 Brazil              9800             8.9
 5 Colombia            8700            NA  </code></pre>
 </div>
 </div>
 <p>Solo para los datos que se encuentran en el dataset desde la posición en el código (right) : <code>right_join</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">right_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">right_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 5 × 3
   pais      pib_per_capita anios_educacion
@@ -844,14 +1004,14 @@ Geodetic CRS:  WGS 84
 <h2>Datos ficticios (3)</h2>
 <p>Se unen todos, incluso los con valores NA (full): <code>full_join</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">full_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">full_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 7 × 3
   pais      pib_per_capita anios_educacion
   &lt;chr&gt;              &lt;dbl&gt;           &lt;dbl&gt;
 1 Chile              15000            11.2
 2 Argentina          10500            10.5
-3 Perú               12000            NA  
+3 Peru               12000            NA  
 4 Brazil              9800             8.9
 5 Colombia            8700            NA  
 6 Uruguay               NA             9.8
@@ -860,17 +1020,17 @@ Geodetic CRS:  WGS 84
 </div>
 <p>Se verifica los que no pueden ser unidos correctamente en ambas bases: <code>anti_join</code></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   pais     pib_per_capita
   &lt;chr&gt;             &lt;dbl&gt;
-1 Perú              12000
+1 Peru              12000
 2 Colombia           8700</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>educacion <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(economia, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>educacion <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(economia, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   pais    anios_educacion
@@ -883,19 +1043,19 @@ Geodetic CRS:  WGS 84
 <section id="datos-ficticios-4" class="slide level2">
 <h2>Datos ficticios (4)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a>datos <span class="ot">&lt;-</span> economia <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>datos <span class="ot">&lt;-</span> economia <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href=""></a><span class="co"># Paso 3: crear columna con código ISO-3 como 'iso3c'</span></span>
-<span id="cb25-2"><a href=""></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
-<span id="cb25-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">iso3c =</span> <span class="fu">countrycode</span>(pais, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>))</span>
-<span id="cb25-4"><a href=""></a></span>
-<span id="cb25-5"><a href=""></a><span class="co"># Paso 4: obtener geometría mundial</span></span>
-<span id="cb25-6"><a href=""></a>world <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb25-7"><a href=""></a>  <span class="fu">select</span>(name, iso_a3, geometry)</span>
-<span id="cb25-8"><a href=""></a></span>
-<span id="cb25-9"><a href=""></a><span class="co"># Paso 5: unir usando world como base principal</span></span>
-<span id="cb25-10"><a href=""></a>datos_geo <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(world, datos, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"iso_a3"</span> <span class="ot">=</span> <span class="st">"iso3c"</span>)); datos_geo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="co"># Paso 3: crear columna con código ISO-3 como 'iso3c'</span></span>
+<span id="cb40-2"><a href=""></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
+<span id="cb40-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">iso3c =</span> <span class="fu">countrycode</span>(pais, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>))</span>
+<span id="cb40-4"><a href=""></a></span>
+<span id="cb40-5"><a href=""></a><span class="co"># Paso 4: obtener geometría mundial</span></span>
+<span id="cb40-6"><a href=""></a>world <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb40-7"><a href=""></a>  <span class="fu">select</span>(name, iso_a3, geometry)</span>
+<span id="cb40-8"><a href=""></a></span>
+<span id="cb40-9"><a href=""></a><span class="co"># Paso 5: unir usando world como base principal</span></span>
+<span id="cb40-10"><a href=""></a>datos_geo <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(world, datos, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"iso_a3"</span> <span class="ot">=</span> <span class="st">"iso3c"</span>)); datos_geo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 3 features and 5 fields
 Geometry type: MULTIPOLYGON
@@ -916,16 +1076,16 @@ Geodetic CRS:  WGS 84
 <section id="datos-ficticios-5" class="slide level2">
 <h2>Datos ficticios (5)</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>datos <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>datos <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 7
 Columns: 4
-$ pais            &lt;chr&gt; "Chile", "Argentina", "Perú", "Brazil", "Colombia", "U…
+$ pais            &lt;chr&gt; "Chile", "Argentina", "Peru", "Brazil", "Colombia", "U…
 $ pib_per_capita  &lt;dbl&gt; 15000, 10500, 12000, 9800, 8700, NA, NA
 $ anios_educacion &lt;dbl&gt; 11.2, 10.5, NA, 8.9, NA, 9.8, 8.3
-$ iso3c           &lt;chr&gt; "CHL", "ARG", NA, "BRA", "COL", "URY", "ECU"</code></pre>
+$ iso3c           &lt;chr&gt; "CHL", "ARG", "PER", "BRA", "COL", "URY", "ECU"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 242
 Columns: 3
@@ -933,8 +1093,8 @@ $ name     &lt;chr&gt; "Zimbabwe", "Zambia", "Yemen", "Vietnam", "Venezuela", "V
 $ iso_a3   &lt;chr&gt; "ZWE", "ZMB", "YEM", "VNM", "VEN", "VAT", "VUT", "UZB", "URY"…
 $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGON (((…</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>world2 <span class="ot">&lt;-</span>world <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">iso3c =</span> iso_a3)</span>
-<span id="cb31-2"><a href=""></a>datos_geo <span class="ot">&lt;-</span> world2 <span class="sc">|&gt;</span>  <span class="fu">inner_join</span>(datos, <span class="at">by =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>world2 <span class="ot">&lt;-</span>world <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">iso3c =</span> iso_a3)</span>
+<span id="cb46-2"><a href=""></a>datos_geo <span class="ot">&lt;-</span> world2 <span class="sc">|&gt;</span>  <span class="fu">inner_join</span>(datos, <span class="at">by =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -959,6 +1119,14 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <td style="text-align: left;">MULTIPOLYGON (((-53.37061 -...</td>
 </tr>
 <tr class="even">
+<td style="text-align: left;">Peru</td>
+<td style="text-align: left;">PER</td>
+<td style="text-align: left;">Peru</td>
+<td style="text-align: right;">12000</td>
+<td style="text-align: right;">NA</td>
+<td style="text-align: left;">MULTIPOLYGON (((-69.96592 -...</td>
+</tr>
+<tr class="odd">
 <td style="text-align: left;">Ecuador</td>
 <td style="text-align: left;">ECU</td>
 <td style="text-align: left;">Ecuador</td>
@@ -966,7 +1134,7 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <td style="text-align: right;">8.3</td>
 <td style="text-align: left;">MULTIPOLYGON (((-75.28447 -...</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">Colombia</td>
 <td style="text-align: left;">COL</td>
 <td style="text-align: left;">Colombia</td>
@@ -974,7 +1142,7 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <td style="text-align: right;">NA</td>
 <td style="text-align: left;">MULTIPOLYGON (((-71.31973 1...</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">Chile</td>
 <td style="text-align: left;">CHL</td>
 <td style="text-align: left;">Chile</td>
@@ -982,7 +1150,7 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <td style="text-align: right;">11.2</td>
 <td style="text-align: left;">MULTIPOLYGON (((-109.28 -27...</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td style="text-align: left;">Brazil</td>
 <td style="text-align: left;">BRA</td>
 <td style="text-align: left;">Brazil</td>
@@ -990,7 +1158,7 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <td style="text-align: right;">8.9</td>
 <td style="text-align: left;">MULTIPOLYGON (((-66.87603 1...</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td style="text-align: left;">Argentina</td>
 <td style="text-align: left;">ARG</td>
 <td style="text-align: left;">Argentina</td>
@@ -1007,22 +1175,22 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 </section>
 <section id="datos-ficticios-6" class="slide level2">
 <h2>Datos ficticios (6)</h2>
-<h4 id="geom_sfaesfill-pib_per_capita-color-white">✅&nbsp;<code>geom_sf(aes(fill = pib_per_capita), color = "white")</code></h4>
+<p>✅&nbsp;<code>geom_sf(aes(fill = pib_per_capita), color = "white")</code></p>
 <ul>
 <li class="fragment"><p><code>geom_sf()</code>&nbsp;es el equivalente espacial de&nbsp;<code>geom_bar()</code>&nbsp;o&nbsp;<code>geom_point()</code>, pero para geometría.</p></li>
 <li class="fragment"><p><code>fill = pib_per_capita</code>:&nbsp;<strong>el color del país depende del valor del PIB per cápita</strong>.</p></li>
 <li class="fragment"><p><code>color = "white"</code>: agrega bordes blancos entre países, para que se vean claramente separados.</p></li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href=""></a><span class="fu">ggplot</span>(datos_geo) <span class="sc">+</span></span>
-<span id="cb32-2"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> pib_per_capita), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb32-3"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PIB per cápita en países con datos educativos"</span>,</span>
-<span id="cb32-4"><a href=""></a>       <span class="at">fill =</span> <span class="st">"PIB per cápita"</span>) <span class="sc">+</span></span>
-<span id="cb32-5"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="fu">ggplot</span>(datos_geo) <span class="sc">+</span></span>
+<span id="cb47-2"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> pib_per_capita), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb47-3"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PIB per cápita en países con datos educativos"</span>,</span>
+<span id="cb47-4"><a href=""></a>       <span class="at">fill =</span> <span class="st">"PIB per cápita"</span>) <span class="sc">+</span></span>
+<span id="cb47-5"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-23-1.png" width="576"></p>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-32-1.png" width="576"></p>
 </figure>
 </div>
 </div>
@@ -1032,16 +1200,16 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <h2>Datos ficticios (7)</h2>
 <p><strong>¿Y si hubiera hecho un full_join?</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>datos <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>datos <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 7
 Columns: 4
-$ pais            &lt;chr&gt; "Chile", "Argentina", "Perú", "Brazil", "Colombia", "U…
+$ pais            &lt;chr&gt; "Chile", "Argentina", "Peru", "Brazil", "Colombia", "U…
 $ pib_per_capita  &lt;dbl&gt; 15000, 10500, 12000, 9800, 8700, NA, NA
 $ anios_educacion &lt;dbl&gt; 11.2, 10.5, NA, 8.9, NA, 9.8, 8.3
-$ iso3c           &lt;chr&gt; "CHL", "ARG", NA, "BRA", "COL", "URY", "ECU"</code></pre>
+$ iso3c           &lt;chr&gt; "CHL", "ARG", "PER", "BRA", "COL", "URY", "ECU"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 242
 Columns: 3
@@ -1049,8 +1217,8 @@ $ name     &lt;chr&gt; "Zimbabwe", "Zambia", "Yemen", "Vietnam", "Venezuela", "V
 $ iso_a3   &lt;chr&gt; "ZWE", "ZMB", "YEM", "VNM", "VEN", "VAT", "VUT", "UZB", "URY"…
 $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGON (((…</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>world2 <span class="ot">&lt;-</span>world <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">iso3c =</span> iso_a3)</span>
-<span id="cb37-2"><a href=""></a>datos_geo <span class="ot">&lt;-</span> world2 <span class="sc">|&gt;</span>  <span class="fu">full_join</span>(datos, <span class="at">by =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>world2 <span class="ot">&lt;-</span>world <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">iso3c =</span> iso_a3)</span>
+<span id="cb52-2"><a href=""></a>datos_geo <span class="ot">&lt;-</span> world2 <span class="sc">|&gt;</span>  <span class="fu">full_join</span>(datos, <span class="at">by =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
 <div class="cell-output-display">
@@ -1113,13 +1281,18 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 </div>
 </div>
 </section>
-<section id="datos-ficticios-8-efecto-del-inner-join" class="slide level2">
-<h2>Datos ficticios 8: Efecto del inner join</h2>
+<section id="datos-ficticios-8-efecto-del-full-join" class="slide level2">
+<h2>Datos ficticios (8): Efecto del full join</h2>
 <div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="fu">ggplot</span>(datos_geo) <span class="sc">+</span></span>
+<span id="cb53-2"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> pib_per_capita), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb53-3"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PIB per cápita en países con datos educativos"</span>,</span>
+<span id="cb53-4"><a href=""></a>       <span class="at">fill =</span> <span class="st">"PIB per cápita"</span>) <span class="sc">+</span></span>
+<span id="cb53-5"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-26-1.png" width="960"></p>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-35-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1149,9 +1322,9 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <section id="chilemapas" class="slide level2">
 <h2>ChileMapas</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href=""></a>mapa_comunas <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas</span>
-<span id="cb38-2"><a href=""></a></span>
-<span id="cb38-3"><a href=""></a>mapa_comunas <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>mapa_comunas <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas</span>
+<span id="cb54-2"><a href=""></a></span>
+<span id="cb54-3"><a href=""></a>mapa_comunas <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 4
    codigo_comuna codigo_provincia codigo_region                         geometry
@@ -1172,17 +1345,17 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <section id="gráfico-chile" class="slide level2">
 <h2>Gráfico Chile</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a>grafico_comunas <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
-<span id="cb40-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_comunas<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="co"># asignar geometría</span></span>
-<span id="cb40-3"><a href=""></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="co"># gráfico</span></span>
-<span id="cb40-4"><a href=""></a>  <span class="fu">geom_sf</span>() <span class="co"># capa geométrica</span></span>
-<span id="cb40-5"><a href=""></a></span>
-<span id="cb40-6"><a href=""></a>grafico_comunas <span class="sc">+</span></span>
-<span id="cb40-7"><a href=""></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a>grafico_comunas <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
+<span id="cb56-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_comunas<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="co"># asignar geometría</span></span>
+<span id="cb56-3"><a href=""></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="co"># gráfico</span></span>
+<span id="cb56-4"><a href=""></a>  <span class="fu">geom_sf</span>() <span class="co"># capa geométrica</span></span>
+<span id="cb56-5"><a href=""></a></span>
+<span id="cb56-6"><a href=""></a>grafico_comunas <span class="sc">+</span></span>
+<span id="cb56-7"><a href=""></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-28-1.png" width="960"></p>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-37-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1193,11 +1366,11 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <p>El paquete&nbsp;<code>{sf}</code>&nbsp;facilita en gran medida el trabajo con datos geográficos, especialmente en lo que respecta a operaciones espaciales como la&nbsp;<strong>fusión de polígonos adyacentes</strong>.</p>
 <p>En este caso, utilizamos&nbsp;<code>group_by()</code>&nbsp;para agrupar las observaciones según la variable&nbsp;<code>codigo_region</code>, Luego, aplicamos&nbsp;<code>summarize()</code>&nbsp;junto a la función&nbsp;<code>sf::st_union()</code>&nbsp;para combinar los polígonos de las comunas dentro de cada grupo, generando así un nuevo conjunto de&nbsp;<strong>polígonos regionales</strong></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
-<span id="cb41-2"><a href=""></a>  <span class="fu">group_by</span>(codigo_region) <span class="sc">|&gt;</span> </span>
-<span id="cb41-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geometry)) <span class="co"># resumir los datos agrupados uniéndolos</span></span>
-<span id="cb41-4"><a href=""></a></span>
-<span id="cb41-5"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
+<span id="cb57-2"><a href=""></a>  <span class="fu">group_by</span>(codigo_region) <span class="sc">|&gt;</span> </span>
+<span id="cb57-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geometry)) <span class="co"># resumir los datos agrupados uniéndolos</span></span>
+<span id="cb57-4"><a href=""></a></span>
+<span id="cb57-5"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   codigo_region                                                         geometry
@@ -1213,7 +1386,7 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-30-1.png" width="960"></p>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-39-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1222,14 +1395,14 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <section id="chilemapas-filtremos" class="slide level2">
 <h2>ChileMapas: Filtremos</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href=""></a>mapa <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas <span class="sc">|&gt;</span> </span>
-<span id="cb43-2"><a href=""></a>  <span class="fu">left_join</span>(</span>
-<span id="cb43-3"><a href=""></a>    chilemapas<span class="sc">::</span>codigos_territoriales <span class="sc">|&gt;</span> </span>
-<span id="cb43-4"><a href=""></a>      <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">"comuna"</span>)), </span>
-<span id="cb43-5"><a href=""></a>    <span class="at">by =</span> <span class="st">"codigo_comuna"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb43-6"><a href=""></a>  <span class="fu">filter</span>(codigo_region<span class="sc">==</span><span class="st">"08"</span>)</span>
-<span id="cb43-7"><a href=""></a></span>
-<span id="cb43-8"><a href=""></a>mapa <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a>mapa <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas <span class="sc">|&gt;</span> </span>
+<span id="cb59-2"><a href=""></a>  <span class="fu">left_join</span>(</span>
+<span id="cb59-3"><a href=""></a>    chilemapas<span class="sc">::</span>codigos_territoriales <span class="sc">|&gt;</span> </span>
+<span id="cb59-4"><a href=""></a>      <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">"comuna"</span>)), </span>
+<span id="cb59-5"><a href=""></a>    <span class="at">by =</span> <span class="st">"codigo_comuna"</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb59-6"><a href=""></a>  <span class="fu">filter</span>(codigo_region<span class="sc">==</span><span class="st">"08"</span>)</span>
+<span id="cb59-7"><a href=""></a></span>
+<span id="cb59-8"><a href=""></a>mapa <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 5
   codigo_comuna codigo_provincia codigo_region                          geometry
@@ -1240,18 +1413,18 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href=""></a>mapa_datos <span class="ot">&lt;-</span> mapa <span class="sc">|&gt;</span> </span>
-<span id="cb45-2"><a href=""></a>  <span class="co"># crear una variable para comunas específicas</span></span>
-<span id="cb45-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="fu">case_when</span>(nombre_comuna <span class="sc">==</span> <span class="st">"Chiguayante"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb45-4"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"San Pedro de la Paz"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb45-5"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Coronel"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb45-6"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Hualpen"</span> <span class="sc">~</span> <span class="st">"No fui"</span>,</span>
-<span id="cb45-7"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Lota"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb45-8"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Concepcion"</span> <span class="sc">~</span> <span class="st">"Ñuñoa"</span>,</span>
-<span id="cb45-9"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Santa Juana"</span> <span class="sc">~</span> <span class="st">"No fui"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb45-10"><a href=""></a>  <span class="fu">select</span>(nombre_comuna, codigo_comuna, variable, geometry)</span>
-<span id="cb45-11"><a href=""></a></span>
-<span id="cb45-12"><a href=""></a>mapa_datos <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a>mapa_datos <span class="ot">&lt;-</span> mapa <span class="sc">|&gt;</span> </span>
+<span id="cb61-2"><a href=""></a>  <span class="co"># crear una variable para comunas específicas</span></span>
+<span id="cb61-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="fu">case_when</span>(nombre_comuna <span class="sc">==</span> <span class="st">"Chiguayante"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb61-4"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"San Pedro de la Paz"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb61-5"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Coronel"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb61-6"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Hualpen"</span> <span class="sc">~</span> <span class="st">"No fui"</span>,</span>
+<span id="cb61-7"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Lota"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb61-8"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Concepcion"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
+<span id="cb61-9"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Santa Juana"</span> <span class="sc">~</span> <span class="st">"No fui"</span>)) <span class="sc">|&gt;</span> </span>
+<span id="cb61-10"><a href=""></a>  <span class="fu">select</span>(nombre_comuna, codigo_comuna, variable, geometry)</span>
+<span id="cb61-11"><a href=""></a></span>
+<span id="cb61-12"><a href=""></a>mapa_datos <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 1 × 4
   nombre_comuna codigo_comuna variable                                  geometry
@@ -1263,17 +1436,17 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <section id="chilemapas-visualizar" class="slide level2">
 <h2>ChileMapas: Visualizar</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="co"># visualizar</span></span>
-<span id="cb47-2"><a href=""></a>mapa_datos <span class="sc">|&gt;</span> </span>
-<span id="cb47-3"><a href=""></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb47-4"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry, </span>
-<span id="cb47-5"><a href=""></a>              <span class="at">fill =</span> variable), <span class="co">#usamos la variable que creamos como relleno de las comunas</span></span>
-<span id="cb47-6"><a href=""></a>          <span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb47-7"><a href=""></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="co"># visualizar</span></span>
+<span id="cb63-2"><a href=""></a>mapa_datos <span class="sc">|&gt;</span> </span>
+<span id="cb63-3"><a href=""></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb63-4"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry, </span>
+<span id="cb63-5"><a href=""></a>              <span class="at">fill =</span> variable), <span class="co">#usamos la variable que creamos como relleno de las comunas</span></span>
+<span id="cb63-6"><a href=""></a>          <span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb63-7"><a href=""></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-33-1.png" width="960"></p>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-42-1.png" width="960"></p>
 </figure>
 </div>
 </div>
@@ -1282,8 +1455,8 @@ $ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGO
 <section id="chilemapas-un-ejemplo-a-las-regiones" class="slide level2">
 <h2>ChileMapas: Un ejemplo a las regiones</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> </span>
-<span id="cb48-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> </span>
+<span id="cb64-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Simple feature collection with 3 features and 1 field
 Geometry type: GEOMETRY
@@ -1299,32 +1472,32 @@ Geodetic CRS:  SIRGAS 2000
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_regiones <span class="sc">%&gt;%</span></span>
-<span id="cb50-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">nombre_region =</span> <span class="fu">case_when</span>(</span>
-<span id="cb50-3"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"01"</span> <span class="sc">~</span> <span class="st">"Región de Tarapacá"</span>,</span>
-<span id="cb50-4"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"02"</span> <span class="sc">~</span> <span class="st">"Región de Antofagasta"</span>,</span>
-<span id="cb50-5"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"03"</span> <span class="sc">~</span> <span class="st">"Región de Atacama"</span>,</span>
-<span id="cb50-6"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"04"</span> <span class="sc">~</span> <span class="st">"Región de Coquimbo"</span>,</span>
-<span id="cb50-7"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"05"</span> <span class="sc">~</span> <span class="st">"Región de Valparaíso"</span>,</span>
-<span id="cb50-8"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"06"</span> <span class="sc">~</span> <span class="st">"Región del Libertador General Bernardo O'Higgins"</span>,</span>
-<span id="cb50-9"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"07"</span> <span class="sc">~</span> <span class="st">"Región del Maule"</span>,</span>
-<span id="cb50-10"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"08"</span> <span class="sc">~</span> <span class="st">"Región del Biobío"</span>,</span>
-<span id="cb50-11"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"09"</span> <span class="sc">~</span> <span class="st">"Región de La Araucanía"</span>,</span>
-<span id="cb50-12"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"10"</span> <span class="sc">~</span> <span class="st">"Región de Los Lagos"</span>,</span>
-<span id="cb50-13"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"11"</span> <span class="sc">~</span> <span class="st">"Región de Aysén del General Carlos Ibáñez del Campo"</span>,</span>
-<span id="cb50-14"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"12"</span> <span class="sc">~</span> <span class="st">"Región de Magallanes y de la Antártica Chilena"</span>,</span>
-<span id="cb50-15"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"13"</span> <span class="sc">~</span> <span class="st">"Región Metropolitana de Santiago"</span>,</span>
-<span id="cb50-16"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"14"</span> <span class="sc">~</span> <span class="st">"Región de Los Ríos"</span>,</span>
-<span id="cb50-17"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"15"</span> <span class="sc">~</span> <span class="st">"Región de Arica y Parinacota"</span>,</span>
-<span id="cb50-18"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"16"</span> <span class="sc">~</span> <span class="st">"Región de Ñuble"</span>,</span>
-<span id="cb50-19"><a href=""></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
-<span id="cb50-20"><a href=""></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_regiones <span class="sc">%&gt;%</span></span>
+<span id="cb66-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">nombre_region =</span> <span class="fu">case_when</span>(</span>
+<span id="cb66-3"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"01"</span> <span class="sc">~</span> <span class="st">"Región de Tarapacá"</span>,</span>
+<span id="cb66-4"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"02"</span> <span class="sc">~</span> <span class="st">"Región de Antofagasta"</span>,</span>
+<span id="cb66-5"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"03"</span> <span class="sc">~</span> <span class="st">"Región de Atacama"</span>,</span>
+<span id="cb66-6"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"04"</span> <span class="sc">~</span> <span class="st">"Región de Coquimbo"</span>,</span>
+<span id="cb66-7"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"05"</span> <span class="sc">~</span> <span class="st">"Región de Valparaíso"</span>,</span>
+<span id="cb66-8"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"06"</span> <span class="sc">~</span> <span class="st">"Región del Libertador General Bernardo O'Higgins"</span>,</span>
+<span id="cb66-9"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"07"</span> <span class="sc">~</span> <span class="st">"Región del Maule"</span>,</span>
+<span id="cb66-10"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"08"</span> <span class="sc">~</span> <span class="st">"Región del Biobío"</span>,</span>
+<span id="cb66-11"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"09"</span> <span class="sc">~</span> <span class="st">"Región de La Araucanía"</span>,</span>
+<span id="cb66-12"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"10"</span> <span class="sc">~</span> <span class="st">"Región de Los Lagos"</span>,</span>
+<span id="cb66-13"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"11"</span> <span class="sc">~</span> <span class="st">"Región de Aysén del General Carlos Ibáñez del Campo"</span>,</span>
+<span id="cb66-14"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"12"</span> <span class="sc">~</span> <span class="st">"Región de Magallanes y de la Antártica Chilena"</span>,</span>
+<span id="cb66-15"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"13"</span> <span class="sc">~</span> <span class="st">"Región Metropolitana de Santiago"</span>,</span>
+<span id="cb66-16"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"14"</span> <span class="sc">~</span> <span class="st">"Región de Los Ríos"</span>,</span>
+<span id="cb66-17"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"15"</span> <span class="sc">~</span> <span class="st">"Región de Arica y Parinacota"</span>,</span>
+<span id="cb66-18"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"16"</span> <span class="sc">~</span> <span class="st">"Región de Ñuble"</span>,</span>
+<span id="cb66-19"><a href=""></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb66-20"><a href=""></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="chilemapas-un-ejemplo-a-las-regiones-1" class="slide level2">
 <h2>ChileMapas: Un ejemplo a las regiones</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href=""></a>perros_callejeros <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a>perros_callejeros <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 2 × 2
   codigo_region perros_calle_por_1000hab
@@ -1334,7 +1507,7 @@ Geodetic CRS:  SIRGAS 2000
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a>mapa_regiones2 <span class="ot">&lt;-</span> mapa_regiones <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(perros_callejeros, <span class="at">by =</span> <span class="st">"codigo_region"</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a>mapa_regiones2 <span class="ot">&lt;-</span> mapa_regiones <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(perros_callejeros, <span class="at">by =</span> <span class="st">"codigo_region"</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 16
 Columns: 4
@@ -1374,43 +1547,43 @@ $ perros_calle_por_1000hab &lt;dbl&gt; 52.8, 42.7, 25.4, 41.1, 56.9, 33.5, 26.0,
 <div class="columns">
 <div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
-<span id="cb56-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
-<span id="cb56-3"><a href=""></a>  <span class="co"># especificar la geometría del mapa</span></span>
-<span id="cb56-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
-<span id="cb56-5"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab</span>
-<span id="cb56-6"><a href=""></a>             )) <span class="sc">+</span> <span class="co"># graficar</span></span>
-<span id="cb56-7"><a href=""></a>  <span class="fu">geom_sf</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
+<span id="cb72-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
+<span id="cb72-3"><a href=""></a>  <span class="co"># especificar la geometría del mapa</span></span>
+<span id="cb72-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
+<span id="cb72-5"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab</span>
+<span id="cb72-6"><a href=""></a>             )) <span class="sc">+</span> <span class="co"># graficar</span></span>
+<span id="cb72-7"><a href=""></a>  <span class="fu">geom_sf</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-40-1.png" width="960"></p>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-49-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </div><div class="column" style="width:50%;">
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
-<span id="cb57-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
-<span id="cb57-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
-<span id="cb57-4"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab)) <span class="sc">+</span></span>
-<span id="cb57-5"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="at">color =</span> <span class="st">"gray90"</span>) <span class="sc">+</span></span>
-<span id="cb57-6"><a href=""></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">77</span>, <span class="sc">-</span><span class="dv">65</span>)) <span class="sc">+</span></span>
-<span id="cb57-7"><a href=""></a><span class="fu">scale_fill_gradient</span>(</span>
-<span id="cb57-8"><a href=""></a>  <span class="at">low =</span> <span class="st">"#8EC3E2"</span>,</span>
-<span id="cb57-9"><a href=""></a>  <span class="at">high =</span> <span class="st">"#BB1515"</span>,</span>
-<span id="cb57-10"><a href=""></a>  <span class="at">name =</span> <span class="st">"Perros / 1000 hab."</span></span>
-<span id="cb57-11"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb57-12"><a href=""></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb57-13"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb57-14"><a href=""></a>    <span class="at">title =</span> <span class="st">"Perros callejeros"</span>,</span>
-<span id="cb57-15"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"En Chile por cada mil habitantes"</span></span>
-<span id="cb57-16"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
+<span id="cb73-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
+<span id="cb73-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
+<span id="cb73-4"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab)) <span class="sc">+</span></span>
+<span id="cb73-5"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="at">color =</span> <span class="st">"gray90"</span>) <span class="sc">+</span></span>
+<span id="cb73-6"><a href=""></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">77</span>, <span class="sc">-</span><span class="dv">65</span>)) <span class="sc">+</span></span>
+<span id="cb73-7"><a href=""></a><span class="fu">scale_fill_gradient</span>(</span>
+<span id="cb73-8"><a href=""></a>  <span class="at">low =</span> <span class="st">"#8EC3E2"</span>,</span>
+<span id="cb73-9"><a href=""></a>  <span class="at">high =</span> <span class="st">"#BB1515"</span>,</span>
+<span id="cb73-10"><a href=""></a>  <span class="at">name =</span> <span class="st">"Perros / 1000 hab."</span></span>
+<span id="cb73-11"><a href=""></a>) <span class="sc">+</span></span>
+<span id="cb73-12"><a href=""></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb73-13"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb73-14"><a href=""></a>    <span class="at">title =</span> <span class="st">"Perros callejeros"</span>,</span>
+<span id="cb73-15"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"En Chile por cada mil habitantes"</span></span>
+<span id="cb73-16"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-41-1.png" width="960"></p>
+<p><img data-src="presentacion_clase3_files/figure-revealjs/unnamed-chunk-50-1.png" width="960"></p>
 </figure>
 </div>
 </div>

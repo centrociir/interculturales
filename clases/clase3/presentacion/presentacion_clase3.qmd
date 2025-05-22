@@ -61,9 +61,133 @@ library(countrycode)
 library(chilemapas)
 ```
 
-## Recapitulando
+## Recapitulando...📝
+
+**Tidyverse**
+
+Conjunto de paquetes de R diseñados para ciencia de datos. Incluye herramientas como ggplot2, dplyr, tidyr, readr, entre otros, que comparten una sintaxis coherente y principios comunes (funciones pipe ( `|>` o `%>%` ) y manipulación de datos "ordenados").
+
+```{r eval=FALSE, echo=TRUE}
+head(starwars)
+```
+
+```{r, echo=TRUE}
+names(starwars)
+```
+
+------------------------------------------------------------------------
+
+## Recapitulando...📝
+
+**Tidyverse: `Select`**
+
+Sirve para elegir columnas específicas de un data frame.
+
+```{r, echo=TRUE}
+starwars %>%
+  select(name, species, height, mass) |> head(2)
+```
+
+**Tidyverse: `Filter`**
+
+Permite filtrar filas según condiciones lógicas.
+
+```{r, echo=TRUE}
+starwars %>% filter(species == "Human", mass > 80) |> head(2)
+```
+
+------------------------------------------------------------------------
+
+## Recapitulando...📝
+
+**Tidyverse: `Mutate`**
+
+Crea nuevas columnas o modifica variables existentes.
+
+```{r, echo=TRUE}
+starwars %>%
+  mutate(imc_ficticio = mass / (height / 100)^2) %>%
+  select(name, imc_ficticio) %>%
+  arrange(desc(imc_ficticio)) |> 
+  head(3)
+
+```
+
+------------------------------------------------------------------------
+
+## Recapitulando...📝
+
+**Tidyverse: `Group_by` + `summarise`**
+
+`Group_by`: Crea nuevas columnas o modifica variables existentes y `Summarise`: Genera resúmenes estadísticos por grupo (si se usó group_by()) o para todo el conjunto.
+
+```{r, echo=TRUE}
+starwars %>% group_by(species) %>%
+  summarise(
+    promedio_altura = mean(height, na.rm = TRUE)
+  ) %>%
+  arrange(desc(promedio_altura)) |>  # Ordenar por número de personajes
+  head(3)
+
+
+```
+
+## Recapitulando ...📝
+
+```{r, echo=TRUE}
+# Crear el gráfico
+starwars %>%
+  mutate(imc_ficticio = mass / (height / 100)^2) %>%
+  select(name, imc_ficticio) %>%
+  arrange(desc(imc_ficticio)) %>%
+  head(3) %>%
+  ggplot(aes(x = reorder(name, imc_ficticio), y = imc_ficticio)) +
+  geom_col(fill = "steelblue") +
+  coord_flip() +
+  labs(
+    title = "Top 3 personajes con mayor IMC ficticio",
+    x = "Nombre",
+    y = "IMC"
+  ) +
+  theme_minimal()
+
+```
+
+## Recapitulando ...📝
+
+```{r, echo=TRUE}
+starwars %>%
+  filter(!is.na(height), !is.na(mass)) %>%
+  ggplot(aes(x = height, y = mass)) +
+  geom_point(alpha = 0.7, color = "navy") +
+  labs(title = "Relación entre estatura y peso en Star Wars",
+       x = "Estatura (cm)", y = "Masa (kg)") +
+  theme_minimal()
+
+```
+
+## Recapitulando ...📝
+
+```{r, echo=TRUE}
+starwars %>%
+  filter(!is.na(height)) %>%
+  ggplot(aes(x = height)) +
+  geom_density(fill = "skyblue", alpha = 0.6) +
+  labs(title = "Distribución de estatura en personajes de Star Wars",
+       x = "Estatura (cm)", y = "Densidad") +
+  theme_minimal()
+
+```
 
 ## Sistema de Información Geográfica (SIG)
+
+Un **Sistema de Información Geográfica (SIG)** es una herramienta tecnológica que permite **capturar, almacenar, analizar, visualizar y representar datos geográficos o espaciales**.
+
+Combina información alfanumérica (como población, ingresos o acceso a servicios) con su ubicación en el espacio (como comunas, calles o regiones), lo que permite responder preguntas del tipo **“¿Dónde ocurre qué...?”**.
+
+-   Mapas temáticos (ej. pobreza por comuna)
+
+-   Análisis territorial (ej. acceso a servicios)
 
 ## Paquetes: 📦 ¿Qué es `sf`?
 
@@ -112,7 +236,7 @@ Te permite:
 Porque te permite combinar el mundo de la **estadística en R** con el análisis geográfico, sin salir del mismo entorno. 
 
 | Componente             | ¿Qué hace?                                              |
-|----------------------|--------------------------------------------------|
+|------------------------|---------------------------------------------------------|
 | **Clase especial**     | Le dice a R cómo interpretar los datos como espaciales. |
 | **Columna `geometry`** | Guarda formas como puntos, polígonos, líneas.           |
 | **`CRS` (proyección)** | Define cómo se ubica esa geometría en el planeta.       |
@@ -175,7 +299,7 @@ kable(tabla_chile, caption = "Codificaciones para 'Chile' usando countrycode()")
 
 Es un paquete R que permite **descargar datos geográficos del mundo** (países, estados, líneas costeras, ríos, etc.) desde el proyecto [Natural Earth](https://www.naturalearthdata.com/). Se usa mucho para crear mapas en R, especialmente con `sf` y `ggplot2`.
 
-```{r}
+```{r, echo=TRUE}
 library(rnaturalearth)
 
 world <- ne_countries(scale = "medium", returnclass = "sf")
@@ -189,12 +313,12 @@ world |> select(iso_a3, geometry) |> head(2)
 
 -   Región económica (BRICS, OCDE, etc)
 
--   Espera de vida
+-   Esperanza de vida
 
 ## Entonces....
 
 | Paquete         | Rol en el flujo de trabajo                  | Analogía                         |
-|-----------------|--------------------------------|------------------------|
+|-----------------|---------------------------------------------|----------------------------------|
 | `sf`            | Estructura: hace que todo sea "espacial"    | Es como el "Excel" espacial de R |
 | `rnaturalearth` | Fuente de datos geográficos en formato `sf` | Es como bajar un mapa listo      |
 | `countrycode`   | Diccionario para traducir nombres de países | Es como un traductor de nombres  |
@@ -246,7 +370,7 @@ library(dplyr)
 library(knitr)
 
 economia <- tibble(
-  pais = c("Chile", "Argentina", "Perú", "Brazil", "Colombia"),
+  pais = c("Chile", "Argentina", "Peru", "Brazil", "Colombia"),
   pib_per_capita = c(15000, 10500, 12000, 9800, 8700)
 )
 
@@ -374,7 +498,7 @@ datos_geo |>
 
 ## Datos ficticios (6)
 
-#### ✅ `geom_sf(aes(fill = pib_per_capita), color = "white")`
+✅ `geom_sf(aes(fill = pib_per_capita), color = "white")`
 
 -   `geom_sf()` es el equivalente espacial de `geom_bar()` o `geom_point()`, pero para geometría.
 
@@ -411,9 +535,9 @@ datos_geo |> head(5)|>
   kable_styling(font_size = 21)
 ```
 
-## Datos ficticios 8: Efecto del inner join 
+## Datos ficticios (8): Efecto del full join
 
-```{r}
+```{r, echo=TRUE}
 ggplot(datos_geo) +
   geom_sf(aes(fill = pib_per_capita), color = "white") +
   labs(title = "PIB per cápita en países con datos educativos",
@@ -504,7 +628,7 @@ mapa_datos <- mapa |>
                               nombre_comuna == "Coronel" ~ "Fui",
                               nombre_comuna == "Hualpen" ~ "No fui",
                               nombre_comuna == "Lota" ~ "Fui",
-                              nombre_comuna == "Concepcion" ~ "Ñuñoa",
+                              nombre_comuna == "Concepcion" ~ "Fui",
                               nombre_comuna == "Santa Juana" ~ "No fui")) |> 
   select(nombre_comuna, codigo_comuna, variable, geometry)
 
