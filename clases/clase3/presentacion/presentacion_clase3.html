@@ -602,26 +602,26 @@ Matías Deneken
 </section>
 <section id="sistema-de-información-geográfica-sig" class="slide level2">
 <h2>Sistema de Información Geográfica (SIG)</h2>
-<p>Un&nbsp;<strong>Sistema de Información Geográfica (SIG)</strong>&nbsp;es una herramienta tecnológica que permite&nbsp;<strong>capturar, almacenar, analizar, visualizar y representar datos geográficos o espaciales</strong>.</p>
-<p>Combina información alfanumérica (como población, ingresos o acceso a servicios) con su ubicación en el espacio (como comunas, calles o regiones), lo que permite responder preguntas del tipo&nbsp;<strong>“¿Dónde ocurre qué…?”</strong>.</p>
+<p>Un <strong>Sistema de Información Geográfica (SIG)</strong> es una herramienta tecnológica que permite <strong>capturar, almacenar, analizar, visualizar y representar datos geográficos o espaciales</strong>.</p>
+<p>Combina información alfanumérica (como población, ingresos o acceso a servicios) con su ubicación en el espacio (como comunas, calles o regiones), lo que permite responder preguntas del tipo <strong>“¿Dónde ocurre qué…?”</strong>.</p>
 <ul>
 <li class="fragment"><p>Mapas temáticos (ej. pobreza por comuna)</p></li>
 <li class="fragment"><p>Análisis territorial (ej. acceso a servicios)</p></li>
 </ul>
 </section>
 <section id="paquetes-qué-es-sf" class="slide level2">
-<h2>Paquetes: 📦 ¿Qué es&nbsp;<code>sf</code>?</h2>
-<p><code>sf</code>&nbsp;es un&nbsp;<strong>paquete de R</strong>&nbsp;para trabajar con&nbsp;<strong>datos espaciales</strong>&nbsp;(geográficos) de manera moderna y eficiente. Su nombre viene de&nbsp;<strong>“simple features”</strong>, un estándar internacional para representar datos espaciales (como puntos, líneas o polígonos) en bases de datos y software.</p>
+<h2>Paquetes: 📦 ¿Qué es <code>sf</code>?</h2>
+<p><code>sf</code> es un <strong>paquete de R</strong> para trabajar con <strong>datos espaciales</strong> (geográficos) de manera moderna y eficiente. Su nombre viene de <strong>“simple features”</strong>, un estándar internacional para representar datos espaciales (como puntos, líneas o polígonos) en bases de datos y software.</p>
 <p>Te permite:</p>
 <ul>
-<li class="fragment"><p>Leer y escribir&nbsp;<strong>archivos espaciales</strong>&nbsp;como Shapefiles, GeoJSON, KML, etc.</p></li>
+<li class="fragment"><p>Leer y escribir <strong>archivos espaciales</strong> como Shapefiles, GeoJSON, KML, etc.</p></li>
 <li class="fragment"><p>Unir datos geográficos con datos tabulares (como una comuna con su población).</p></li>
-<li class="fragment"><p>Hacer&nbsp;<strong>análisis espacial</strong>&nbsp;(intersecciones, distancias, áreas, etc.).</p></li>
-<li class="fragment"><p>Visualizar mapas fácilmente con&nbsp;<code>ggplot2::geom_sf()</code>&nbsp;o&nbsp;<code>tmap</code>.</p></li>
+<li class="fragment"><p>Hacer <strong>análisis espacial</strong> (intersecciones, distancias, áreas, etc.).</p></li>
+<li class="fragment"><p>Visualizar mapas fácilmente con <code>ggplot2::geom_sf()</code> o <code>tmap</code>.</p></li>
 </ul>
 </section>
 <section id="paquetes-qué-es-sf-1" class="slide level2">
-<h2>Paquetes: 📦 ¿Qué es&nbsp;<code>sf</code>?</h2>
+<h2>Paquetes: 📦 ¿Qué es <code>sf</code>?</h2>
 <h3 id="tipos-de-geometría">🧩 Tipos de geometría</h3>
 <ul>
 <li class="fragment"><p><code>POINT</code>: una ubicación (ej: una escuela).</p></li>
@@ -629,24 +629,24 @@ Matías Deneken
 <li class="fragment"><p><code>POLYGON</code>: una superficie cerrada (ej: una comuna o país).</p></li>
 <li class="fragment"><p><code>MULTIPOLYGON</code>: varios polígonos juntos (ej: Chile continental + Rapa Nui).</p></li>
 </ul>
-<h3 id="funciones-importantes-del-paquete-sf">🔧 Funciones importantes del paquete&nbsp;<code>sf</code></h3>
+<h3 id="funciones-importantes-del-paquete-sf">🔧 Funciones importantes del paquete <code>sf</code></h3>
 <ul>
 <li class="fragment"><p><code>st_read()</code>: lee archivos espaciales (como shapefiles).</p></li>
 <li class="fragment"><p><code>st_write()</code>: guarda archivos espaciales.</p></li>
 <li class="fragment"><p><code>st_geometry()</code>: accede a la geometría de un objeto.</p></li>
 <li class="fragment"><p><code>st_crs()</code>: inspecciona o define el sistema de coordenadas.</p></li>
 <li class="fragment"><p><code>st_transform()</code>: cambia la proyección del mapa.</p></li>
-<li class="fragment"><p><code>st_join()</code>,&nbsp;<code>st_intersection()</code>: operaciones espaciales.</p></li>
+<li class="fragment"><p><code>st_join()</code>,<code>st_intersection()</code>: operaciones espaciales.</p></li>
 </ul>
 </section>
-<section id="paquetes-qué-es-sf-2" class="slide level2">
-<h2>Paquetes: 📦 ¿Qué es&nbsp;<code>sf</code>?</h2>
+<section id="paquetes-qué-essf" class="slide level2">
+<h2>Paquetes: 📦 ¿Qué es<code>sf</code>?</h2>
 <h3 id="por-qué-es-útil">🗺️ ¿Por qué es útil?</h3>
-<p>Porque te permite combinar el mundo de la&nbsp;<strong>estadística en R</strong>&nbsp;con el análisis geográfico, sin salir del mismo entorno.&nbsp;</p>
+<p>Porque te permite combinar el mundo de la <strong>estadística en R</strong> con el análisis geográfico, sin salir del mismo entorno.</p>
 <table class="caption-top">
 <colgroup>
-<col style="width: 32%">
-<col style="width: 67%">
+<col style="width: 29%">
+<col style="width: 70%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -752,7 +752,7 @@ Matías Deneken
 </section>
 <section id="paquete-r-natural-earth." class="slide level2">
 <h2>Paquete: R Natural Earth.</h2>
-<p>Es un paquete R que permite&nbsp;<strong>descargar datos geográficos del mundo</strong>&nbsp;(países, estados, líneas costeras, ríos, etc.) desde el proyecto&nbsp;<a href="https://www.naturalearthdata.com/">Natural Earth</a>. Se usa mucho para crear mapas en R, especialmente con&nbsp;<code>sf</code>&nbsp;y&nbsp;<code>ggplot2</code>.</p>
+<p>Es un paquete R que permite <strong>descargar datos geográficos del mundo</strong> (países, estados, líneas costeras, ríos, etc.) desde el proyecto <a href="https://www.naturalearthdata.com/">Natural Earth</a>. Se usa mucho para crear mapas en R, especialmente con <code>sf</code> y <code>ggplot2</code>.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">library</span>(rnaturalearth)</span>
 <span id="cb20-2"><a href=""></a></span>
@@ -781,9 +781,9 @@ Geodetic CRS:  WGS 84
 <h2>Entonces….</h2>
 <table class="caption-top">
 <colgroup>
-<col style="width: 25%">
-<col style="width: 42%">
-<col style="width: 32%">
+<col style="width: 17%">
+<col style="width: 46%">
+<col style="width: 35%">
 </colgroup>
 <thead>
 <tr class="header">

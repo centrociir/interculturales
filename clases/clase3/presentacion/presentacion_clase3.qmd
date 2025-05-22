@@ -181,29 +181,29 @@ starwars %>%
 
 ## Sistema de Información Geográfica (SIG)
 
-Un **Sistema de Información Geográfica (SIG)** es una herramienta tecnológica que permite **capturar, almacenar, analizar, visualizar y representar datos geográficos o espaciales**.
+Un **Sistema de Información Geográfica (SIG)** es una herramienta tecnológica que permite **capturar, almacenar, analizar, visualizar y representar datos geográficos o espaciales**.
 
-Combina información alfanumérica (como población, ingresos o acceso a servicios) con su ubicación en el espacio (como comunas, calles o regiones), lo que permite responder preguntas del tipo **“¿Dónde ocurre qué...?”**.
+Combina información alfanumérica (como población, ingresos o acceso a servicios) con su ubicación en el espacio (como comunas, calles o regiones), lo que permite responder preguntas del tipo **“¿Dónde ocurre qué...?”**.
 
 -   Mapas temáticos (ej. pobreza por comuna)
 
 -   Análisis territorial (ej. acceso a servicios)
 
-## Paquetes: 📦 ¿Qué es `sf`?
+## Paquetes: 📦 ¿Qué es `sf`?
 
-`sf` es un **paquete de R** para trabajar con **datos espaciales** (geográficos) de manera moderna y eficiente. Su nombre viene de **"simple features"**, un estándar internacional para representar datos espaciales (como puntos, líneas o polígonos) en bases de datos y software.
+`sf` es un **paquete de R** para trabajar con **datos espaciales** (geográficos) de manera moderna y eficiente. Su nombre viene de **"simple features"**, un estándar internacional para representar datos espaciales (como puntos, líneas o polígonos) en bases de datos y software. 
 
 Te permite:
 
--   Leer y escribir **archivos espaciales** como Shapefiles, GeoJSON, KML, etc.
+-   Leer y escribir **archivos espaciales** como Shapefiles, GeoJSON, KML, etc.
 
 -   Unir datos geográficos con datos tabulares (como una comuna con su población).
 
--   Hacer **análisis espacial** (intersecciones, distancias, áreas, etc.).
+-   Hacer **análisis espacial** (intersecciones, distancias, áreas, etc.).
 
--   Visualizar mapas fácilmente con `ggplot2::geom_sf()` o `tmap`.
+-   Visualizar mapas fácilmente con `ggplot2::geom_sf()` o `tmap`.
 
-## Paquetes: 📦 ¿Qué es `sf`?
+## Paquetes: 📦 ¿Qué es `sf`?
 
 ### 🧩 Tipos de geometría
 
@@ -215,7 +215,7 @@ Te permite:
 
 -   `MULTIPOLYGON`: varios polígonos juntos (ej: Chile continental + Rapa Nui).
 
-### 🔧 Funciones importantes del paquete `sf`
+### 🔧 Funciones importantes del paquete `sf`
 
 -   `st_read()`: lee archivos espaciales (como shapefiles).
 
@@ -227,13 +227,13 @@ Te permite:
 
 -   `st_transform()`: cambia la proyección del mapa.
 
--   `st_join()`, `st_intersection()`: operaciones espaciales.
+-   `st_join()`,`st_intersection()`: operaciones espaciales.
 
-## Paquetes: 📦 ¿Qué es `sf`?
+## Paquetes: 📦 ¿Qué es`sf`?
 
 ### 🗺️ ¿Por qué es útil?
 
-Porque te permite combinar el mundo de la **estadística en R** con el análisis geográfico, sin salir del mismo entorno. 
+Porque te permite combinar el mundo de la **estadística en R** con el análisis geográfico, sin salir del mismo entorno.
 
 | Componente             | ¿Qué hace?                                              |
 |------------------------|---------------------------------------------------------|
@@ -297,7 +297,7 @@ kable(tabla_chile, caption = "Codificaciones para 'Chile' usando countrycode()")
 
 ## Paquete: R Natural Earth.
 
-Es un paquete R que permite **descargar datos geográficos del mundo** (países, estados, líneas costeras, ríos, etc.) desde el proyecto [Natural Earth](https://www.naturalearthdata.com/). Se usa mucho para crear mapas en R, especialmente con `sf` y `ggplot2`.
+Es un paquete R que permite **descargar datos geográficos del mundo** (países, estados, líneas costeras, ríos, etc.) desde el proyecto [Natural Earth](https://www.naturalearthdata.com/). Se usa mucho para crear mapas en R, especialmente con `sf` y `ggplot2`.
 
 ```{r, echo=TRUE}
 library(rnaturalearth)
