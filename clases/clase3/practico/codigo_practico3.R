@@ -213,6 +213,16 @@ data_rm |> ggplot() +
   ) +
   theme_classic()
 
+##=============
+## Puntos
+##============
+
+
+data_consolidada |> 
+  filter(codigo_region == 13) |> 
+  ggplot() +
+  geom_sf(aes(geometry = geometry))
+
 ## ========================================
 ## PUEBLOS INDÍGENAS
 ## ========================================
