@@ -127,6 +127,31 @@ bbdd5 |> filter(name != "Antarctica") |>
 ggsave("clases/clase3/practico/images/presidentas_mapa.png",
        plot = last_plot(), width = 29.21, height = 12.09, units = "cm", dpi = 300)
 
+
+
+## Otra data (rápido.
+
+library(readr)
+
+vdem <- read_csv("https://raw.githubusercontent.com/centrociir/interculturales/main/clases/clase3/practico/bbdd/vdem2024.csv") |> 
+  rename(name = country_name)
+
+data <- vdem |> full_join(bbdd5, by = "name")
+
+data |> filter(name != "Antarctica") |> 
+  ggplot() +
+  geom_sf(aes(geometry = geometry, fill = v2x_polyarchy)) +
+  scale_fill_viridis_c(option = "D") +
+  labs(
+    title = "Índice de poliarquía en el mundo",
+    subtitle = "Según datos de V-Dem",
+    caption = "Fuente: V-Dem",
+    fill = "v2x_polyarchy"
+  ) +
+  theme_minimal()
+
+
+
 ## ========================================
 ## CHILEMAPAS: CARGA Y UNIÓN
 ## ========================================
