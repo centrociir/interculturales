@@ -42,7 +42,7 @@ bbdd2 <- bbdd |> full_join(world, by = "name") |> glimpse()
 # Agrupa por país y calcula total de presidentas mujeres electas
 bbdd3 <- bbdd2 |> 
   group_by(name, geometry) |> 
-  summarise(sum = sum(fempresvictory, na.rm = TRUE)) |> 
+  summarise(sum = sum(fempresvictory)) |> 
   ungroup() 
 
 # Mapa básico con número total de presidentas
@@ -55,7 +55,7 @@ ggplot(data = bbdd3) +
 
 bbdd4 <- bbdd2 |> 
   group_by(name, geometry) |> 
-  summarise(sum = sum(fempresvictory, na.rm = TRUE)) |> 
+  summarise(sum = sum(fempresvictory)) |> 
   ungroup() |> 
   mutate(sum = factor(sum))
 
@@ -71,6 +71,12 @@ ggplot(data = bbdd4) +
 ## MAPA SIN ANTÁRTICA + ETIQUETAS
 ## ========================================
 
+bbdd4 <- bbdd2 |> 
+  group_by(name, geometry) |> 
+  summarise(sum = sum(fempresvictory, na.rm = TRUE)) |> 
+  ungroup() |> 
+  mutate(sum = factor(sum))
+
 bbdd4 |> filter(name != "Antarctica") |> 
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = sum)) +
@@ -84,6 +90,38 @@ bbdd4 |> filter(name != "Antarctica") |>
     fill = "Presidentas electas"
   ) +
   theme_minimal()
+#===========================
+# AÑADIR CASO MANUALMENTE
+## =========================
+
+
+
+bbdd5 <- bbdd4 |> 
+  mutate(
+    sum = case_when(
+      name %in% c("Peru", 
+                  "Bolivia", 
+                  "Mexico") ~ 1,                   # Asigna 1 a Perú y Bolivia
+      TRUE ~ as.numeric(as.character(sum))                  # Mantiene el resto como está
+    ),
+    sum = factor(sum)  # Si vas a usar una escala categórica (colores fijos)
+  )
+
+
+bbdd5 |> filter(name != "Antarctica") |> 
+  ggplot() +
+  geom_sf(aes(geometry = geometry, fill = sum)) +
+  scale_fill_manual(
+    values = c("0" = "gray80", "1" = "#a6cee3", "2" = "#1f78b4")
+  ) +
+  labs(
+    title = "Presidentas electas en el mundo",
+    subtitle = "A lo largo de la democracia",
+    caption = "Fuente: bbdd",
+    fill = "Presidentas electas"
+  ) +
+  theme_minimal()
+
 
 # Guarda imagen del gráfico
 ggsave("clases/clase3/practico/images/presidentas_mapa.png",
@@ -169,6 +207,17 @@ g1
 ## MAPA DE PUNTAJES POR COMUNA
 ## ========================================
 
+data_consolidada |> 
+  filter(codigo_region == 13) |> 
+  ggplot() +
+  geom_sf(aes(geometry = geometry, fill = promedio_ambas), col = "white") +
+  scale_fill_gradientn(
+    colours = colors
+  ) +
+  theme_classic()
+
+
+
 comunas_urbanas <- c("Pudahuel", "Cerro Navia", "Conchali", "La Pintana", "El Bosque", 
                      "Estacion Central", "Pedro Aguirre Cerda", "Recoleta", "Independencia", 
                      "La Florida", "Penalolen", "Las Condes", 
@@ -238,20 +287,9 @@ data_indi <- read_delim(
   delim = ";"
 )
 
-mapa_regiones <- mapa_comunas |> 
+mapa_regiones <- mapa |> 
   group_by(codigo_region) |> 
   summarize(geometry = st_union(geometry)) # resumir los datos agrupados uniéndolos
-
-
-## Homogeniza código comuna
-#data_indi <- data_indi |> mutate(
-#  codigo_comuna = as.character(codigo_comuna),
-#  codigo_comuna = if_else(
-#    nchar(codigo_comuna) == 4,
-#    str_pad(codigo_comuna, width = 5, pad = "0"),
-#    codigo_comuna
-#  )
-#)
 
 
 # Homogeniza código comuna
@@ -259,19 +297,10 @@ data_indi <- data_indi |> mutate(
   codigo_region = as.character(codigo_region)
 )
 
-## Suma población indígena por comuna
-#tabla_indi <- data_indi |> 
-#  group_by(codigo_comuna, pueblo, poblacion_total) |> 
-#  summarise(sum = sum(n, na.rm = TRUE), .groups = "drop")
-
 # Suma población indígena por comuna
-tabla_indi <- data_indi |> 
+indigenas_por_region <- data_indi |> 
   group_by(codigo_region, pueblo, poblacion_total) |> 
-  summarise(sum = sum(n, na.rm = TRUE), .groups = "drop")
-
-#indigenas_por_comuna <- tabla_indi |> 
-#  group_by(codigo_comuna, poblacion_total) |> 
-#  summarise(total_indigenas = sum(sum, na.rm = TRUE), .groups = "drop")
+  summarise(total_indigenas = sum(n, na.rm = TRUE), .groups = "drop")
 
 # Agrupar por código de región
 indigenas_por_region <- indigenas_por_region |> 
@@ -279,22 +308,12 @@ indigenas_por_region <- indigenas_por_region |>
   
   # Sumar población total e indígena en cada región
   summarise(
-    poblacion_total = sum(poblacion_total, na.rm = TRUE),      # Suma la población total por región
     total_indigenas = sum(total_indigenas, na.rm = TRUE),      # Suma el total de indígenas por región
     .groups = "drop"                                            # Elimina la estructura de agrupamiento después del resumen
-  ) |> 
-  
-  # Calcular proporción de indígenas
-  mutate(
-    proporcion_indigena = round((total_indigenas / poblacion_total) * 100, 2)  # Calcula el porcentaje de población indígena
   )
-
-
-
+  
 # Unión con geometría
-mapa_indi <- indigenas_por_region |> inner_join(mapa_regiones, by = "codigo_region") |> 
-  mutate(proporcion = round((total_indigenas / poblacion_total) * 100, 2))
-
+mapa_indi <- indigenas_por_region |> inner_join(mapa_regiones, by = "codigo_region") 
 
 indigenas_por_region 
 
@@ -302,21 +321,13 @@ colors <- colorRampPalette(c("grey", "blue"))(2)
 
 # Mapa final: proporción indígena
 mapa_indi |> 
-  filter(proporcion > 0) |> 
   ggplot() +
-  geom_sf(aes(geometry = geometry, fill = proporcion), col = "white") +
-  scale_fill_gradientn(
-    colours = colors,
-    labels = scales::label_number(big.mark = ".", decimal.mark = ",")
-  ) +
+  geom_sf(aes(geometry = geometry, fill = total_indigenas), col = "white")  +
   labs(fill = "Proporción de indígenas (%)") +
   theme_void() +
   coord_sf(datum = TRUE)
 
-
 # De nuevo....
-
-
 
 indigenas_por_region <- indigenas_por_region |> 
   mutate(
@@ -325,25 +336,75 @@ indigenas_por_region <- indigenas_por_region |>
 
 
 # Unión con geometría
-mapa_indi <- indigenas_por_region |> inner_join(mapa_regiones, by = "codigo_region") |> 
-  mutate(proporcion = round((total_indigenas / poblacion_total) * 100, 2))
+mapa_indi <- indigenas_por_region |> inner_join(mapa_regiones, by = "codigo_region") 
 
 colors <- colorRampPalette(c("#F3FAFD", "#2087AC"))(10)
 
 # Mapa final: proporción indígena
 mapa_indi |> 
-  filter(proporcion > 0) |> 
-  ggplot() +
-  geom_sf(aes(geometry = geometry, fill = proporcion), col = "white") +
-  coord_sf(xlim = c(-77, -65)) +
+  ggplot() +  # Inicia el gráfico usando el objeto espacial `mapa_indi`
+  
+  geom_sf(aes(geometry = geometry, fill = total_indigenas), col = "white") +  
+  # Agrega las geometrías (regiones) y las colorea según la variable `total_indigenas`
+  # El borde de cada región se dibuja en blanco
+  
+  coord_sf(xlim = c(-77, -65)) +  
+  # Ajusta la vista del mapa al rango longitudinal de Chile continental
+  
   scale_fill_gradientn(
-    colours = colors,
-    labels = scales::label_number(big.mark = ".", decimal.mark = ",")
+    colours = colors,  # Aplica una paleta de colores previamente definida
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",")  # Formatea los números con punto como separador de miles y coma decimal
   ) +
-  labs(fill = "Proporción de indígenas (%)") +
-  theme_classic() 
+  
+  labs(fill = "Número total de indígenas por región") +  
+  # Etiqueta para la leyenda del mapa (relleno)
+  
+  theme_classic()  
+# Aplica un tema limpio, sin cuadrícula ni ejes
 
 
+# Comunas
 
+## Homogeniza código comuna
+data_indi <- data_indi |> mutate(
+ codigo_comuna = as.character(codigo_comuna),
+ codigo_comuna = if_else(
+   nchar(codigo_comuna) == 4,
+   str_pad(codigo_comuna, width = 5, pad = "0"),
+   codigo_comuna
+ ))
+
+
+## Suma población indígena por comuna
+data_indi |> 
+  group_by(codigo_comuna, pueblo, poblacion_total) |> 
+  summarise(sum = sum(n, na.rm = TRUE), .groups = "drop")
+
+indigenas_por_comuna <- tabla_indi |> 
+  group_by(codigo_comuna, poblacion_total) |> 
+  summarise(total_indigenas = sum(sum, na.rm = TRUE), .groups = "drop")
+
+mapa_indi <- indigenas_por_comuna |> inner_join(mapa, by = "codigo_comuna") 
+
+
+mapa_indi |> 
+  ggplot() +  # Inicia el gráfico usando el objeto espacial `mapa_indi`
+  
+  geom_sf(aes(geometry = geometry, fill = total_indigenas), col = "white") +  
+  # Agrega las geometrías (regiones) y las colorea según la variable `total_indigenas`
+  # El borde de cada región se dibuja en blanco
+  
+  coord_sf(xlim = c(-77, -65)) +  
+  # Ajusta la vista del mapa al rango longitudinal de Chile continental
+  
+  scale_fill_gradientn(
+    colours = colors,  # Aplica una paleta de colores previamente definida
+    labels = scales::label_number(big.mark = ".", decimal.mark = ",")  # Formatea los números con punto como separador de miles y coma decimal
+  ) +
+  
+  labs(fill = "Número total de indígenas por región") +  
+  # Etiqueta para la leyenda del mapa (relleno)
+  
+  theme_classic()  
 
 
