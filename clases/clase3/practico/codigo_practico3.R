@@ -20,10 +20,7 @@ library(readxl)           # Lectura de archivos Excel
 
 
 bbdd <- read_csv("https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase3/practico/bbdd/bbdd.csv")  
-  
-
-bbdd <- read_excel("clases/clase3/practico/bbdd/bbdd.xlsx")  # Base con datos de presidentas
-write.csv(bbdd, "clases/clase3/practico/bbdd/bbdd.csv", row.names = FALSE)  # Guarda la base como CSV
+  write.csv(bbdd, "clases/clase3/practico/bbdd/bbdd.csv", row.names = FALSE)  # Guarda la base como CSV
 
 world <- ne_countries(scale = "medium", returnclass = "sf")   # Mapa mundial con geometría en formato sf
 
