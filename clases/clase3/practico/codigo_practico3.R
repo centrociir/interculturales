@@ -169,8 +169,24 @@ g1
 ## MAPA DE PUNTAJES POR COMUNA
 ## ========================================
 
+comunas_urbanas <- c("Pudahuel", "Cerro Navia", "Conchali", "La Pintana", "El Bosque", 
+                     "Estacion Central", "Pedro Aguirre Cerda", "Recoleta", "Independencia", 
+                     "La Florida", "Penalolen", "Las Condes", 
+                     #"Lo Barnechea",
+                     "Quinta Normal", 
+                     "Maipu", "Macul", "Nunoa", "Puente Alto", "Quilicura", "Renca", 
+                     "San Bernardo", "San Miguel", "La Granja", "Providencia", "Santiago",
+                     "San Joaquin", "Lo Espejo", "La Reina", "San Ramon", "La Cisterna", 
+                     "Lo Prado", "Cerrillos", "Vitacura", 
+                     "Huechuraba"
+                   #  ,
+                   #  "San Jose de Maipo"
+                     )
+
+
 data_consolidada |> 
   filter(codigo_region == 13) |> 
+  filter(nombre_comuna %in% comunas_urbanas) |>
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = promedio_ambas), col = "white") +
   scale_fill_gradientn(
@@ -179,8 +195,8 @@ data_consolidada |>
   theme_classic()
 
 
-
-
+# Tutorial para ver acá:
+# https://bastianolea.rbind.io/blog/tutorial_mapa_urbano/
 
 ##=============
 ## Puntos
