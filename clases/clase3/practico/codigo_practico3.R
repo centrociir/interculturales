@@ -20,10 +20,11 @@ library(readxl)           # Lectura de archivos Excel
 
 
 bbdd <- read_csv("https://raw.githubusercontent.com/centrociir/interculturales/refs/heads/main/clases/clase3/practico/bbdd/bbdd.csv")  
-  write.csv(bbdd, "clases/clase3/practico/bbdd/bbdd.csv", row.names = FALSE)  # Guarda la base como CSV
-
 world <- ne_countries(scale = "medium", returnclass = "sf")   # Mapa mundial con geometría en formato sf
 
+
+view(bbdd)  # Muestra la base de datos en una tabla interactiva
+view(world)
 bbdd |> glimpse()
 world |> glimpse()
 
@@ -32,6 +33,7 @@ world |> glimpse()
 ## ========================================
 
 bbdd <- bbdd |> rename(name = country)  # Asegura coincidencia en nombres de país
+view(bbdd)
 
 # Se realiza la unión entre datos de presidentas y geometría mundial
 bbdd2 <- bbdd |> full_join(world, by = "name") |> glimpse()
@@ -79,6 +81,8 @@ bbdd4 <- bbdd2 |>
   summarise(sum = sum(fempresvictory, na.rm = TRUE)) |> 
   ungroup() |> 
   mutate(sum = factor(sum))
+
+view(bbdd4)
 
 bbdd4 |> filter(name != "Antarctica") |> 
   ggplot() +
@@ -131,19 +135,27 @@ ggsave("clases/clase3/practico/images/presidentas_mapa.png",
        plot = last_plot(), width = 29.21, height = 12.09, units = "cm", dpi = 300)
 
 
-
 ## Otra data (rápido.
 
 library(readr)
 
+#VDEM
+
 vdem <- read_csv("https://raw.githubusercontent.com/centrociir/interculturales/main/clases/clase3/practico/bbdd/vdem2024.csv") |> 
   rename(name = country_name)
 
+vdem
+
+bbdd5
+
 data <- vdem |> full_join(bbdd5, by = "name")
+data
+
 
 data |> filter(name != "Antarctica") |> 
   ggplot() +
-  geom_sf(aes(geometry = geometry, fill = v2x_polyarchy)) +
+  geom_sf(aes(geometry = geometry, 
+              fill = v2x_polyarchy)) +
   scale_fill_viridis_c(option = "D") +
   labs(
     title = "Índice de poliarquía en el mundo",
@@ -167,6 +179,8 @@ mapa <- chilemapas::mapa_comunas |>
     by = "codigo_comuna"
   )
 
+mapa
+
 ## ========================================
 ## CARGA DE DATOS PAES
 ## ========================================
@@ -178,12 +192,15 @@ data <- read_delim(
   delim = ";"
 )
 
+data
+
 data_paes <- data |> 
   select(CODIGO_REGION, CODIGO_COMUNA, MATE1_REG_ACTUAL, PTJE_NEM, CLEC_REG_ACTUAL) |> 
   glimpse()
 
 # Resumen estadístico de puntajes
 summary(data_paes)
+
 
 ## ========================================
 ## CÁLCULO DE PROMEDIOS Y UNIÓN CON MAPA
@@ -200,6 +217,7 @@ tabla <- data_paes |>
   drop_na(CODIGO_COMUNA) |> 
   rename(codigo_comuna = CODIGO_COMUNA)
 
+
 # Homogeniza largo de códigos para que coincidan
 tabla <- tabla |> mutate(
   codigo_comuna = as.character(codigo_comuna),
@@ -209,6 +227,8 @@ tabla <- tabla |> mutate(
     codigo_comuna
   )
 )
+
+tabla
 
 mapa <- mapa |> mutate(codigo_comuna = as.character(codigo_comuna))
 
@@ -221,7 +241,7 @@ data_consolidada <- mapa |> full_join(tabla, by = "codigo_comuna")
 colors <- colorRampPalette(c("#FF0000", "#00679E"))(5)
 
 g1 <- data_consolidada |> 
-  filter(nombre_comuna != "Isla de Pascua", nombre_comuna != "Juan Fernandez") |> 
+  #filter(nombre_comuna != "Isla de Pascua", nombre_comuna != "Juan Fernandez") |> 
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = promedio_ambas), col = "white") +
   scale_fill_gradientn(
@@ -236,7 +256,7 @@ g1
 ## ========================================
 
 data_consolidada |> 
-  filter(codigo_region == 13) |> 
+  filter(codigo_region == "08") |> 
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = promedio_ambas), col = "white") +
   scale_fill_gradientn(
@@ -246,7 +266,11 @@ data_consolidada |>
 
 
 
-comunas_urbanas <- c("Pudahuel", "Cerro Navia", "Conchali", "La Pintana", "El Bosque", 
+
+comunas_urbanas <- c("Pudahuel", 
+                     "Cerro Navia", 
+                     "Conchali", 
+                     "La Pintana", "El Bosque", 
                      "Estacion Central", "Pedro Aguirre Cerda", "Recoleta", "Independencia", 
                      "La Florida", "Penalolen", "Las Condes", 
                      #"Lo Barnechea",
@@ -262,13 +286,13 @@ comunas_urbanas <- c("Pudahuel", "Cerro Navia", "Conchali", "La Pintana", "El Bo
 
 
 data_consolidada |> 
-  filter(codigo_region == 13) |> 
-  filter(nombre_comuna %in% comunas_urbanas) |>
+  #filter(codigo_region == "08") |> 
   ggplot() +
   geom_sf(aes(geometry = geometry, fill = promedio_ambas), col = "white") +
   scale_fill_gradientn(
     colours = colors
   ) +
+  facet_wrap(~ nombre_comuna) +  # Crea un gráfico para cada comuna
   theme_classic()
 
 
@@ -291,6 +315,12 @@ campus_sj <- st_point(c(-70.614407, -33.497657)) |>  # LONG, LAT
   st_sfc(crs = 4326) |>
   st_sf(nombre = "Campus San Joaquín", geometry = _)
 
+colegio <- st_point(c(-70.627980, -33.431223)) |>  # LONG, LAT
+  st_sfc(crs = 4326) |>
+  st_sf(nombre = "colegio", geometry = _)
+
+
+
 
 # Paso 2: Crear el mapa base y añadir La Moneda
 
@@ -300,6 +330,7 @@ data_consolidada |>
   geom_sf(aes(geometry = geometry), color = "white") +  # Mapa base de comunas
   geom_sf(data = la_moneda, color = "red", size = 1) +                         # Punto de La Moneda
   geom_sf(data = campus_sj, color = "red", size = 1) +                         # Punto de La Moneda
+  geom_sf(data = colegio, color = "red", size = 1) +                         # Punto de La Moneda
   theme_classic() +
   labs(title = "Mapa PAES + Punto de La Moneda")
 
@@ -315,6 +346,8 @@ data_indi <- read_delim(
   delim = ";"
 )
 
+mapa
+
 mapa_regiones <- mapa |> 
   group_by(codigo_region) |> 
   summarize(geometry = st_union(geometry)) # resumir los datos agrupados uniéndolos
@@ -325,10 +358,14 @@ data_indi <- data_indi |> mutate(
   codigo_region = as.character(codigo_region)
 )
 
+data_indi
+
 # Suma población indígena por comuna
 indigenas_por_region <- data_indi |> 
   group_by(codigo_region, pueblo, poblacion_total) |> 
   summarise(total_indigenas = sum(n, na.rm = TRUE), .groups = "drop")
+
+indigenas_por_region
 
 # Agrupar por código de región
 indigenas_por_region <- indigenas_por_region |> 
@@ -339,11 +376,12 @@ indigenas_por_region <- indigenas_por_region |>
     total_indigenas = sum(total_indigenas, na.rm = TRUE),      # Suma el total de indígenas por región
     .groups = "drop"                                            # Elimina la estructura de agrupamiento después del resumen
   )
+
+indigenas_por_region
+mapa_regiones
   
 # Unión con geometría
 mapa_indi <- indigenas_por_region |> inner_join(mapa_regiones, by = "codigo_region") 
-
-indigenas_por_region 
 
 colors <- colorRampPalette(c("grey", "blue"))(2)
 
@@ -354,6 +392,9 @@ mapa_indi |>
   labs(fill = "Proporción de indígenas (%)") +
   theme_void() +
   coord_sf(datum = TRUE)
+
+indigenas_por_region
+mapa_regiones
 
 # De nuevo....
 
@@ -383,12 +424,17 @@ mapa_indi |>
     colours = colors,  # Aplica una paleta de colores previamente definida
     labels = scales::label_number(big.mark = ".", decimal.mark = ",")  # Formatea los números con punto como separador de miles y coma decimal
   ) +
-  
-  labs(fill = "Número total de indígenas por región") +  
+
+  labs(fill = "",
+       title = "Número de personas indígenas por Región") +  
   # Etiqueta para la leyenda del mapa (relleno)
   
   theme_classic()  
 # Aplica un tema limpio, sin cuadrícula ni ejes
+
+
+ggsave("clases/clase3/practico/images/mapa_indigenas.png",
+       plot = last_plot(), width = 29.21, height = 12.09, units = "cm", dpi = 300)
 
 
 # Comunas
