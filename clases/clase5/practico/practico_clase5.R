@@ -14,70 +14,79 @@ library(stopwords)    # Stopwords en español
 #===============================================================================
 
 # Descargar archivo desde GitHub
-url <- "https://github.com/centrociir/interculturales/raw/main/clases/clase5/bbdd/cuentapublica_25.docx"
+url <- "https://github.com/centrociir/interculturales/raw/main/clases/clase5/practico/bbdd/cuentapublica_25.docx"
+
+# Crear un archivo temporal con extensión .docx
 temp_file <- tempfile(fileext = ".docx")
+
+# Descargar el archivo desde la URL al archivo temporal (modo binario para archivos Word)
 download.file(url, temp_file, mode = "wb")
 
-# Leer el documento y extraer solo los párrafos
-texto_df <- read_docx(temp_file) %>%
-  docx_summary() %>%
-  filter(content_type == "paragraph") %>%
-  transmute(parrafo = text) %>%
-  rowid_to_column("id")
+# Leer el documento Word y extraer los párrafos
+texto_df <- read_docx(temp_file) %>%          # Leer el archivo Word
+  docx_summary() %>%                          # Extraer contenido estructurado (tipo, texto, estilo, etc.)
+  filter(content_type == "paragraph") %>%     # Filtrar solo los elementos tipo párrafo
+  transmute(parrafo = text) %>%               # Crear nueva columna 'parrafo' con el texto
+  rowid_to_column("id")                       # Agregar columna 'id' con el número de párrafo
 
-# Unir todo el texto en una sola cadena
+# Unir todos los párrafos en una sola cadena de texto
 texto_completo <- paste(texto_df$parrafo, collapse = " ")
 
 #===============================================================================
 # 2. Análisis de contexto: palabra "estallido" ---------------------------------
 #===============================================================================
 
-# Extraer contextos +/- 10 palabras alrededor de "estallido"
-patron <- "(?:\\S+\\s+){0,10}estallido(?:\\s+\\S+){0,10}"
+# Extraer contextos de +/- 10 palabras alrededor de la palabra "estallido"
+patron <- "(?:\\S+\\s+){0,10}estallido(?:\\s+\\S+){0,10}"  # Expresión regular para capturar hasta 10 palabras antes y después de "estallido"
+
+# Aplicar la expresión regular al texto completo (ignorando mayúsculas/minúsculas)
 contextos <- str_extract_all(texto_completo, regex(patron, ignore_case = TRUE))[[1]]
 
-# Guardar en tibble y contar palabras por contexto
+# Crear un tibble con cada contexto y contar cuántas palabras tiene cada uno
 contexto_df <- tibble(
-  contexto = contextos,
-  palabras = str_count(contextos, "\\S+")
+  contexto = contextos,                                 # Texto del fragmento extraído
+  palabras = str_count(contextos, "\\S+")               # Contar número de palabras en cada contexto
 )
 
+# Imprimir el resultado
 print(contexto_df)
+
 
 #===============================================================================
 # 3. Tokenización --------------------------------------------------------------
 #===============================================================================
 
-# Tokenizar por palabra
+# Tokenizar por palabra (convierte cada palabra en una fila)
 tokens <- texto_df %>%
-  unnest_tokens(palabra, parrafo)
+  unnest_tokens(palabra, parrafo)  # Extrae palabras desde los párrafos
 
-# Remover stopwords en español
+# Remover stopwords en español (palabras vacías como "el", "la", "de", etc.)
 stopwords_es <- stopwords("es")
 tokens_limpios <- tokens %>%
-  filter(!palabra %in% stopwords_es)
+  filter(!palabra %in% stopwords_es)  # Filtra las palabras que no están en la lista de stopwords
 
-# Frecuencia de palabras limpias
+# Calcular la frecuencia de palabras limpias
 frecuencias_palabra <- tokens_limpios %>%
-  count(palabra, sort = TRUE)
+  count(palabra, sort = TRUE)  # Cuenta y ordena las palabras por frecuencia descendente
 
+# Mostrar tabla de frecuencias
 print(frecuencias_palabra)
-
 
 # Seleccionar las 20 palabras más frecuentes
 top_palabras <- frecuencias_palabra %>%
-  slice_max(n, n = 20)
+  slice_max(n, n = 20)  # Escoge las 20 con mayor frecuencia
 
 # Graficar con ggplot2
 ggplot(top_palabras, aes(x = reorder(palabra, n), y = n)) +
-  geom_col(fill = "steelblue") +
-  coord_flip() +
+  geom_col(fill = "steelblue") +      
+  coord_flip() +                      
   labs(
-    title = "Top 20 palabras más frecuentes",
-    x = "Palabra",
-    y = "Frecuencia"
+    title = "Top 20 palabras más frecuentes",  
+    x = "Palabra",                             
+    y = "Frecuencia"                           
   ) +
-  theme_minimal()
+  theme_minimal()  # Tema visual limpio y claro
+
 
 
 #install.packages("wordcloud")
@@ -108,91 +117,90 @@ ggsave(
 )
 
 
-
-
 #===============================================================================
 # 4. Bigrama: creación, limpieza y conteo --------------------------------------
 #===============================================================================
 
-# Crear bigramas desde los párrafos
+# Crear bigramas desde los párrafos (pares de palabras consecutivas)
 bigrams <- texto_df %>%
-  unnest_tokens(bigrama, parrafo, token = "ngrams", n = 2)
+  unnest_tokens(bigrama, parrafo, token = "ngrams", n = 2)  # Extrae n-gramas de 2 palabras (bigramas)
 
-bigrams
+bigrams  # Muestra los bigramas generados
 
-# Separar cada bigrama en palabra1 y palabra2
+# Separar cada bigrama en dos columnas: palabra1 y palabra2
 bigrams_separados <- bigrams %>%
-  separate(bigrama, into = c("palabra1", "palabra2"), sep = " "); bigrams_separados
+  separate(bigrama, into = c("palabra1", "palabra2"), sep = " ")  # Separa el bigrama en dos palabras
 
-bigrams_separados
+bigrams_separados  # Muestra los bigramas separados
 
 # Filtrar bigramas que no contengan stopwords ni números
 bigrams_limpios <- bigrams_separados %>%
   filter(
-    !palabra1 %in% stopwords_es,
-    !palabra2 %in% stopwords_es,
-    !str_detect(palabra1, "^[0-9]+$"),
-    !str_detect(palabra2, "^[0-9]+$")
+    !palabra1 %in% stopwords_es,                      # Excluye si la primera palabra es una stopword
+    !palabra2 %in% stopwords_es,                      # Excluye si la segunda palabra es una stopword
+    !str_detect(palabra1, "^[0-9]+$"),                # Excluye si palabra1 es un número
+    !str_detect(palabra2, "^[0-9]+$")                 # Excluye si palabra2 es un número
   ) %>%
-  unite("bigrama", palabra1, palabra2, sep = " ")
+  unite("bigrama", palabra1, palabra2, sep = " ")     # Une las palabras filtradas nuevamente como bigrama
 
-bigrams_limpios
+bigrams_limpios  # Muestra los bigramas limpios
 
 # Contar bigramas más frecuentes
 frecuencias_bigrama <- bigrams_limpios %>%
-  count(bigrama, sort = TRUE)
+  count(bigrama, sort = TRUE)  # Cuenta y ordena los bigramas por frecuencia descendente
 
-frecuencias_palabra
+frecuencias_palabra  
 
 #===============================================================================
 # 5- Quanteda --------
 #===============================================================================
 
+# Cargar librerías necesarias
 library(quanteda)
-#install.packages("quanteda.textplots")
+# install.packages("quanteda.textplots")
 library(quanteda.textplots)
-#install.packages("quanteda.textstats")
+# install.packages("quanteda.textstats")  # si se requieren estadísticas
 
-
-# Crear corpus a partir del texto completo
+# Crear un corpus a partir del texto completo (asignando un nombre al documento)
 corpus_cuenta <- corpus(texto_completo, docnames = "cuenta_25")
 
-# Tokenizar
+# Tokenizar el corpus
 tokens_cuenta <- tokens(corpus_cuenta, 
-                        remove_punct = TRUE, 
-                        remove_numbers = TRUE) %>%
-  tokens_tolower() %>%  # Convertir a minúsculas
-  tokens_remove(pattern = stopwords("spanish"))  # Eliminar stopwords en español
+                        remove_punct = TRUE,         # Eliminar puntuación
+                        remove_numbers = TRUE) %>%   # Eliminar números
+  tokens_tolower() %>%                              # Convertir a minúsculas
+  tokens_remove(pattern = stopwords("spanish"))     # Eliminar stopwords en español
 
-tokens_cuenta
+tokens_cuenta  # Mostrar tokens procesados
 
+# Crear una matriz documento-término (DFM: document-feature matrix)
 dfm_cuenta <- dfm(tokens_cuenta)
 
-dfm_cuenta
+dfm_cuenta  # Mostrar DFM
 
-# Ver las palabras más frecuentes
+# Ver las 20 palabras más frecuentes en el documento
 topfeatures(dfm_cuenta, 20)
 
-  
+# Crear una nube de palabras con las 100 más frecuentes
 textplot_wordcloud(
   dfm_cuenta,
   max_words = 100,
-  color = RColorBrewer::brewer.pal(8, "Dark2")
+  color = RColorBrewer::brewer.pal(8, "Dark2")  # Paleta de colores
 )
 
-
-# Obtener las 50 palabras más frecuentes
+# Obtener las 10 palabras más frecuentes y construir un data.frame para graficar
 top_terms <- topfeatures(dfm_cuenta, 10); top_terms
 top_df <- data.frame(
-  word = names(top_terms),
-  freq = as.numeric(top_terms)
+  word = names(top_terms),               # Nombre de las palabras
+  freq = as.numeric(top_terms)           # Frecuencia de aparición
 ); top_df
 
-#install.packages("treemapify")  # si no lo tienes
+# Cargar librerías para treemap
+# install.packages("treemapify")  # Ejecutar si no está instalada
 library(treemapify)
 library(ggplot2)
 
-
+# Crear un treemap con las palabras más frecuentes
 ggplot(top_df, aes(area = freq, fill = freq, label = word)) +
   geom_treemap() +
   geom_treemap_text(color = "white", place = "center", grow = TRUE, reflow = TRUE) +
@@ -202,59 +210,56 @@ ggplot(top_df, aes(area = freq, fill = freq, label = word)) +
 
 
 #===============================================================================
-# 6.  Quantenada avazando ------------------------------------------------------
+# 6. Quanteda Avanzado ---------------------------------------------------------
 #===============================================================================
 
+# Cargar librería para importar texto como data frame
+library(readtext)
 
-library(readtext) # importar texto como data frame
+# Importar archivos .txt desde la carpeta indicada y crear data frame “presi_df”
+presi_df <- readtext("bbdd/discursos/*.txt",
+                     encoding = "UTF-8")  # Asegura correcta codificación
 
+# Explorar estructura del data frame importado
+class(presi_df)     # Clase del objeto
+names(presi_df)     # Nombres de las columnas
+glimpse(presi_df)   # Vista general del contenido
 
-# Importar texto con readtext y creación de data frame “presidentes” 
-presi_df <- readtext ("bbdd/discursos/*.txt",
-                      encoding = "UTF-8") 
-
-
-# Explorar el data frame creado
-class(presi_df)
-names(presi_df)
-glimpse (presi_df)
-#presi_df[1,2]
-
-# Crea corpus “presi_c” desde data frame presidentes. El corpus es el texto en 
-#el que se basará nuestro análisis.
-
+# Crear corpus “presi_c” a partir del data frame “presi_df”
+# Este corpus servirá como base para el análisis de texto
 presi_c <- corpus(presi_df)
 
+# Resumen básico del corpus (tokens, tipos, etc.)
 summary(presi_c)
 
-#Tokens, conjunto de caracteres de texto. 
+# Convertir resumen del corpus a tibble para manipulación posterior
+resumen <- as_tibble(summary(presi_c))
+resumen  # Muestra resumen del corpus en formato tibble
 
-resumen <- as_tibble (summary(presi_c))
-resumen
-#View(resumen)
+# Separar la columna 'Text' del resumen en Año, Presidente y Formato
+metadata <- resumen %>%
+  separate(col = Text,
+           into = c("Año", "Presidente", "Formato"))  # Asume nombres separados por "_"
 
-# Agrega "docvars" como metadata (variables o atributos del texto)
-# Ordena información contenida en resumen
-metadata <- resumen %>% 
-  separate(col = Text, #Sepamos la variable "Text"
-           into = c("Año", "Presidente", "Formato"))
-
-# Crea vardocs con información anterior
+# Agregar metadata (docvars) al corpus con la información del resumen
 docvars(presi_c, "Presidente") <- metadata$Presidente
 docvars(presi_c, "Año")        <- metadata$Año
 docvars(presi_c, "Formato")    <- metadata$Formato
 
+# Ver resumen actualizado del corpus con metadata incluida
 summary(presi_c)
-#View(summary(presi_c))
 
-# Grafica
-resumen <- arrange(resumen,Tokens)
-dotchart(resumen$Tokens, resumen$Text)
+# Graficar cantidad de tokens por texto
+resumen <- arrange(resumen, Tokens)  # Ordenar por número de tokens
+dotchart(resumen$Tokens, resumen$Text)  # Gráfico de puntos
 
-# Asegúrate de que Año y Tokens son numéricos
+# Convertir columnas "Año" y "Tokens" a variables numéricas
 metadata <- metadata %>%
-  mutate(Año = as.numeric(Año),
-         Tokens = as.numeric(Tokens))
+  mutate(
+    Año = as.numeric(Año),
+    Tokens = as.numeric(Tokens)
+  )
+
 
 # Gráfico
 metadata %>%
@@ -318,10 +323,9 @@ Pinera_c <- corpus_subset(presi_c, Presidente == "Pinera")
 summary (Pinera_c)
 
 
-# P
 tokens_presi <- tokens(presi_c); tokens_presi
 
-# Luego aplica kwic sobre los tokens
+# Luego aplica kwic sobre los tokens KWIC (Key Works in context)
 desigual <- kwic(tokens_presi, pattern = "desigual*", window = 20)
 
 # Ver resultado
@@ -374,30 +378,37 @@ conteo_kwic %>%
   )
 
 
-# Otra aproximación gráfico
+#===============================================================================
+# Visualización tipo "rayos X" de menciones a términos clave en el corpus
+#===============================================================================
 
+# Visualizar menciones a "desigual*" (como desigualdad, desiguales, etc.)
 textplot_xray(kwic(tokens_presi, "desigual*"))
+
+# Visualizar menciones a "brecha*" (como brechas, brechando, etc.)
 textplot_xray(kwic(tokens_presi, "brecha*"))
-#textplot_xray(kwic(tokens_presi, "educaci*"))
-#textplot_xray(kwic(tokens_presi, "constituci*"))
-#textplot_xray(kwic(tokens_presi, "salud*"))
-#textplot_xray(kwic(tokens_presi, "migra*"))
 
+# También puedes explorar otras palabras clave descomentando las siguientes líneas:
+# textplot_xray(kwic(tokens_presi, "educaci*"))      # educación, educativo...
+# textplot_xray(kwic(tokens_presi, "constituci*"))   # constitución, constitucional...
+# textplot_xray(kwic(tokens_presi, "salud*"))        # salud, salud pública...
+# textplot_xray(kwic(tokens_presi, "migra*"))        # migración, migrante...
 
+# Comparar varias palabras clave en un solo gráfico
 textplot_xray(
-  kwic(tokens_presi, "brecha*"),
-  kwic(tokens_presi, "ineq*"),
-  kwic(tokens_presi, "desigual*")
+  kwic(tokens_presi, "brecha*"),     # menciones a "brecha"
+  kwic(tokens_presi, "ineq*"),       # menciones a "inequidad", "inequidades"...
+  kwic(tokens_presi, "desigual*")    # menciones a "desigualdad", "desiguales"...
 ) +
-  aes(color = keyword) +
-  scale_color_manual(values = c("red", "blue", "black"))
+  aes(color = keyword) +  # Asignar color por palabra clave
+  scale_color_manual(values = c("red", "blue", "black"))  # Colores personalizados
 
-
-
+# Otra comparación: "trabajo" y "empresa"
 textplot_xray(
-  kwic(tokens_presi, "trabaj*"),
-  kwic(tokens_presi, "empres*")
+  kwic(tokens_presi, "trabaj*"),     # trabajo, trabajadores...
+  kwic(tokens_presi, "empres*")      # empresa, empresarios...
 )
+
 
 #textplot_xray(
 #  kwic(tokens_presi, "todos"),
@@ -411,47 +422,49 @@ textplot_xray(
 
 
 #===============================================================================
-# 7.  Análisis de sentimiento ------------------------------------------------------
+# 7.1  Análisis de sentimiento ------------------------------------------------------
 #===============================================================================
 
 library(tidytext)
 library(stringr)
 
-# Palabras asociadas a alegría (como patrones, no literales)
+# Definir raíces de palabras asociadas al sentimiento de alegría (no palabras literales)
 alegria <- c("feli", "entusias", "emocio", "alegre",
              "satis", "optimis", "maravill")
 
-# Tokenización
+# Tokenización del texto en palabras, removiendo stopwords
 tokens <- presi_df %>%
-  unnest_tokens(word, text) %>%
-  filter(!word %in% stopwords::stopwords("es"))
+  unnest_tokens(word, text) %>%                             # Separar texto en palabras
+  filter(!word %in% stopwords::stopwords("es"))             # Eliminar stopwords en español
 
-# Detección de alegría usando str_detect con patrones
+# Detectar si cada palabra contiene alguna raíz asociada a la alegría
 tokens_sentimiento <- tokens %>%
   mutate(sentimiento = case_when(
-    str_detect(word, str_c(alegria, collapse = "|")) ~ "alegría",
-    TRUE ~ NA_character_
+    str_detect(word, str_c(alegria, collapse = "|")) ~ "alegría",  # Si la palabra contiene alguna raíz
+    TRUE ~ NA_character_                                            # Si no, dejar como NA
   )) %>%
-  filter(!is.na(sentimiento))
+  filter(!is.na(sentimiento))  # Mantener solo las palabras que expresan "alegría"
 
-tokens_sentimiento
+tokens_sentimiento  # Mostrar palabras clasificadas como alegría
 
-
-# Contar cuántas veces aparece "alegría" por discurso
+# Contar cuántas palabras de alegría aparecen por discurso (según `doc_id`)
 conteo_alegria <- tokens_sentimiento %>%
   filter(sentimiento == "alegría") %>%
-  count(doc_id, name = "cantidad_alegria")
+  count(doc_id, name = "cantidad_alegria")  # Conteo por documento
 
-# Graficar
+# Graficar cantidad de palabras asociadas a alegría por discurso
 ggplot(conteo_alegria, aes(x = reorder(doc_id, cantidad_alegria), y = cantidad_alegria)) +
-  geom_col(fill = "steelblue") +
-  coord_flip() +
-  labs(title = "Cantidad de palabras de alegría por discurso",
-       x = "Discurso (doc_id)",
-       y = "Cantidad de palabras de alegría") +
-  theme_minimal()
+  geom_col(fill = "steelblue") +                          
+  coord_flip() +                                           
+  labs(title = "Cantidad de palabras de alegría por discurso",  # Título del gráfico
+       x = "Discurso (doc_id)",                                # Eje X
+       y = "Cantidad de palabras de alegría") +                # Eje Y
+  theme_minimal()                                             # Tema visual limpio
 
-###
+
+#===============================================================================
+# 7.2  Análisis de sentimiento --------------------------------------------------
+#================================================================================
 
 # Asociaciones temáticas con raíces de palabras
 conceptos <- list(
