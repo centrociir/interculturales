@@ -2,10 +2,25 @@
 # 0. Cargar paquetes -----------------------------------------------------------
 #===============================================================================
 
-library(officer)      # Leer archivos Word
-library(tidyverse)    # Manipulación de datos y visualización
-library(tidytext)     # Tokenización y análisis de texto
-library(stopwords)    # Stopwords en español
+# Instalar y cargar pacman si no está disponible
+if (!require("pacman")) install.packages("pacman")
+
+# Cargar e instalar automáticamente los paquetes requeridos
+pacman::p_load(
+  officer,         # Leer documentos Word (.docx)
+  tidyverse,       # Manipulación de datos y visualización (ggplot2, dplyr, etc.)
+  tidytext,        # Análisis y tokenización de texto
+  stopwords,       # Stopwords en múltiples idiomas
+  quanteda,        # Corpus, DFM, tokenización avanzada
+  quanteda.textplots,  # Visualizaciones en quanteda
+  quanteda.textstats,  # Estadísticas textuales
+  readtext,        # Leer múltiples archivos de texto como data frame
+  stringr,         # Manipulación de strings (str_detect, etc.)
+  RColorBrewer,    # Paletas de colores
+  treemapify,      # Visualización de frecuencia como treemap
+  ggplot2          # Visualización de datos
+)
+
 
 
 
