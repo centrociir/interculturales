@@ -1,6 +1,6 @@
 ---
 title: "Análisis cuantitativo del texto"
-subtitle: "Seminario: InteRculturales"
+subtitle: "Una pequeña introducción"
 author: "Matías Deneken"
 logo: "images/logo_ciir.jpg"
 include-in-header:
