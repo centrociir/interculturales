@@ -388,8 +388,6 @@
       margin-right: 0; 
     }
   </style>
-  <script src="presentacion_clase5_files/libs/kePrint-0.0.1/kePrint.js"></script>
-  <link href="presentacion_clase5_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
   <style>
     .reveal .slides {
       padding-top: 0px !important;
@@ -405,7 +403,7 @@
 
 <section id="title-slide" class="quarto-title-block center">
   <h1 class="title">Análisis cuantitativo del texto</h1>
-  <p class="subtitle">Datamining al textmining</p>
+  <p class="subtitle">Seminario: InteRculturales</p>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -418,1183 +416,433 @@ Matías Deneken
   <p class="date">May 22, 2025</p>
 </section>
 <section>
-<section id="temario-de-hoy" class="title-slide slide level1 center">
-<h1>Temario de hoy</h1>
+<section id="qué-veremos-hoy" class="title-slide slide level1 center">
+<h1>¿Qué veremos hoy?</h1>
 <ol type="1">
-<li class="fragment">Introducción al SIG</li>
-<li class="fragment">Paquetes en R</li>
-<li class="fragment">Unión de bases de datos</li>
-<li class="fragment">Práctica con datos ficticios</li>
-<li class="fragment">ChileMapas</li>
-<li class="fragment">Código práctico</li>
+<li class="fragment">¿Cómo hacer cosas con las palabras?</li>
+<li class="fragment">La minería de texto: Desafío de las Ciencias Sociales Computacionales</li>
+<li class="fragment">Conceptos claves</li>
+<li class="fragment">Uso y práctica en el software R
+<ol type="a">
+<li class="fragment">Palabras en su contexto</li>
+<li class="fragment">Paquete Quanteda</li>
+<li class="fragment">Tidytext</li>
+</ol></li>
+<li class="fragment">Preguntas empíricas</li>
 </ol>
 </section>
-<section id="objetivo-principal-replicar-estos-mapas" class="slide level2">
-<h2>Objetivo principal: Replicar estos mapas</h2>
+<section id="resultados-esperados" class="slide level2 smaller">
+<h2>Resultados esperados</h2>
 <div class="columns">
 <div class="column" style="width:50%;">
-<h4 id="nube-de-palabras-cuenta-pública">Nube de palabras cuenta pública</h4>
+<h3 id="nube-de-las-palabras">Nube de las palabras 🥱</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/humilde-objetivo1.png" class="quarto-figure quarto-figure-center" width="496"></p>
+<p><img data-src="images/humilde-objetivo1.png" class="quarto-figure quarto-figure-center" width="564" height="435"></p>
 </figure>
 </div>
 </div><div class="column" style="width:50%;">
-<h4 id="palabras-mencionadas-en-cuenta-pública">Palabras mencionadas en Cuenta Pública</h4>
+<h3 id="tendencias-de-palabras">Tendencias de palabras</h3>
 <div class="quarto-figure quarto-figure-center">
 <figure>
-<p><img data-src="images/humilde-objetivo2.png" class="quarto-figure quarto-figure-center" width="496"></p>
+<p><img data-src="images/humilde-objetivo2.png" class="quarto-figure quarto-figure-center" width="666"></p>
 </figure>
 </div>
 </div></div>
 </section>
-<section id="recapitulando" class="slide level2">
-<h2>Recapitulando…📝</h2>
-<p><strong>Tidyverse</strong></p>
-<p>Conjunto de paquetes de R diseñados para ciencia de datos. Incluye herramientas como ggplot2, dplyr, tidyr, readr, entre otros, que comparten una sintaxis coherente y principios comunes (funciones pipe ( <code>|&gt;</code> o <code>%&gt;%</code> ) y manipulación de datos “ordenados”).</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="fu">head</span>(starwars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href=""></a><span class="fu">names</span>(starwars)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "name"       "height"     "mass"       "hair_color" "skin_color"
- [6] "eye_color"  "birth_year" "sex"        "gender"     "homeworld" 
-[11] "species"    "films"      "vehicles"   "starships" </code></pre>
-</div>
+<section id="cómo-hacer-cosas-con-las-palabras" class="slide level2">
+<h2>¿Cómo hacer cosas con las palabras?</h2>
+<pre><code>Pues bien; si a un cervantista se le ocurriera decir: el Quijote empieza con dos palabras monosilábicas terminadas en n: (en y un), y sigue con una de cinco letras (lugar), con dos de dos letras (de la), con una de cinco o de seis (Mancha), y luego se le ocurriera derivar conclusiones de eso, inmediatamente se pensaría que está loco. La Biblia ha sido estudiada de ese modo.</code></pre>
+<pre><code>Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="img/borges.jpg" class="quarto-figure quarto-figure-center" width="579"></p>
+</figure>
 </div>
 </section>
-<section id="recapitulando-1" class="slide level2">
-<h2>Recapitulando…📝</h2>
-<p><strong>Tidyverse: <code>Select</code></strong></p>
-<p>Sirve para elegir columnas específicas de un data frame.</p>
+<section id="cómo-hacer-cosas-con-la-palabras" class="slide level2">
+<h2>¿Cómo hacer cosas con la palabras?</h2>
+<h3 id="y-lo-podremos-hacer">¿Y lo podremos hacer?</h3>
+<p style="font-size: 24px; text-align: center;">
+</p><p><span style="color: red;">En</span> <span style="color: blue;">un</span> <span style="color: black;">lugar</span> <span style="color: green;">de</span> <span style="color: purple;">la</span> <span style="color: black;">Mancha,</span> <span style="color: red;">de</span> <span style="color: black;">cuyo</span> <span style="color: black;">nombre</span> <span style="color: blue;">no</span> <span style="color: black;">quiero</span> <span style="color: brown;">acordarme</span>.</p>
+<p></p>
+<p style="font-size: 18px; text-align: center;">
+</p><p><span style="color: red;">(1)</span> <span style="color: blue;">(1)</span> <span style="color: black;">(2)</span> <span style="color: green;">(1)</span> <span style="color: purple;">(1)</span> <span style="color: black;">(2)</span> <span style="color: red;">(1)</span> <span style="color: brown;">(2)</span> <span style="color: black;">(2)</span> <span style="color: blue;">(1)</span> <span style="color: black;">(2)</span> <span style="color: brown;">(4)</span></p>
+<p></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
-<span id="cb4-2"><a href=""></a>  <span class="fu">select</span>(name, species, height, mass) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 4
-  name           species height  mass
-  &lt;chr&gt;          &lt;chr&gt;    &lt;int&gt; &lt;dbl&gt;
-1 Luke Skywalker Human      172    77
-2 C-3PO          Droid      167    75</code></pre>
-</div>
-</div>
-<p><strong>Tidyverse: <code>Filter</code></strong></p>
-<p>Permite filtrar filas según condiciones lógicas.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a>starwars <span class="sc">%&gt;%</span> <span class="fu">filter</span>(species <span class="sc">==</span> <span class="st">"Human"</span>, mass <span class="sc">&gt;</span> <span class="dv">80</span>) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 14
-  name      height  mass hair_color skin_color eye_color birth_year sex   gender
-  &lt;chr&gt;      &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;      &lt;chr&gt;      &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt; &lt;chr&gt; 
-1 Darth Va…    202   136 none       white      yellow          41.9 male  mascu…
-2 Owen Lars    178   120 brown, gr… light      blue            52   male  mascu…
-# ℹ 5 more variables: homeworld &lt;chr&gt;, species &lt;chr&gt;, films &lt;list&gt;,
-#   vehicles &lt;list&gt;, starships &lt;list&gt;</code></pre>
-</div>
-</div>
-</section>
-<section id="recapitulando-2" class="slide level2">
-<h2>Recapitulando…📝</h2>
-<p><strong>Tidyverse: <code>Mutate</code></strong></p>
-<p>Crea nuevas columnas o modifica variables existentes.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">imc_ficticio =</span> mass <span class="sc">/</span> (height <span class="sc">/</span> <span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href=""></a>  <span class="fu">select</span>(name, imc_ficticio) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(imc_ficticio)) <span class="sc">|&gt;</span> </span>
-<span id="cb8-5"><a href=""></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 2
-  name                  imc_ficticio
-  &lt;chr&gt;                        &lt;dbl&gt;
-1 Jabba Desilijic Tiure        443. 
-2 Dud Bolt                      50.9
-3 Yoda                          39.0</code></pre>
-</div>
-</div>
-</section>
-<section id="recapitulando-3" class="slide level2">
-<h2>Recapitulando…📝</h2>
-<p><strong>Tidyverse: <code>Group_by</code> + <code>summarise</code></strong></p>
-<p><code>Group_by</code>: Crea nuevas columnas o modifica variables existentes y <code>Summarise</code>: Genera resúmenes estadísticos por grupo (si se usó group_by()) o para todo el conjunto.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a>starwars <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(species) <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href=""></a>  <span class="fu">summarise</span>(</span>
-<span id="cb10-3"><a href=""></a>    <span class="at">promedio_altura =</span> <span class="fu">mean</span>(height, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb10-4"><a href=""></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(promedio_altura)) <span class="sc">|&gt;</span>  <span class="co"># Ordenar por número de personajes</span></span>
-<span id="cb10-6"><a href=""></a>  <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 2
-  species  promedio_altura
-  &lt;chr&gt;              &lt;dbl&gt;
-1 Quermian             264
-2 Wookiee              231
-3 Kaminoan             221</code></pre>
-</div>
-</div>
-</section>
-<section id="recapitulando-4" class="slide level2">
-<h2>Recapitulando …📝</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="co"># Crear el gráfico</span></span>
-<span id="cb12-2"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">imc_ficticio =</span> mass <span class="sc">/</span> (height <span class="sc">/</span> <span class="dv">100</span>)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-4"><a href=""></a>  <span class="fu">select</span>(name, imc_ficticio) <span class="sc">%&gt;%</span></span>
-<span id="cb12-5"><a href=""></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(imc_ficticio)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-6"><a href=""></a>  <span class="fu">head</span>(<span class="dv">3</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-7"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(name, imc_ficticio), <span class="at">y =</span> imc_ficticio)) <span class="sc">+</span></span>
-<span id="cb12-8"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
-<span id="cb12-9"><a href=""></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
-<span id="cb12-10"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb12-11"><a href=""></a>    <span class="at">title =</span> <span class="st">"Top 3 personajes con mayor IMC ficticio"</span>,</span>
-<span id="cb12-12"><a href=""></a>    <span class="at">x =</span> <span class="st">"Nombre"</span>,</span>
-<span id="cb12-13"><a href=""></a>    <span class="at">y =</span> <span class="st">"IMC"</span></span>
-<span id="cb12-14"><a href=""></a>  ) <span class="sc">+</span></span>
-<span id="cb12-15"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-8-1.png" width="960"></p>
+<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-2-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="recapitulando-5" class="slide level2">
-<h2>Recapitulando …📝</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
-<span id="cb13-2"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(height), <span class="sc">!</span><span class="fu">is.na</span>(mass)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> height, <span class="at">y =</span> mass)) <span class="sc">+</span></span>
-<span id="cb13-4"><a href=""></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.7</span>, <span class="at">color =</span> <span class="st">"navy"</span>) <span class="sc">+</span></span>
-<span id="cb13-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Relación entre estatura y peso en Star Wars"</span>,</span>
-<span id="cb13-6"><a href=""></a>       <span class="at">x =</span> <span class="st">"Estatura (cm)"</span>, <span class="at">y =</span> <span class="st">"Masa (kg)"</span>) <span class="sc">+</span></span>
-<span id="cb13-7"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-9-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="cómo-hacer-cosas-con-la-palabras." class="slide level2">
+<h2>Cómo hacer cosas con la palabras.</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<h3 id="denotación-y-la-connotación">Denotación y la connotación</h3>
+<p><img data-src="img/guerra-pinera.jpg" style="width:100.0%"></p>
+</div><div class="column" style="width:50%;">
+<h3 id="palabras-y-sus-efectos">Palabras y sus efectos</h3>
+<p><img data-src="img/biden1.jpg" style="width:52.0%"></p>
+<p><br> <!-- espacio entre imágenes --></p>
+<p><img data-src="img/biden2.jpg" style="width:56.0%"></p>
+</div></div>
 </section>
-<section id="recapitulando-6" class="slide level2">
-<h2>Recapitulando …📝</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a>starwars <span class="sc">%&gt;%</span></span>
-<span id="cb14-2"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(height)) <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> height)) <span class="sc">+</span></span>
-<span id="cb14-4"><a href=""></a>  <span class="fu">geom_density</span>(<span class="at">fill =</span> <span class="st">"skyblue"</span>, <span class="at">alpha =</span> <span class="fl">0.6</span>) <span class="sc">+</span></span>
-<span id="cb14-5"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Distribución de estatura en personajes de Star Wars"</span>,</span>
-<span id="cb14-6"><a href=""></a>       <span class="at">x =</span> <span class="st">"Estatura (cm)"</span>, <span class="at">y =</span> <span class="st">"Densidad"</span>) <span class="sc">+</span></span>
-<span id="cb14-7"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-10-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
+<section id="ciencias-sociales-computacionales-text-mining" class="slide level2">
+<h2>Ciencias Sociales Computacionales: <em>Text Mining</em></h2>
+<p>Las&nbsp;<strong>Ciencias Sociales Computacionales</strong>&nbsp;integran herramientas de la computación con preguntas sustantivas de las ciencias sociales. En este cruce, el&nbsp;<strong>text mining</strong>&nbsp;(minería de texto) permite analizar grandes volúmenes de texto —como discursos, noticias o redes sociales— para identificar patrones, temas, emociones o relaciones entre actores.</p>
+<p>Más que contar palabras, se trata de&nbsp;<strong>convertir texto en datos estructurados</strong>&nbsp;que permitan nuevas formas de interpretar lo social.</p>
+<p>Esta metodología abre nuevas posibilidades para:</p>
+<ol type="1">
+<li class="fragment">Explorar&nbsp;<strong>tendencias discursivas</strong>&nbsp;en el tiempo.</li>
+<li class="fragment">Identificar&nbsp;<strong>marcos ideológicos</strong>&nbsp;y emociones dominantes.</li>
+<li class="fragment">Analizar cómo ciertos conceptos (como&nbsp;<em>desigualdad</em>,&nbsp;<em>democracia</em>,&nbsp;<em>identidad</em>) aparecen y se transforman en distintos contextos.</li>
+</ol>
 </section>
-<section id="sistema-de-información-geográfica-sig" class="slide level2">
-<h2>Sistema de Información Geográfica (SIG)</h2>
-<p>Un <strong>Sistema de Información Geográfica (SIG)</strong> es una herramienta tecnológica que permite <strong>capturar, almacenar, analizar, visualizar y representar datos geográficos o espaciales</strong>.</p>
-<p>Combina información alfanumérica (como población, ingresos o acceso a servicios) con su ubicación en el espacio (como comunas, calles o regiones), lo que permite responder preguntas del tipo <strong>“¿Dónde ocurre qué…?”</strong>.</p>
+<section id="ciencias-sociales-computacionales-text-mining-1" class="slide level2">
+<h2>Ciencias Sociales Computacionales: <em>Text Mining</em></h2>
+<p>El&nbsp;<strong>Procesamiento de Lenguaje Natural</strong>&nbsp;(en inglés,&nbsp;<em>Natural Language Processing</em>, NLP) es un campo interdisciplinario entre&nbsp;<strong>lingüística</strong>,&nbsp;<strong>ciencia computacional</strong>&nbsp;e&nbsp;<strong>inteligencia artificial</strong>, que busca desarrollar métodos para que las máquinas puedan&nbsp;<strong>leer, interpretar, generar y analizar lenguaje humano</strong>&nbsp;(oral o escrito).</p>
+<p>Incluye tareas como:</p>
 <ul>
-<li class="fragment"><p>Mapas temáticos (ej. pobreza por comuna)</p></li>
-<li class="fragment"><p>Análisis territorial (ej. acceso a servicios)</p></li>
+<li class="fragment"><p><strong>Tokenización</strong>: dividir el texto en palabras, frases o unidades mínimas.</p></li>
+<li class="fragment"><p><strong>Lematización/Stemming</strong>: reducir palabras a su forma base (“corriendo” → “correr”).</p></li>
+<li class="fragment"><p><strong>Análisis sintáctico y semántico</strong>: entender la estructura gramatical o el significado del texto.</p></li>
+<li class="fragment"><p><strong>Extracción de entidades</strong>&nbsp;(personas, lugares, organizaciones).</p></li>
+<li class="fragment"><p><strong>Clasificación de sentimientos</strong>, detección de tópicos, generación de texto, etc.</p></li>
 </ul>
 </section>
-<section id="paquetes-qué-es-sf" class="slide level2">
-<h2>Paquetes: 📦 ¿Qué es <code>sf</code>?</h2>
-<p><code>sf</code> es un <strong>paquete de R</strong> para trabajar con <strong>datos espaciales</strong> (geográficos) de manera moderna y eficiente. Su nombre viene de <strong>“simple features”</strong>, un estándar internacional para representar datos espaciales (como puntos, líneas o polígonos) en bases de datos y software.</p>
-<p>Te permite:</p>
+<section id="ciencias-sociales-computacionales-text-mining-2" class="slide level2">
+<h2>Ciencias Sociales Computacionales: <em>Text Mining</em></h2>
+<p>Algunos ejemplos de técnicas.</p>
 <ul>
-<li class="fragment"><p>Leer y escribir <strong>archivos espaciales</strong> como Shapefiles, GeoJSON, KML, etc.</p></li>
-<li class="fragment"><p>Unir datos geográficos con datos tabulares (como una comuna con su población).</p></li>
-<li class="fragment"><p>Hacer <strong>análisis espacial</strong> (intersecciones, distancias, áreas, etc.).</p></li>
-<li class="fragment"><p>Visualizar mapas fácilmente con <code>ggplot2::geom_sf()</code> o <code>tmap</code>.</p></li>
+<li class="fragment"><p>Modelos de tópicos (LDA) → para identificar temas latentes en discursos.</p></li>
+<li class="fragment"><p>Análisis de sentimiento → para mapear emociones o polarización.</p></li>
+<li class="fragment"><p>Redes semánticas → para ver cómo se asocian conceptos o actores.</p></li>
+<li class="fragment"><p>Clasificadores supervisados → para categorizar tweets, artículos o comentarios por tipo, ideología, tono, etc.</p></li>
 </ul>
 </section>
-<section id="paquetes-qué-es-sf-1" class="slide level2">
-<h2>Paquetes: 📦 ¿Qué es <code>sf</code>?</h2>
-<h3 id="tipos-de-geometría">🧩 Tipos de geometría</h3>
+<section id="ciencias-sociales-computacionales-text-mining-3" class="slide level2">
+<h2>Ciencias Sociales Computacionales: <em>Text Mining</em></h2>
+<p><strong>¿Cómo ha cambiado la forma en que los presidentes de Chile hablan sobre la <em>desigualdad</em> entre 1990 y 2021?</strong></p>
 <ul>
-<li class="fragment"><p><code>POINT</code>: una ubicación (ej: una escuela).</p></li>
-<li class="fragment"><p><code>LINESTRING</code>: una línea (ej: un río).</p></li>
-<li class="fragment"><p><code>POLYGON</code>: una superficie cerrada (ej: una comuna o país).</p></li>
-<li class="fragment"><p><code>MULTIPOLYGON</code>: varios polígonos juntos (ej: Chile continental + Rapa Nui).</p></li>
+<li class="fragment">📄 <strong>Corpus</strong>: Discursos anuales de la Cuenta Pública (1990–2021)<br>
+</li>
+<li class="fragment">🔍 <strong>Filtro por concepto</strong>: Palabras como <code>desigual*</code>, <code>brecha*</code>, <code>inequidad</code>, <code>estratificación</code><br>
+</li>
+<li class="fragment">📊 <strong>Conteo por año</strong>: Número de menciones por discurso<br>
+</li>
+<li class="fragment">📈 <strong>Visualización</strong>: Gráfico de línea para mostrar evolución</li>
 </ul>
-<h3 id="funciones-importantes-del-paquete-sf">🔧 Funciones importantes del paquete <code>sf</code></h3>
+<p><strong>¿Por qué es útil?</strong></p>
 <ul>
-<li class="fragment"><p><code>st_read()</code>: lee archivos espaciales (como shapefiles).</p></li>
-<li class="fragment"><p><code>st_write()</code>: guarda archivos espaciales.</p></li>
-<li class="fragment"><p><code>st_geometry()</code>: accede a la geometría de un objeto.</p></li>
-<li class="fragment"><p><code>st_crs()</code>: inspecciona o define el sistema de coordenadas.</p></li>
-<li class="fragment"><p><code>st_transform()</code>: cambia la proyección del mapa.</p></li>
-<li class="fragment"><p><code>st_join()</code>,<code>st_intersection()</code>: operaciones espaciales.</p></li>
-</ul>
-</section>
-<section id="paquetes-qué-essf" class="slide level2">
-<h2>Paquetes: 📦 ¿Qué es<code>sf</code>?</h2>
-<h3 id="por-qué-es-útil">🗺️ ¿Por qué es útil?</h3>
-<p>Porque te permite combinar el mundo de la <strong>estadística en R</strong> con el análisis geográfico, sin salir del mismo entorno.</p>
-<table class="caption-top">
-<colgroup>
-<col style="width: 29%">
-<col style="width: 70%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Componente</th>
-<th>¿Qué hace?</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><strong>Clase especial</strong></td>
-<td>Le dice a R cómo interpretar los datos como espaciales.</td>
-</tr>
-<tr class="even">
-<td><strong>Columna&nbsp;<code>geometry</code></strong></td>
-<td>Guarda formas como puntos, polígonos, líneas.</td>
-</tr>
-<tr class="odd">
-<td><strong><code>CRS</code>&nbsp;(proyección)</strong></td>
-<td>Define cómo se ubica esa geometría en el planeta.</td>
-</tr>
-<tr class="even">
-<td><strong>Métodos especiales</strong></td>
-<td>Permite hacer joins, distancias, transformaciones, etc.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="paquete-countrycode" class="slide level2">
-<h2>Paquete: countrycode</h2>
-<p>El paquete <code>countrycode</code> permite convertir nombres de países entre distintos sistemas de codificación estándar. Es muy útil para unir bases de datos internacionales o conectar datos con geometrías espaciales.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href=""></a><span class="fu">library</span>(countrycode)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">countrycode</span>(<span class="st">"Chile"</span>, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] "CHL"</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href=""></a><span class="fu">names</span>(countrycode<span class="sc">::</span>codelist)[<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code> [1] "ar5"                   "cctld"                 "continent"            
- [4] "country.name.de"       "country.name.de.regex" "country.name.en"      
- [7] "country.name.en.regex" "country.name.fr"       "country.name.fr.regex"
-[10] "country.name.it"      </code></pre>
-</div>
-</div>
-<p>Algunas opciones de destination que puedes usar: *</p>
-<ul>
-<li class="fragment"><p>“iso3c” → código de 3 letras (ej: CHL)</p></li>
-<li class="fragment"><p>“iso2c” → código de 2 letras (ej: CL) * “continent” → continente (ej: Americas)</p></li>
-<li class="fragment"><p>“region” → región del mundo según World Bank</p></li>
-<li class="fragment"><p>“un.region.name” → región según Naciones Unidas</p></li>
-<li class="fragment"><p>“cldr.short.en” → nombre corto en inglés (ej: Chile)</p></li>
+<li class="fragment">Convierte texto cualitativo en <strong>datos analizables</strong><br>
+</li>
+<li class="fragment">Permite comparaciones temporales y temáticas<br>
+</li>
+<li class="fragment">Une teoría social y herramientas computacionales</li>
 </ul>
 </section>
-<section id="paquete-countrycode-1" class="slide level2">
-<h2>Paquete: countrycode</h2>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<caption>Codificaciones para ‘Chile’ usando countrycode()</caption>
-<thead>
-<tr class="header">
-<th style="text-align: left;">atributo</th>
-<th style="text-align: left;">valor</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Nombre (original)</td>
-<td style="text-align: left;">Chile</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Código ISO-3</td>
-<td style="text-align: left;">CHL</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Código ISO-2</td>
-<td style="text-align: left;">CL</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Continente</td>
-<td style="text-align: left;">Americas</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Región</td>
-<td style="text-align: left;">Latin America &amp; Caribbean</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Región ONU</td>
-<td style="text-align: left;">Americas</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Nombre corto en inglés</td>
-<td style="text-align: left;">Chile</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</section>
-<section id="paquete-r-natural-earth." class="slide level2">
-<h2>Paquete: R Natural Earth.</h2>
-<p>Es un paquete R que permite <strong>descargar datos geográficos del mundo</strong> (países, estados, líneas costeras, ríos, etc.) desde el proyecto <a href="https://www.naturalearthdata.com/">Natural Earth</a>. Se usa mucho para crear mapas en R, especialmente con <code>sf</code> y <code>ggplot2</code>.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">library</span>(rnaturalearth)</span>
-<span id="cb20-2"><a href=""></a></span>
-<span id="cb20-3"><a href=""></a>world <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>)</span>
-<span id="cb20-4"><a href=""></a></span>
-<span id="cb20-5"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">select</span>(iso_a3, geometry) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 2 features and 1 field
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: 21.97891 ymin: -22.40205 xmax: 33.66152 ymax: -8.193652
-Geodetic CRS:  WGS 84
-  iso_a3                       geometry
-1    ZWE MULTIPOLYGON (((31.28789 -2...
-2    ZMB MULTIPOLYGON (((30.39609 -1...</code></pre>
-</div>
-</div>
-<p><strong>Posee estadísticas de interés:</strong></p>
+<section id="fundamento-en-r" class="slide level2">
+<h2>Fundamento en R</h2>
+<h4 id="paquetes-esenciales">🧰 Paquetes esenciales</h4>
 <ul>
-<li class="fragment"><p>Producto de Interno de Bruto</p></li>
-<li class="fragment"><p>Región económica (BRICS, OCDE, etc)</p></li>
-<li class="fragment"><p>Esperanza de vida</p></li>
+<li class="fragment">📦 <strong><code>quanteda</code></strong>
+<ul>
+<li class="fragment">Corpus estructurados (<code>corpus()</code>, <code>tokens()</code>, <code>dfm()</code>)</li>
+<li class="fragment">Análisis por diccionario (<code>dictionary()</code>, <code>dfm_lookup()</code>)</li>
+<li class="fragment">KWIC y análisis de contexto (<code>kwic()</code>)</li>
+</ul></li>
+<li class="fragment">📦 <strong><code>tidytext</code></strong>
+<ul>
+<li class="fragment">Integración con <code>dplyr</code> para limpieza y visualización</li>
+<li class="fragment">Compatible con enfoques Tidy: <code>count()</code>, <code>mutate()</code>, <code>group_by()</code></li>
+</ul></li>
 </ul>
-</section>
-<section id="entonces." class="slide level2">
-<h2>Entonces….</h2>
-<table class="caption-top">
-<colgroup>
-<col style="width: 17%">
-<col style="width: 46%">
-<col style="width: 35%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Paquete</th>
-<th>Rol en el flujo de trabajo</th>
-<th>Analogía</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><code>sf</code></td>
-<td>Estructura: hace que todo sea “espacial”</td>
-<td>Es como el “Excel” espacial de R</td>
-</tr>
-<tr class="even">
-<td><code>rnaturalearth</code></td>
-<td>Fuente de datos geográficos en formato&nbsp;<code>sf</code></td>
-<td>Es como bajar un mapa listo</td>
-</tr>
-<tr class="odd">
-<td><code>countrycode</code></td>
-<td>Diccionario para traducir nombres de países</td>
-<td>Es como un traductor de nombres</td>
-</tr>
-</tbody>
-</table>
+<h4 id="uso-de-diccionarios">🗂️ Uso de diccionarios</h4>
+<ul>
+<li class="fragment">Permite <strong>agrupar palabras en categorías temáticas</strong></li>
+<li class="fragment">Se pueden usar para:
+<ul>
+<li class="fragment">Filtrar palabras por tema o emoción</li>
+<li class="fragment">Medir frecuencia relativa o presencia/ausencia</li>
+</ul></li>
+</ul>
 </section></section>
 <section>
-<section id="manos-a-la-obra" class="title-slide slide level1 center">
-<h1>Manos a la obra</h1>
-
+<section id="conceptos-y-funciones-fundamentales" class="title-slide slide level1 center">
+<h1>Conceptos y funciones fundamentales</h1>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co"># Texto base</span></span>
+<span id="cb3-2"><a href=""></a>texto <span class="ot">&lt;-</span> <span class="st">"Desde 1990 Chile es una democracia representativa y Chile </span></span>
+<span id="cb3-3"><a href=""></a><span class="st">es libre. A lo largo de su historia, Chile se </span></span>
+<span id="cb3-4"><a href=""></a><span class="st">destacó por su estabilibidad democrática, siendo la excepción la dictadura de Pinochet"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
-<section id="exploremos" class="slide level2">
-<h2>Exploremos</h2>
+<section id="conceptos-y-funciones-fundamentales-1" class="slide level2">
+<h2>Conceptos y funciones fundamentales</h2>
+<h3 id="token">🧱 Token</h3>
+<blockquote>
+<p>Un&nbsp;<strong>token</strong>&nbsp;es una unidad mínima de análisis, usualmente una palabra. Tokenizar un texto significa&nbsp;<strong>dividirlo en esas unidades</strong>.</p>
+</blockquote>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">select</span>(adm0_a3, geometry) <span class="sc">|&gt;</span> </span>
-<span id="cb22-2"><a href=""></a>  <span class="fu">filter</span>(adm0_a3 <span class="sc">==</span> <span class="st">"CHL"</span>)<span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb4-2"><a href=""></a>corp <span class="ot">&lt;-</span> <span class="fu">corpus</span>(texto)</span>
+<span id="cb4-3"><a href=""></a><span class="fu">tokens</span>(corp)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 1 feature and 1 field
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: -109.4341 ymin: -55.8917 xmax: -66.43579 ymax: -17.50605
-Geodetic CRS:  WGS 84
-  adm0_a3                       geometry
-1     CHL MULTIPOLYGON (((-109.28 -27...</code></pre>
+<pre><code>Tokens consisting of 1 document.
+text1 :
+ [1] "Desde"          "1990"           "Chile"          "es"            
+ [5] "una"            "democracia"     "representativa" "y"             
+ [9] "Chile"          "es"             "libre"          "."             
+[ ... and 22 more ]</code></pre>
 </div>
+</div>
+</section>
+<section id="dfm-document-feature-matrix" class="slide level2">
+<h2>🔡 DFM (Document-Feature Matrix)</h2>
+<blockquote>
+<p>Una&nbsp;<strong>DFM</strong>&nbsp;es una matriz donde cada fila representa un documento y cada columna una palabra única (token). El valor es la frecuencia.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href=""></a><span class="fu">dfm</span>(<span class="fu">tokens</span>(corp))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 1 document, 27 features (0.00% sparse) and 0 docvars.
+       features
+docs    desde 1990 chile es una democracia representativa y libre .
+  text1     1    1     3  2   1          1              1 1     1 1
+[ reached max_nfeat ... 17 more features ]</code></pre>
+</div>
+</div>
+<ul>
+<li class="fragment"><p><code>"chile"</code>&nbsp;aparece&nbsp;<strong>2 veces</strong></p></li>
+<li class="fragment"><p><code>"es"</code>&nbsp;aparece&nbsp;<strong>2 veces</strong></p></li>
+<li class="fragment"><p>Las demás palabras (<code>una</code>,&nbsp;<code>democracia</code>,&nbsp;<code>representativa</code>,&nbsp;<code>y</code>,&nbsp;<code>libre</code>,&nbsp;<code>"."</code>) aparecen&nbsp;<strong>una vez cada una</strong></p></li>
+<li class="fragment"><p>El punto&nbsp;<code>"."</code>&nbsp;fue considerado como un token separado (esto ocurre si no se removió la puntuación al crear los tokens)</p></li>
+</ul>
+</section>
+<section id="dfm-document-feature-matrix-remove-punct" class="slide level2">
+<h2>🔡 DFM (Document-Feature Matrix): Remove punct</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href=""></a>tokens_reducidos <span class="ot">&lt;-</span> <span class="fu">tokens</span>(corp, <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href=""></a>  <span class="fu">tokens_tolower</span>() <span class="sc">%&gt;%</span>  <span class="co"># pasar a minúsculas</span></span>
+<span id="cb8-3"><a href=""></a>  <span class="fu">tokens_wordstem</span>(<span class="at">language =</span> <span class="st">"spanish"</span>)  <span class="co"># aplicar stemming</span></span>
+<span id="cb8-4"><a href=""></a></span>
+<span id="cb8-5"><a href=""></a>tokens_reducidos</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tokens consisting of 1 document.
+text1 :
+ [1] "desd"      "1990"      "chil"      "es"        "una"       "democraci"
+ [7] "represent" "y"         "chil"      "es"        "libr"      "a"        
+[ ... and 19 more ]</code></pre>
+</div>
+</div>
+</section>
+<section id="sobre-los-bigramas" class="slide level2">
+<h2>Sobre los bigramas</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href=""></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb10-2"><a href=""></a><span class="fu">library</span>(tibble)</span>
+<span id="cb10-3"><a href=""></a>bigrama <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">text =</span> texto) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href=""></a>  <span class="fu">unnest_tokens</span>(bigrama, text, <span class="at">token =</span> <span class="st">"ngrams"</span>, <span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb10-5"><a href=""></a></span>
+<span id="cb10-6"><a href=""></a>bigrama</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 30 × 1
+   bigrama                  
+   &lt;chr&gt;                    
+ 1 desde 1990               
+ 2 1990 chile               
+ 3 chile es                 
+ 4 es una                   
+ 5 una democracia           
+ 6 democracia representativa
+ 7 representativa y         
+ 8 y chile                  
+ 9 chile es                 
+10 es libre                 
+# ℹ 20 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="kwic-y-stemming" class="slide level2">
+<h2>KWIC y Stemming</h2>
+<h3 id="kwic-key-word-in-context">🔍 KWIC (Key Word in Context)</h3>
+<blockquote>
+<p>Muestra las palabras&nbsp;<strong>inmediatamente antes y después</strong>&nbsp;de una palabra clave. Es útil para&nbsp;<strong>analizar el contexto semántico</strong>.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href=""></a><span class="fu">kwic</span>(<span class="fu">tokens</span>(corp), <span class="at">pattern =</span> <span class="st">"Chile"</span>, <span class="at">window =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Keyword-in-context with 3 matches.                                                  
+  [text1, 3]       Desde 1990 | Chile | es una    
+  [text1, 9] representativa y | Chile | es libre  
+ [text1, 20]        historia, | Chile | se destacó</code></pre>
+</div>
+</div>
+</section>
+<section id="ruido-de-palabras" class="slide level2">
+<h2>Ruido de palabras</h2>
+<h3 id="qué-es-una-stop-word">🚫 ¿Qué es una <em>Stop Word</em>?</h3>
+<blockquote>
+<p>Son palabras muy frecuentes (como <strong>“el”, “de”, “y”, “es”</strong>) que usualmente <strong>no aportan significado sustantivo</strong> al análisis textual.</p>
+</blockquote>
+<h3 id="por-qué-eliminarlas">🧠 ¿Por qué eliminarlas?</h3>
+<ul>
+<li class="fragment">Aparecen en casi todos los textos → <strong>ruido analítico</strong></li>
+<li class="fragment">No discriminan entre temas ni emociones</li>
+<li class="fragment">Permite centrarse en contenido más relevante (sustantivos, verbos clave)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href=""></a><span class="fu">library</span>(quanteda)</span>
+<span id="cb14-2"><a href=""></a></span>
+<span id="cb14-3"><a href=""></a>tokens_limpios <span class="ot">&lt;-</span><span class="fu">tokens</span>(texto,</span>
+<span id="cb14-4"><a href=""></a>       <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span>                 <span class="co"># Elimina puntos, comas, etc.</span></span>
+<span id="cb14-5"><a href=""></a>  <span class="fu">tokens_tolower</span>() <span class="sc">%&gt;%</span>                          <span class="co"># Convierte a minúsculas</span></span>
+<span id="cb14-6"><a href=""></a>  <span class="fu">tokens_remove</span>(<span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"spanish"</span>)) <span class="co"># Elimina stop words en español</span></span>
+<span id="cb14-7"><a href=""></a></span>
+<span id="cb14-8"><a href=""></a>tokens_limpios</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Tokens consisting of 1 document.
+text1 :
+ [1] "1990"           "chile"          "democracia"     "representativa"
+ [5] "chile"          "libre"          "largo"          "historia"      
+ [9] "chile"          "destacó"        "estabilibidad"  "democrática"   
+[ ... and 3 more ]</code></pre>
+</div>
+</div>
+</section>
+<section id="nube-de-palabras-desde-texto-limpio" class="slide level2">
+<h2>☁️ Nube de palabras desde texto limpio</h2>
+<blockquote>
+<p>Eliminamos puntuación y stop words para visualizar solo las palabras relevantes.</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href=""></a><span class="fu">library</span>(quanteda.textplots)</span>
+<span id="cb16-2"><a href=""></a></span>
+<span id="cb16-3"><a href=""></a><span class="co"># Texto más largo</span></span>
+<span id="cb16-4"><a href=""></a>texto <span class="ot">&lt;-</span> <span class="st">"Chile es una democracia representativa. El país enfrenta desigualdades, pero también oportunidades. La educación, la salud y el trabajo son temas prioritarios para Chile."</span></span>
+<span id="cb16-5"><a href=""></a></span>
+<span id="cb16-6"><a href=""></a><span class="co"># Limpiar y procesar</span></span>
+<span id="cb16-7"><a href=""></a>tokens_limpios <span class="ot">&lt;-</span> <span class="fu">tokens</span>(texto,</span>
+<span id="cb16-8"><a href=""></a>                         <span class="at">remove_punct =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-9"><a href=""></a>  <span class="fu">tokens_tolower</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb16-10"><a href=""></a>  <span class="fu">tokens_remove</span>(<span class="at">pattern =</span> <span class="fu">stopwords</span>(<span class="st">"spanish"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<h3 id="crear-dfm-document-feature-matrix">Crear dfm (document-feature matrix)</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href=""></a>dfm_limpio <span class="ot">&lt;-</span> <span class="fu">dfm</span>(tokens_limpios); dfm_limpio</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Document-feature matrix of: 1 document, 12 features (0.00% sparse) and 0 docvars.
+       features
+docs    chile democracia representativa país enfrenta desigualdades
+  text1     2          1              1    1        1             1
+       features
+docs    oportunidades educación salud trabajo
+  text1             1         1     1       1
+[ reached max_nfeat ... 2 more features ]</code></pre>
+</div>
+</div>
+</section>
+<section id="nube-de-palabras-desde-texto-limpio-1" class="slide level2">
+<h2>☁️ Nube de palabras desde texto limpio</h2>
+<h3 id="visualizar">Visualizar</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href=""></a><span class="co"># Nube de palabras más rica</span></span>
+<span id="cb19-2"><a href=""></a><span class="fu">textplot_wordcloud</span>(dfm_limpio, <span class="at">max_words =</span> <span class="dv">50</span>, <span class="at">min_count =</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-12-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="diccionarios" class="slide level2">
+<h2>Diccionarios</h2>
+<p>Pensemos en un texto.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href=""></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb20-2"><a href=""></a><span class="fu">library</span>(stringr)</span>
+<span id="cb20-3"><a href=""></a></span>
+<span id="cb20-4"><a href=""></a>texto <span class="ot">&lt;-</span> <span class="st">"La democracia es fundamental para la participación ciudadana. </span></span>
+<span id="cb20-5"><a href=""></a><span class="st">Sin embargo, la delincuencia organizada y el narcotráfico han aumentado. Se ha generado un escenario de inseguridad.</span></span>
+<span id="cb20-6"><a href=""></a><span class="st">La migración también es un desafío que debe abordarse con políticas públicas integradas y garantizar derechos básicos."</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>¿Qué conceptos no pueden parecer interesantes? Definimos palabras previas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href=""></a><span class="co"># Texto de ejemplo</span></span>
+<span id="cb21-2"><a href=""></a>texto <span class="ot">&lt;-</span> <span class="st">"La democracia es clave. La delincuencia y el narcotráfico afectan la ciudadanía. </span></span>
+<span id="cb21-3"><a href=""></a><span class="st">Muchos migrantes y refugiados llegaron en 2023."</span></span>
+<span id="cb21-4"><a href=""></a></span>
+<span id="cb21-5"><a href=""></a><span class="co"># Diccionario con comodines</span></span>
+<span id="cb21-6"><a href=""></a>diccionario_temas <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb21-7"><a href=""></a>  <span class="at">democracia =</span> <span class="fu">c</span>(<span class="st">"democracia"</span>, <span class="st">"participación"</span>, <span class="st">"ciudad*"</span>, <span class="st">"instituciones"</span>, <span class="st">"elecciones"</span>, <span class="st">"derecho*"</span>),</span>
+<span id="cb21-8"><a href=""></a>  <span class="at">delincuencia =</span> <span class="fu">c</span>(<span class="st">"delincuencia"</span>, <span class="st">"crimen"</span>, <span class="st">"inseguridad"</span>, <span class="st">"violencia"</span>, <span class="st">"narco*"</span>),</span>
+<span id="cb21-9"><a href=""></a>  <span class="at">migracion =</span> <span class="fu">c</span>(<span class="st">"migra*"</span>,  <span class="st">"refugiado"</span>, <span class="st">"exilio"</span>, <span class="st">"inmigración"</span>)</span>
+<span id="cb21-10"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="diccionarios-1" class="slide level2">
+<h2>Diccionarios</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href=""></a><span class="co"># Aplicar diccionario con comodines</span></span>
+<span id="cb22-2"><a href=""></a>patrones_democracia <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(diccionario_temas<span class="sc">$</span>democracia, <span class="st">"</span><span class="sc">\\</span><span class="st">*"</span>, <span class="st">".*"</span>)</span>
+<span id="cb22-3"><a href=""></a>patrones_delincuencia <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(diccionario_temas<span class="sc">$</span>delincuencia, <span class="st">"</span><span class="sc">\\</span><span class="st">*"</span>, <span class="st">".*"</span>)</span>
+<span id="cb22-4"><a href=""></a>patrones_migracion <span class="ot">&lt;-</span> <span class="fu">str_replace_all</span>(diccionario_temas<span class="sc">$</span>migracion, <span class="st">"</span><span class="sc">\\</span><span class="st">*"</span>, <span class="st">".*"</span>)</span>
+<span id="cb22-5"><a href=""></a></span>
+<span id="cb22-6"><a href=""></a>tokens_clasificados <span class="ot">&lt;-</span> tokens_df <span class="sc">%&gt;%</span></span>
+<span id="cb22-7"><a href=""></a>  <span class="fu">mutate</span>(</span>
+<span id="cb22-8"><a href=""></a>    <span class="at">tema =</span> <span class="fu">case_when</span>(</span>
+<span id="cb22-9"><a href=""></a>      <span class="fu">str_detect</span>(word, <span class="fu">regex</span>(<span class="fu">paste0</span>(<span class="st">"^("</span>, <span class="fu">paste</span>(patrones_democracia, <span class="at">collapse =</span> <span class="st">"|"</span>), <span class="st">")$"</span>), <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)) <span class="sc">~</span> <span class="st">"democracia"</span>,</span>
+<span id="cb22-10"><a href=""></a>      <span class="fu">str_detect</span>(word, <span class="fu">regex</span>(<span class="fu">paste0</span>(<span class="st">"^("</span>, <span class="fu">paste</span>(patrones_delincuencia, <span class="at">collapse =</span> <span class="st">"|"</span>), <span class="st">")$"</span>), <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)) <span class="sc">~</span> <span class="st">"delincuencia"</span>,</span>
+<span id="cb22-11"><a href=""></a>      <span class="fu">str_detect</span>(word, <span class="fu">regex</span>(<span class="fu">paste0</span>(<span class="st">"^("</span>, <span class="fu">paste</span>(patrones_migracion, <span class="at">collapse =</span> <span class="st">"|"</span>), <span class="st">")$"</span>), <span class="at">ignore_case =</span> <span class="cn">TRUE</span>)) <span class="sc">~</span> <span class="st">"migracion"</span>,</span>
+<span id="cb22-12"><a href=""></a>      <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
+<span id="cb22-13"><a href=""></a>    )</span>
+<span id="cb22-14"><a href=""></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb22-15"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(tema)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-16"><a href=""></a>  <span class="fu">count</span>(tema, word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">library</span>(countrycode)</span>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 3
+  tema         word             n
+  &lt;chr&gt;        &lt;chr&gt;        &lt;int&gt;
+1 delincuencia delincuencia     1
+2 delincuencia narcotráfico     1
+3 democracia   ciudadanía       1
+4 democracia   democracia       1
+5 migracion    migrantes        1</code></pre>
+</div>
+</div>
+</section>
+<section id="diccionarios-2" class="slide level2">
+<h2>Diccionarios</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href=""></a><span class="fu">library</span>(ggplot2)</span>
 <span id="cb24-2"><a href=""></a></span>
-<span id="cb24-3"><a href=""></a><span class="co"># Vector de países (algunos con nombres en español)</span></span>
-<span id="cb24-4"><a href=""></a>paises <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Brazil"</span>, <span class="st">"Estados Unidos"</span>, <span class="st">"Germany"</span>, <span class="st">"Reino Unido"</span>)</span>
-<span id="cb24-5"><a href=""></a></span>
-<span id="cb24-6"><a href=""></a><span class="co"># Convertir a códigos ISO3</span></span>
-<span id="cb24-7"><a href=""></a>codigo_iso <span class="ot">&lt;-</span> <span class="fu">countrycode</span>(paises, </span>
-<span id="cb24-8"><a href=""></a>                          <span class="at">origin =</span> <span class="st">"country.name"</span>, </span>
-<span id="cb24-9"><a href=""></a>                          <span class="at">destination =</span> <span class="st">"iso3c"</span>)</span>
-<span id="cb24-10"><a href=""></a></span>
-<span id="cb24-11"><a href=""></a><span class="co"># Combinar en tabla</span></span>
-<span id="cb24-12"><a href=""></a><span class="fu">data.frame</span>(<span class="at">pais =</span> paises, <span class="at">iso3c =</span> codigo_iso)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>            pais iso3c
-1          Chile   CHL
-2      Argentina   ARG
-3         Brazil   BRA
-4 Estados Unidos  &lt;NA&gt;
-5        Germany   DEU
-6    Reino Unido  &lt;NA&gt;</code></pre>
-</div>
-</div>
-</section>
-<section id="pero-qué-nos-falta-indexación-de-bases-de-datos" class="slide level2">
-<h2>Pero ¿Qué nos falta? Indexación de bases de datos</h2>
-<p>Cuando trabajamos con datos espaciales, es fundamental asegurarnos de que las bases compartan un mismo sistema de referencia espacial (CRS). Además, debemos usar claves geográficas comunes (ej. códigos de región, comuna o distrito) para poder hacer joins entre bases tabulares y espaciales.</p>
-<p>Verificación con <code>st_crs()</code>. Uniones con <code>left_join()</code> y <code>inner_join()</code> usando códigos comunes.</p>
-<p><em>¿Coinciden los códigos geográficos? ¿Hay nombres de comunas mal escritos o duplicados? ¿Cuántos registros se pierden en el join?</em></p>
-<p><strong>Herramientas útiles:</strong></p>
-<ul>
-<li class="fragment"><code>anti_join()</code> para ver qué quedó fuera.</li>
-<li class="fragment"><code>janitor::clean_names()</code> para estandarizar nombres de variables (mayúsculas, tildes, etc.)</li>
-</ul>
-</section>
-<section id="datos-ficticios-1" class="slide level2">
-<h2>Datos ficticios (1)</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href=""></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb26-2"><a href=""></a><span class="fu">library</span>(knitr)</span>
-<span id="cb26-3"><a href=""></a></span>
-<span id="cb26-4"><a href=""></a>economia <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb26-5"><a href=""></a>  <span class="at">pais =</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Peru"</span>, <span class="st">"Brazil"</span>, <span class="st">"Colombia"</span>),</span>
-<span id="cb26-6"><a href=""></a>  <span class="at">pib_per_capita =</span> <span class="fu">c</span>(<span class="dv">15000</span>, <span class="dv">10500</span>, <span class="dv">12000</span>, <span class="dv">9800</span>, <span class="dv">8700</span>)</span>
-<span id="cb26-7"><a href=""></a>)</span>
-<span id="cb26-8"><a href=""></a></span>
-<span id="cb26-9"><a href=""></a>educacion <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
-<span id="cb26-10"><a href=""></a>  <span class="at">pais =</span> <span class="fu">c</span>(<span class="st">"Chile"</span>, <span class="st">"Argentina"</span>, <span class="st">"Uruguay"</span>, <span class="st">"Brazil"</span>, <span class="st">"Ecuador"</span>),</span>
-<span id="cb26-11"><a href=""></a>  <span class="at">anios_educacion =</span> <span class="fu">c</span>(<span class="fl">11.2</span>, <span class="fl">10.5</span>, <span class="fl">9.8</span>, <span class="fl">8.9</span>, <span class="fl">8.3</span>)</span>
-<span id="cb26-12"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="columns">
-<div class="column" style="width:50%;">
-<p>Educación</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">pais</th>
-<th style="text-align: right;">anios_educacion</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Chile</td>
-<td style="text-align: right;">11.2</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Argentina</td>
-<td style="text-align: right;">10.5</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Uruguay</td>
-<td style="text-align: right;">9.8</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Brazil</td>
-<td style="text-align: right;">8.9</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ecuador</td>
-<td style="text-align: right;">8.3</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<p>Economía</p>
-<div class="cell">
-<div class="cell-output-display">
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th style="text-align: left;">pais</th>
-<th style="text-align: right;">pib_per_capita</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Chile</td>
-<td style="text-align: right;">15000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Argentina</td>
-<td style="text-align: right;">10500</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Peru</td>
-<td style="text-align: right;">12000</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Brazil</td>
-<td style="text-align: right;">9800</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Colombia</td>
-<td style="text-align: right;">8700</td>
-</tr>
-</tbody>
-</table>
-</div>
-</div>
-</div></div>
-</section>
-<section id="datos-ficticios-2" class="slide level2">
-<h2>Datos ficticios (2)</h2>
-<p>Solo para los que se encuentran en el dataset: <code>inner_join</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 3 × 3
-  pais      pib_per_capita anios_educacion
-  &lt;chr&gt;              &lt;dbl&gt;           &lt;dbl&gt;
-1 Chile              15000            11.2
-2 Argentina          10500            10.5
-3 Brazil              9800             8.9</code></pre>
-</div>
-</div>
-<p>Solo para los datos que se encuentran en el dataset desde la posición en el código (left) : <code>left_join</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">left_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 3
-  pais      pib_per_capita anios_educacion
-  &lt;chr&gt;              &lt;dbl&gt;           &lt;dbl&gt;
-1 Chile              15000            11.2
-2 Argentina          10500            10.5
-3 Peru               12000            NA  
-4 Brazil              9800             8.9
-5 Colombia            8700            NA  </code></pre>
-</div>
-</div>
-<p>Solo para los datos que se encuentran en el dataset desde la posición en el código (right) : <code>right_join</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">right_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 5 × 3
-  pais      pib_per_capita anios_educacion
-  &lt;chr&gt;              &lt;dbl&gt;           &lt;dbl&gt;
-1 Chile              15000            11.2
-2 Argentina          10500            10.5
-3 Brazil              9800             8.9
-4 Uruguay               NA             9.8
-5 Ecuador               NA             8.3</code></pre>
-</div>
-</div>
-</section>
-<section id="datos-ficticios-3" class="slide level2">
-<h2>Datos ficticios (3)</h2>
-<p>Se unen todos, incluso los con valores NA (full): <code>full_join</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">full_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 7 × 3
-  pais      pib_per_capita anios_educacion
-  &lt;chr&gt;              &lt;dbl&gt;           &lt;dbl&gt;
-1 Chile              15000            11.2
-2 Argentina          10500            10.5
-3 Peru               12000            NA  
-4 Brazil              9800             8.9
-5 Colombia            8700            NA  
-6 Uruguay               NA             9.8
-7 Ecuador               NA             8.3</code></pre>
-</div>
-</div>
-<p>Se verifica los que no pueden ser unidos correctamente en ambas bases: <code>anti_join</code></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href=""></a>economia <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  pais     pib_per_capita
-  &lt;chr&gt;             &lt;dbl&gt;
-1 Peru              12000
-2 Colombia           8700</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href=""></a>educacion <span class="sc">|&gt;</span> <span class="fu">anti_join</span>(economia, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  pais    anios_educacion
-  &lt;chr&gt;             &lt;dbl&gt;
-1 Uruguay             9.8
-2 Ecuador             8.3</code></pre>
-</div>
-</div>
-</section>
-<section id="datos-ficticios-4" class="slide level2">
-<h2>Datos ficticios (4)</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href=""></a>datos <span class="ot">&lt;-</span> economia <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(educacion, <span class="at">by =</span> <span class="st">"pais"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href=""></a><span class="co"># Paso 3: crear columna con código ISO-3 como 'iso3c'</span></span>
-<span id="cb40-2"><a href=""></a>datos <span class="ot">&lt;-</span> datos <span class="sc">%&gt;%</span></span>
-<span id="cb40-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">iso3c =</span> <span class="fu">countrycode</span>(pais, <span class="at">origin =</span> <span class="st">"country.name"</span>, <span class="at">destination =</span> <span class="st">"iso3c"</span>))</span>
-<span id="cb40-4"><a href=""></a></span>
-<span id="cb40-5"><a href=""></a><span class="co"># Paso 4: obtener geometría mundial</span></span>
-<span id="cb40-6"><a href=""></a>world <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">scale =</span> <span class="st">"medium"</span>, <span class="at">returnclass =</span> <span class="st">"sf"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb40-7"><a href=""></a>  <span class="fu">select</span>(name, iso_a3, geometry)</span>
-<span id="cb40-8"><a href=""></a></span>
-<span id="cb40-9"><a href=""></a><span class="co"># Paso 5: unir usando world como base principal</span></span>
-<span id="cb40-10"><a href=""></a>datos_geo <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(world, datos, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"iso_a3"</span> <span class="ot">=</span> <span class="st">"iso3c"</span>)); datos_geo</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 3 features and 5 fields
-Geometry type: MULTIPOLYGON
-Dimension:     XY
-Bounding box:  xmin: -109.4341 ymin: -55.8917 xmax: -34.80547 ymax: 5.257959
-Geodetic CRS:  WGS 84
-       name iso_a3      pais pib_per_capita anios_educacion
-1     Chile    CHL     Chile          15000            11.2
-2    Brazil    BRA    Brazil           9800             8.9
-3 Argentina    ARG Argentina          10500            10.5
-                        geometry
-1 MULTIPOLYGON (((-109.28 -27...
-2 MULTIPOLYGON (((-66.87603 1...
-3 MULTIPOLYGON (((-57.60889 -...</code></pre>
-</div>
-</div>
-</section>
-<section id="datos-ficticios-5" class="slide level2">
-<h2>Datos ficticios (5)</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href=""></a>datos <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 7
-Columns: 4
-$ pais            &lt;chr&gt; "Chile", "Argentina", "Peru", "Brazil", "Colombia", "U…
-$ pib_per_capita  &lt;dbl&gt; 15000, 10500, 12000, 9800, 8700, NA, NA
-$ anios_educacion &lt;dbl&gt; 11.2, 10.5, NA, 8.9, NA, 9.8, 8.3
-$ iso3c           &lt;chr&gt; "CHL", "ARG", "PER", "BRA", "COL", "URY", "ECU"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 242
-Columns: 3
-$ name     &lt;chr&gt; "Zimbabwe", "Zambia", "Yemen", "Vietnam", "Venezuela", "Vatic…
-$ iso_a3   &lt;chr&gt; "ZWE", "ZMB", "YEM", "VNM", "VEN", "VAT", "VUT", "UZB", "URY"…
-$ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGON (((…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href=""></a>world2 <span class="ot">&lt;-</span>world <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">iso3c =</span> iso_a3)</span>
-<span id="cb46-2"><a href=""></a>datos_geo <span class="ot">&lt;-</span> world2 <span class="sc">|&gt;</span>  <span class="fu">inner_join</span>(datos, <span class="at">by =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 21px; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">name</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">iso3c</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">pais</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">pib_per_capita</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">anios_educacion</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">geometry</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Uruguay</td>
-<td style="text-align: left;">URY</td>
-<td style="text-align: left;">Uruguay</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">9.8</td>
-<td style="text-align: left;">MULTIPOLYGON (((-53.37061 -...</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Peru</td>
-<td style="text-align: left;">PER</td>
-<td style="text-align: left;">Peru</td>
-<td style="text-align: right;">12000</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">MULTIPOLYGON (((-69.96592 -...</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Ecuador</td>
-<td style="text-align: left;">ECU</td>
-<td style="text-align: left;">Ecuador</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">8.3</td>
-<td style="text-align: left;">MULTIPOLYGON (((-75.28447 -...</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Colombia</td>
-<td style="text-align: left;">COL</td>
-<td style="text-align: left;">Colombia</td>
-<td style="text-align: right;">8700</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">MULTIPOLYGON (((-71.31973 1...</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Chile</td>
-<td style="text-align: left;">CHL</td>
-<td style="text-align: left;">Chile</td>
-<td style="text-align: right;">15000</td>
-<td style="text-align: right;">11.2</td>
-<td style="text-align: left;">MULTIPOLYGON (((-109.28 -27...</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Brazil</td>
-<td style="text-align: left;">BRA</td>
-<td style="text-align: left;">Brazil</td>
-<td style="text-align: right;">9800</td>
-<td style="text-align: right;">8.9</td>
-<td style="text-align: left;">MULTIPOLYGON (((-66.87603 1...</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Argentina</td>
-<td style="text-align: left;">ARG</td>
-<td style="text-align: left;">Argentina</td>
-<td style="text-align: right;">10500</td>
-<td style="text-align: right;">10.5</td>
-<td style="text-align: left;">MULTIPOLYGON (((-57.60889 -...</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-</section>
-<section id="datos-ficticios-6" class="slide level2">
-<h2>Datos ficticios (6)</h2>
-<p>✅&nbsp;<code>geom_sf(aes(fill = pib_per_capita), color = "white")</code></p>
-<ul>
-<li class="fragment"><p><code>geom_sf()</code>&nbsp;es el equivalente espacial de&nbsp;<code>geom_bar()</code>&nbsp;o&nbsp;<code>geom_point()</code>, pero para geometría.</p></li>
-<li class="fragment"><p><code>fill = pib_per_capita</code>:&nbsp;<strong>el color del país depende del valor del PIB per cápita</strong>.</p></li>
-<li class="fragment"><p><code>color = "white"</code>: agrega bordes blancos entre países, para que se vean claramente separados.</p></li>
-</ul>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href=""></a><span class="fu">ggplot</span>(datos_geo) <span class="sc">+</span></span>
-<span id="cb47-2"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> pib_per_capita), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb47-3"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PIB per cápita en países con datos educativos"</span>,</span>
-<span id="cb47-4"><a href=""></a>       <span class="at">fill =</span> <span class="st">"PIB per cápita"</span>) <span class="sc">+</span></span>
-<span id="cb47-5"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-3"><a href=""></a><span class="fu">ggplot</span>(tokens_clasificados, <span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder_within</span>(word, n, tema), <span class="at">y =</span> n, <span class="at">fill =</span> tema)) <span class="sc">+</span></span>
+<span id="cb24-4"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb24-5"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> tema, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb24-6"><a href=""></a>  <span class="fu">scale_x_reordered</span>() <span class="sc">+</span></span>
+<span id="cb24-7"><a href=""></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb24-8"><a href=""></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-9"><a href=""></a>    <span class="at">title =</span> <span class="st">"Palabras clave por tema detectadas en el texto"</span>,</span>
+<span id="cb24-10"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"Basado en un diccionario con comodines"</span>,</span>
+<span id="cb24-11"><a href=""></a>    <span class="at">x =</span> <span class="cn">NULL</span>, <span class="at">y =</span> <span class="st">"Frecuencia"</span></span>
+<span id="cb24-12"><a href=""></a>  ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-32-1.png" width="576"></p>
+<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-18-1.png" width="960"></p>
 </figure>
 </div>
 </div>
 </div>
-</section>
-<section id="datos-ficticios-7" class="slide level2">
-<h2>Datos ficticios (7)</h2>
-<p><strong>¿Y si hubiera hecho un full_join?</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href=""></a>datos <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 7
-Columns: 4
-$ pais            &lt;chr&gt; "Chile", "Argentina", "Peru", "Brazil", "Colombia", "U…
-$ pib_per_capita  &lt;dbl&gt; 15000, 10500, 12000, 9800, 8700, NA, NA
-$ anios_educacion &lt;dbl&gt; 11.2, 10.5, NA, 8.9, NA, 9.8, 8.3
-$ iso3c           &lt;chr&gt; "CHL", "ARG", "PER", "BRA", "COL", "URY", "ECU"</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href=""></a>world <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 242
-Columns: 3
-$ name     &lt;chr&gt; "Zimbabwe", "Zambia", "Yemen", "Vietnam", "Venezuela", "Vatic…
-$ iso_a3   &lt;chr&gt; "ZWE", "ZMB", "YEM", "VNM", "VEN", "VAT", "VUT", "UZB", "URY"…
-$ geometry &lt;MULTIPOLYGON [°]&gt; MULTIPOLYGON (((31.28789 -2..., MULTIPOLYGON (((…</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href=""></a>world2 <span class="ot">&lt;-</span>world <span class="sc">|&gt;</span> <span class="fu">rename</span>(<span class="at">iso3c =</span> iso_a3)</span>
-<span id="cb52-2"><a href=""></a>datos_geo <span class="ot">&lt;-</span> world2 <span class="sc">|&gt;</span>  <span class="fu">full_join</span>(datos, <span class="at">by =</span> <span class="st">"iso3c"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<div class="cell">
-<div class="cell-output-display">
-<table class="table caption-top" data-quarto-postprocess="true" style="font-size: 21px; margin-left: auto; margin-right: auto;">
-<thead>
-<tr class="header">
-<th style="text-align: left;" data-quarto-table-cell-role="th">name</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">iso3c</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">pais</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">pib_per_capita</th>
-<th style="text-align: right;" data-quarto-table-cell-role="th">anios_educacion</th>
-<th style="text-align: left;" data-quarto-table-cell-role="th">geometry</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td style="text-align: left;">Zimbabwe</td>
-<td style="text-align: left;">ZWE</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">MULTIPOLYGON (((31.28789 -2...</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Zambia</td>
-<td style="text-align: left;">ZMB</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">MULTIPOLYGON (((30.39609 -1...</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Yemen</td>
-<td style="text-align: left;">YEM</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">MULTIPOLYGON (((53.08564 16...</td>
-</tr>
-<tr class="even">
-<td style="text-align: left;">Vietnam</td>
-<td style="text-align: left;">VNM</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">MULTIPOLYGON (((104.064 10....</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">Venezuela</td>
-<td style="text-align: left;">VEN</td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: right;">NA</td>
-<td style="text-align: left;">MULTIPOLYGON (((-60.82119 9...</td>
-</tr>
-</tbody>
-</table>
-
-
-</div>
-</div>
-</section>
-<section id="datos-ficticios-8-efecto-del-full-join" class="slide level2">
-<h2>Datos ficticios (8): Efecto del full join</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href=""></a><span class="fu">ggplot</span>(datos_geo) <span class="sc">+</span></span>
-<span id="cb53-2"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">fill =</span> pib_per_capita), <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb53-3"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"PIB per cápita en países con datos educativos"</span>,</span>
-<span id="cb53-4"><a href=""></a>       <span class="at">fill =</span> <span class="st">"PIB per cápita"</span>) <span class="sc">+</span></span>
-<span id="cb53-5"><a href=""></a>  <span class="fu">theme_minimal</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-35-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section></section>
-<section>
-<section id="hasta-acá-dudas." class="title-slide slide level1 center">
-<h1>Hasta acá: DUDAS.</h1>
-
-</section>
-<section id="chile-mapas" class="slide level2">
-<h2>Chile Mapas</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="quarto-figure quarto-figure-center">
-<figure>
-<p><img data-src="images/geografia.jpg" class="quarto-figure quarto-figure-center" width="312"></p>
-</figure>
-</div>
-</div><div class="column" style="width:50%;">
-<ul>
-<li class="fragment"><p>El paquete&nbsp;<strong><code>chilemapas</code></strong>&nbsp;es una herramienta diseñada específicamente para R que permite acceder fácilmente a&nbsp;<strong>mapas oficiales y actualizados de Chile</strong>, listos para usar con&nbsp;<code>ggplot2</code>&nbsp;y&nbsp;<code>sf</code>.</p></li>
-<li class="fragment"><p>Proporción información de: Provincias, Comunas, Regiones y Distrito electorales</p></li>
-</ul>
-</div></div>
-</section>
-<section id="chilemapas" class="slide level2">
-<h2>ChileMapas</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href=""></a>mapa_comunas <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas</span>
-<span id="cb54-2"><a href=""></a></span>
-<span id="cb54-3"><a href=""></a>mapa_comunas <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 10 × 4
-   codigo_comuna codigo_provincia codigo_region                         geometry
-   &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;                       &lt;MULTIPOLYGON [°]&gt;
- 1 01401         014              01            (((-68.86081 -21.28512, -68.921…
- 2 01403         014              01            (((-68.65113 -19.77188, -68.811…
- 3 01405         014              01            (((-68.65113 -19.77188, -68.635…
- 4 01402         014              01            (((-69.31789 -19.13651, -69.271…
- 5 01404         014              01            (((-69.39615 -19.06125, -69.400…
- 6 01107         011              01            (((-70.1095 -20.35131, -70.1243…
- 7 01101         011              01            (((-70.09894 -20.08504, -70.102…
- 8 02104         021              02            (((-68.98863 -25.38016, -68.987…
- 9 02101         021              02            (((-70.60654 -23.43054, -70.601…
-10 02201         022              02            (((-67.94302 -22.38175, -67.955…</code></pre>
-</div>
-</div>
-</section>
-<section id="gráfico-chile" class="slide level2">
-<h2>Gráfico Chile</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href=""></a>grafico_comunas <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
-<span id="cb56-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_comunas<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="co"># asignar geometría</span></span>
-<span id="cb56-3"><a href=""></a>  <span class="fu">ggplot</span>() <span class="sc">+</span> <span class="co"># gráfico</span></span>
-<span id="cb56-4"><a href=""></a>  <span class="fu">geom_sf</span>() <span class="co"># capa geométrica</span></span>
-<span id="cb56-5"><a href=""></a></span>
-<span id="cb56-6"><a href=""></a>grafico_comunas <span class="sc">+</span></span>
-<span id="cb56-7"><a href=""></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-37-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="chile-mapas-regiones" class="slide level2">
-<h2>Chile Mapas: Regiones</h2>
-<p>El paquete&nbsp;<code>{sf}</code>&nbsp;facilita en gran medida el trabajo con datos geográficos, especialmente en lo que respecta a operaciones espaciales como la&nbsp;<strong>fusión de polígonos adyacentes</strong>.</p>
-<p>En este caso, utilizamos&nbsp;<code>group_by()</code>&nbsp;para agrupar las observaciones según la variable&nbsp;<code>codigo_region</code>, Luego, aplicamos&nbsp;<code>summarize()</code>&nbsp;junto a la función&nbsp;<code>sf::st_union()</code>&nbsp;para combinar los polígonos de las comunas dentro de cada grupo, generando así un nuevo conjunto de&nbsp;<strong>polígonos regionales</strong></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_comunas <span class="sc">|&gt;</span> </span>
-<span id="cb57-2"><a href=""></a>  <span class="fu">group_by</span>(codigo_region) <span class="sc">|&gt;</span> </span>
-<span id="cb57-3"><a href=""></a>  <span class="fu">summarize</span>(<span class="at">geometry =</span> <span class="fu">st_union</span>(geometry)) <span class="co"># resumir los datos agrupados uniéndolos</span></span>
-<span id="cb57-4"><a href=""></a></span>
-<span id="cb57-5"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  codigo_region                                                         geometry
-  &lt;chr&gt;                                                           &lt;GEOMETRY [°]&gt;
-1 01            POLYGON ((-69.93023 -21.4246, -69.92376 -21.42622, -69.91932 -2…
-2 02            MULTIPOLYGON (((-68.0676 -24.32856, -67.91698 -24.26902, -67.80…</code></pre>
-</div>
-</div>
-</section>
-<section id="chilemapas-regiones" class="slide level2">
-<h2>ChileMapas: Regiones</h2>
-<div class="cell">
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-39-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="chilemapas-filtremos" class="slide level2">
-<h2>ChileMapas: Filtremos</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href=""></a>mapa <span class="ot">&lt;-</span> chilemapas<span class="sc">::</span>mapa_comunas <span class="sc">|&gt;</span> </span>
-<span id="cb59-2"><a href=""></a>  <span class="fu">left_join</span>(</span>
-<span id="cb59-3"><a href=""></a>    chilemapas<span class="sc">::</span>codigos_territoriales <span class="sc">|&gt;</span> </span>
-<span id="cb59-4"><a href=""></a>      <span class="fu">select</span>(<span class="fu">matches</span>(<span class="st">"comuna"</span>)), </span>
-<span id="cb59-5"><a href=""></a>    <span class="at">by =</span> <span class="st">"codigo_comuna"</span>) <span class="sc">|&gt;</span> </span>
-<span id="cb59-6"><a href=""></a>  <span class="fu">filter</span>(codigo_region<span class="sc">==</span><span class="st">"08"</span>)</span>
-<span id="cb59-7"><a href=""></a></span>
-<span id="cb59-8"><a href=""></a>mapa <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 5
-  codigo_comuna codigo_provincia codigo_region                          geometry
-  &lt;chr&gt;         &lt;chr&gt;            &lt;chr&gt;                        &lt;MULTIPOLYGON [°]&gt;
-1 08308         083              08            (((-71.67889 -37.80871, -71.6746…
-2 08314         083              08            (((-71.20222 -37.65613, -71.1991…
-# ℹ 1 more variable: nombre_comuna &lt;chr&gt;</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href=""></a>mapa_datos <span class="ot">&lt;-</span> mapa <span class="sc">|&gt;</span> </span>
-<span id="cb61-2"><a href=""></a>  <span class="co"># crear una variable para comunas específicas</span></span>
-<span id="cb61-3"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="fu">case_when</span>(nombre_comuna <span class="sc">==</span> <span class="st">"Chiguayante"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb61-4"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"San Pedro de la Paz"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb61-5"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Coronel"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb61-6"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Hualpen"</span> <span class="sc">~</span> <span class="st">"No fui"</span>,</span>
-<span id="cb61-7"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Lota"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb61-8"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Concepcion"</span> <span class="sc">~</span> <span class="st">"Fui"</span>,</span>
-<span id="cb61-9"><a href=""></a>                              nombre_comuna <span class="sc">==</span> <span class="st">"Santa Juana"</span> <span class="sc">~</span> <span class="st">"No fui"</span>)) <span class="sc">|&gt;</span> </span>
-<span id="cb61-10"><a href=""></a>  <span class="fu">select</span>(nombre_comuna, codigo_comuna, variable, geometry)</span>
-<span id="cb61-11"><a href=""></a></span>
-<span id="cb61-12"><a href=""></a>mapa_datos <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 1 × 4
-  nombre_comuna codigo_comuna variable                                  geometry
-  &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;                           &lt;MULTIPOLYGON [°]&gt;
-1 Quilaco       08308         &lt;NA&gt;     (((-71.67889 -37.80871, -71.67466 -37.81…</code></pre>
-</div>
-</div>
-</section>
-<section id="chilemapas-visualizar" class="slide level2">
-<h2>ChileMapas: Visualizar</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href=""></a><span class="co"># visualizar</span></span>
-<span id="cb63-2"><a href=""></a>mapa_datos <span class="sc">|&gt;</span> </span>
-<span id="cb63-3"><a href=""></a>  <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb63-4"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry, </span>
-<span id="cb63-5"><a href=""></a>              <span class="at">fill =</span> variable), <span class="co">#usamos la variable que creamos como relleno de las comunas</span></span>
-<span id="cb63-6"><a href=""></a>          <span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
-<span id="cb63-7"><a href=""></a>  <span class="fu">theme_void</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-42-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</section>
-<section id="chilemapas-un-ejemplo-a-las-regiones" class="slide level2">
-<h2>ChileMapas: Un ejemplo a las regiones</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href=""></a>mapa_regiones <span class="sc">|&gt;</span> </span>
-<span id="cb64-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Simple feature collection with 3 features and 1 field
-Geometry type: GEOMETRY
-Dimension:     XY
-Bounding box:  xmin: -71.58939 ymin: -29.5351 xmax: -66.9909 ymax: -18.9369
-Geodetic CRS:  SIRGAS 2000
-# A tibble: 3 × 2
-  codigo_region                                                         geometry
-  &lt;chr&gt;                                                           &lt;GEOMETRY [°]&gt;
-1 01            POLYGON ((-69.93023 -21.4246, -69.92376 -21.42622, -69.91932 -2…
-2 02            MULTIPOLYGON (((-68.0676 -24.32856, -67.91698 -24.26902, -67.80…
-3 03            MULTIPOLYGON (((-71.58497 -29.02456, -71.58844 -29.02838, -71.5…</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href=""></a>mapa_regiones <span class="ot">&lt;-</span> mapa_regiones <span class="sc">%&gt;%</span></span>
-<span id="cb66-2"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">nombre_region =</span> <span class="fu">case_when</span>(</span>
-<span id="cb66-3"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"01"</span> <span class="sc">~</span> <span class="st">"Región de Tarapacá"</span>,</span>
-<span id="cb66-4"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"02"</span> <span class="sc">~</span> <span class="st">"Región de Antofagasta"</span>,</span>
-<span id="cb66-5"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"03"</span> <span class="sc">~</span> <span class="st">"Región de Atacama"</span>,</span>
-<span id="cb66-6"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"04"</span> <span class="sc">~</span> <span class="st">"Región de Coquimbo"</span>,</span>
-<span id="cb66-7"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"05"</span> <span class="sc">~</span> <span class="st">"Región de Valparaíso"</span>,</span>
-<span id="cb66-8"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"06"</span> <span class="sc">~</span> <span class="st">"Región del Libertador General Bernardo O'Higgins"</span>,</span>
-<span id="cb66-9"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"07"</span> <span class="sc">~</span> <span class="st">"Región del Maule"</span>,</span>
-<span id="cb66-10"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"08"</span> <span class="sc">~</span> <span class="st">"Región del Biobío"</span>,</span>
-<span id="cb66-11"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"09"</span> <span class="sc">~</span> <span class="st">"Región de La Araucanía"</span>,</span>
-<span id="cb66-12"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"10"</span> <span class="sc">~</span> <span class="st">"Región de Los Lagos"</span>,</span>
-<span id="cb66-13"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"11"</span> <span class="sc">~</span> <span class="st">"Región de Aysén del General Carlos Ibáñez del Campo"</span>,</span>
-<span id="cb66-14"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"12"</span> <span class="sc">~</span> <span class="st">"Región de Magallanes y de la Antártica Chilena"</span>,</span>
-<span id="cb66-15"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"13"</span> <span class="sc">~</span> <span class="st">"Región Metropolitana de Santiago"</span>,</span>
-<span id="cb66-16"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"14"</span> <span class="sc">~</span> <span class="st">"Región de Los Ríos"</span>,</span>
-<span id="cb66-17"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"15"</span> <span class="sc">~</span> <span class="st">"Región de Arica y Parinacota"</span>,</span>
-<span id="cb66-18"><a href=""></a>    codigo_region <span class="sc">==</span> <span class="st">"16"</span> <span class="sc">~</span> <span class="st">"Región de Ñuble"</span>,</span>
-<span id="cb66-19"><a href=""></a>    <span class="cn">TRUE</span> <span class="sc">~</span> <span class="cn">NA_character_</span></span>
-<span id="cb66-20"><a href=""></a>  ))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="chilemapas-un-ejemplo-a-las-regiones-1" class="slide level2">
-<h2>ChileMapas: Un ejemplo a las regiones</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href=""></a>perros_callejeros <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 2 × 2
-  codigo_region perros_calle_por_1000hab
-  &lt;chr&gt;                            &lt;dbl&gt;
-1 01                                52.8
-2 02                                42.7</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href=""></a>mapa_regiones2 <span class="ot">&lt;-</span> mapa_regiones <span class="sc">|&gt;</span> <span class="fu">inner_join</span>(perros_callejeros, <span class="at">by =</span> <span class="st">"codigo_region"</span>) <span class="sc">|&gt;</span> <span class="fu">glimpse</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Rows: 16
-Columns: 4
-$ codigo_region            &lt;chr&gt; "01", "02", "03", "04", "05", "06", "07", "08…
-$ geometry                 &lt;GEOMETRY [°]&gt; POLYGON ((-69.93023 -21.424..., MULT…
-$ nombre_region            &lt;chr&gt; "Región de Tarapacá", "Región de Antofagasta"…
-$ perros_calle_por_1000hab &lt;dbl&gt; 52.8, 42.7, 25.4, 41.1, 56.9, 33.5, 26.0, 73.…</code></pre>
-</div>
-</div>
-<div class="cell">
-<div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 16 × 4
-   codigo_region                   geometry nombre_region perros_calle_por_100…¹
-   &lt;chr&gt;                     &lt;GEOMETRY [°]&gt; &lt;chr&gt;                          &lt;dbl&gt;
- 1 01            POLYGON ((-69.93023 -21.4… Región de Ta…                   52.8
- 2 02            MULTIPOLYGON (((-68.0676 … Región de An…                   42.7
- 3 03            MULTIPOLYGON (((-71.58497… Región de At…                   25.4
- 4 04            MULTIPOLYGON (((-70.54551… Región de Co…                   41.1
- 5 05            MULTIPOLYGON (((-71.33832… Región de Va…                   56.9
- 6 06            POLYGON ((-71.5477 -34.87… Región del L…                   33.5
- 7 07            POLYGON ((-70.41724 -35.6… Región del M…                   26  
- 8 08            MULTIPOLYGON (((-73.53466… Región del B…                   73.9
- 9 09            MULTIPOLYGON (((-73.35306… Región de La…                   51  
-10 10            MULTIPOLYGON (((-73.1691 … Región de Lo…                   30  
-11 11            MULTIPOLYGON (((-75.41754… Región de Ay…                   62.9
-12 12            MULTIPOLYGON (((-70.35563… Región de Ma…                   83.2
-13 13            POLYGON ((-70.47405 -33.8… Región Metro…                   41.9
-14 14            MULTIPOLYGON (((-73.39503… Región de Lo…                   52.1
-15 15            POLYGON ((-69.07223 -19.0… Región de Ar…                   25.4
-16 16            POLYGON ((-72.38553 -36.9… Región de Ñu…                   78.2
-# ℹ abbreviated name: ¹​perros_calle_por_1000hab</code></pre>
-</div>
-</div>
-</section>
-<section id="chilemapas-un-ejemplo-a-las-regiones-2" class="slide level2">
-<h2>ChileMapas: Un ejemplo a las regiones</h2>
-<div class="columns">
-<div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
-<span id="cb72-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
-<span id="cb72-3"><a href=""></a>  <span class="co"># especificar la geometría del mapa</span></span>
-<span id="cb72-4"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
-<span id="cb72-5"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab</span>
-<span id="cb72-6"><a href=""></a>             )) <span class="sc">+</span> <span class="co"># graficar</span></span>
-<span id="cb72-7"><a href=""></a>  <span class="fu">geom_sf</span>() </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-49-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div><div class="column" style="width:50%;">
-<div class="cell">
-<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href=""></a>mapa_regiones2 <span class="sc">|&gt;</span> </span>
-<span id="cb73-2"><a href=""></a>  <span class="fu">st_set_geometry</span>(mapa_regiones<span class="sc">$</span>geometry) <span class="sc">|&gt;</span> </span>
-<span id="cb73-3"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">geometry =</span> geometry,</span>
-<span id="cb73-4"><a href=""></a>             <span class="at">fill =</span> perros_calle_por_1000hab)) <span class="sc">+</span></span>
-<span id="cb73-5"><a href=""></a>  <span class="fu">geom_sf</span>(<span class="at">color =</span> <span class="st">"gray90"</span>) <span class="sc">+</span></span>
-<span id="cb73-6"><a href=""></a>  <span class="fu">coord_sf</span>(<span class="at">xlim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">77</span>, <span class="sc">-</span><span class="dv">65</span>)) <span class="sc">+</span></span>
-<span id="cb73-7"><a href=""></a><span class="fu">scale_fill_gradient</span>(</span>
-<span id="cb73-8"><a href=""></a>  <span class="at">low =</span> <span class="st">"#8EC3E2"</span>,</span>
-<span id="cb73-9"><a href=""></a>  <span class="at">high =</span> <span class="st">"#BB1515"</span>,</span>
-<span id="cb73-10"><a href=""></a>  <span class="at">name =</span> <span class="st">"Perros / 1000 hab."</span></span>
-<span id="cb73-11"><a href=""></a>) <span class="sc">+</span></span>
-<span id="cb73-12"><a href=""></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb73-13"><a href=""></a>  <span class="fu">labs</span>(</span>
-<span id="cb73-14"><a href=""></a>    <span class="at">title =</span> <span class="st">"Perros callejeros"</span>,</span>
-<span id="cb73-15"><a href=""></a>    <span class="at">subtitle =</span> <span class="st">"En Chile por cada mil habitantes"</span></span>
-<span id="cb73-16"><a href=""></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure>
-<p><img data-src="presentacion_clase5_files/figure-revealjs/unnamed-chunk-50-1.png" width="960"></p>
-</figure>
-</div>
-</div>
-</div>
-</div></div>
-</section>
-<section id="fuente-utilizadas" class="slide level2">
-<h2>Fuente utilizadas</h2>
-<ol type="1">
-<li class="fragment"><a href="https://rpubs.com/bastimapache/mapa_urbano_rm">Tutorial BastiMapache</a></li>
-</ol>
 </section></section>
 <section id="vamos-al-código" class="title-slide slide level1 center">
 <h1>Vamos al código!</h1>
