@@ -30,6 +30,71 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="presentacion_clase6_files/libs/revealjs/dist/theme/quarto.css">
   <link href="presentacion_clase6_files/libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -323,12 +388,15 @@
       margin-right: 0; 
     }
   </style>
+  <script src="presentacion_clase6_files/libs/kePrint-0.0.1/kePrint.js"></script>
+  <link href="presentacion_clase6_files/libs/lightable-0.0.1/lightable.css" rel="stylesheet">
   <style>
     .reveal .slides {
       padding-top: 0px !important;
+      margin-top: -20px !important;
     }
     .reveal h2 {
-      margin-top: -20px !important;
+      /* puedes agregar estilos aquí */
     }
   </style>
 </head>
@@ -400,8 +468,612 @@ Matías Deneken
 </figure>
 </div>
 </section></section>
+<section>
+<section id="conceptos-claves" class="title-slide slide level1 center">
+<h1>Conceptos claves</h1>
+
+</section>
+<section id="conceptos-claves-aprendizaje-supervisado" class="slide level2">
+<h2>Conceptos claves (Aprendizaje supervisado)</h2>
+<p>En este enfoque, cada dato de entrenamiento cuenta con una etiqueta (label), es decir, la respuesta correcta que queremos enseñar al modelo.</p>
+<ul>
+<li class="fragment">Correo electrónico → spam o no spam.</li>
+<li class="fragment">Texto de opinión → sentimiento: positivo, negativo, neutral.</li>
+</ul>
+<p>Cómo funciona:</p>
+<ul>
+<li class="fragment">Alimentamos el modelo con ejemplos (entrada, etiqueta) –&gt; El modelo aprende a mapear entradas a etiquetas. Luego puede predecir etiquetas en datos nuevos.</li>
+</ul>
+<p>Ejemplos en ciencias sociales:</p>
+<ul>
+<li class="fragment"><p>Clasificar tweets por ideología política: cada tweet con etiqueta izquierda, derecha, etc.</p></li>
+<li class="fragment"><p>Predecir estado cultural: texto de entrevistas etiquetado como “optimista” o “pesimista”.</p></li>
+</ul>
+</section>
+<section id="conceptos-claves-aprendizaje-supervisado-1" class="slide level2">
+<h2>Conceptos claves (Aprendizaje supervisado)</h2>
+<h3 id="ejemplo-clasificación-de-tweets-por-orientación-ideológica">Ejemplo: Clasificación de tweets por orientación ideológica</h3>
+<h4 id="objetivo">Objetivo</h4>
+<p>Clasificar tweets según si expresan una&nbsp;<strong>posición política de derecha</strong>&nbsp;(vs.&nbsp;centro o izquierda).</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 75%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Texto del tweet</th>
+<th>Etiqueta</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>“Los empresarios crean empleo, no el Estado. Menos intervención, por favor.”</td>
+<td>derecha</td>
+</tr>
+<tr class="even">
+<td>“No más ideología de género en las escuelas. Dejen educar a los padres.”</td>
+<td>derecha</td>
+</tr>
+<tr class="odd">
+<td>“El gobierno debe garantizar salud pública y educación gratuita”</td>
+<td>izquierda</td>
+</tr>
+<tr class="even">
+<td>“La constitución debe reconocer los derechos de los pueblos originarios”</td>
+<td>izquierda</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="conceptos-claves-aprendizaje-supervisado-2" class="slide level2">
+<h2>Conceptos claves (Aprendizaje supervisado)</h2>
+<h3 id="qué-contienen-los-tweets-de-derecha">¿Qué contienen los tweets de derecha?</h3>
+<ul>
+<li class="fragment"><p><strong>Temas frecuentes</strong>:</p>
+<ul>
+<li class="fragment"><p>orden, ley, seguridad</p></li>
+<li class="fragment"><p>libertad económica, emprendimiento</p></li>
+<li class="fragment"><p>defensa de Carabineros o militares</p></li>
+<li class="fragment"><p>rechazo al Estado grande o a políticas redistributivas</p></li>
+<li class="fragment"><p>crítica a ideologías progresistas (feminismo, género, multiculturalismo)</p></li>
+</ul></li>
+<li class="fragment"><p><strong>Lenguaje característico</strong>:</p>
+<ul>
+<li class="fragment">“ideología de género”, “orden”, “delincuencia”, “progreso real”, “libertad”</li>
+</ul></li>
+</ul>
+</section>
+<section id="conceptos-claves-aprendizaje-supervisado-3" class="slide level2">
+<h2>Conceptos claves (Aprendizaje supervisado)</h2>
+<h3 id="cómo-usar-esto-para-clasificar">¿Cómo usar esto para clasificar?</h3>
+<ol type="1">
+<li class="fragment"><p><strong>Recolectas más tweets</strong>.</p></li>
+<li class="fragment"><p><strong>Etiquetas una muestra manualmente</strong>&nbsp;(<code>derecha</code>,&nbsp;<code>izquierda</code>,&nbsp;<code>centro</code>,&nbsp;<code>ambiguo</code>).</p></li>
+<li class="fragment"><p>Tokenizas el texto y extraes características (TF-IDF o embeddings).</p></li>
+<li class="fragment"><p>Entrenas un clasificador supervisado (por ejemplo: regresión logística).</p></li>
+<li class="fragment"><p>Evalúas su precisión en una muestra de test.</p></li>
+</ol>
+</section>
+<section id="conceptos-claves-aprendizaje-no-supervisado" class="slide level2">
+<h2>Conceptos claves (Aprendizaje No Supervisado)</h2>
+<p>El aprendizaje&nbsp;<strong>no supervisado</strong>&nbsp;es un enfoque del machine learning en el cual&nbsp;<strong>no contamos con etiquetas previas</strong>. En lugar de predecir una clase o valor, el algoritmo&nbsp;<strong>explora patrones internos en los datos</strong>, buscando:</p>
+<ul>
+<li class="fragment"><p>Agrupar elementos similares (<strong>clustering</strong>)</p></li>
+<li class="fragment"><p>Detectar&nbsp;<strong>temas latentes</strong>&nbsp;o estructuras (ej. con LDA)</p></li>
+</ul>
+<h4 id="por-qué-usarlo-en-texto">🧾 ¿Por qué usarlo en texto?</h4>
+<ul>
+<li class="fragment"><p>Los textos muchas veces&nbsp;<strong>no vienen etiquetados</strong>.</p></li>
+<li class="fragment"><p>Etiquetar manualmente puede ser&nbsp;<strong>costoso, subjetivo y lento</strong>.</p></li>
+<li class="fragment"><p>El no supervisado permite:</p>
+<ul>
+<li class="fragment"><p><strong>Explorar corpus grandes</strong></p></li>
+<li class="fragment"><p><strong>Detectar patrones sin sesgo</strong></p></li>
+<li class="fragment"><p><strong>Agrupar textos automáticamente</strong>&nbsp;(temas, posturas, estilos)</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="conceptos-claves-aprendizaje-no-supervisado-1" class="slide level2">
+<h2>Conceptos claves (Aprendizaje No Supervisado)</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 75%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>ID</th>
+<th>Texto del tweet</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T1</td>
+<td>“Boric quiere acabar con las instituciones democráticas. Grave.”</td>
+</tr>
+<tr class="even">
+<td>T2</td>
+<td>“La libertad individual está por sobre el Estado. Basta de intervencionismo.”</td>
+</tr>
+<tr class="odd">
+<td>T3</td>
+<td>“Apoyo total a nuestras Fuerzas Armadas. Orden, disciplina y respeto.”</td>
+</tr>
+<tr class="even">
+<td>T4</td>
+<td>“La educación pública debe ser gratuita y de calidad. El Estado tiene un rol central.”</td>
+</tr>
+<tr class="odd">
+<td>T5</td>
+<td>“No a la ideología de género. Proteger la familia es prioridad nacional.”</td>
+</tr>
+</tbody>
+</table>
+<h4 id="limpieza-y-tokenización">Limpieza y tokenización</h4>
+<p>Después de limpiar (sin stopwords, sin hashtags ni puntuación), quedan tokens como:</p>
+<ul>
+<li class="fragment">T1: boric, quiere, acabar, instituciones, democráticas</li>
+<li class="fragment">T2: libertad, individual, estado, intervencionismo</li>
+<li class="fragment">T3: apoyo, fuerzas, armadas, orden, disciplina, respeto</li>
+</ul>
+</section>
+<section id="conceptos-claves-1" class="slide level2">
+<h2>Conceptos claves</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-striped table-hover caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>📊 Matriz documento-palabra binaria (0/1)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">Tuit</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">boric</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">quiere</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">acabar</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">instituciones</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">democráticas</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">libertad</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">individual</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">estado</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">intervencionismo</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">apoyo</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">fuerzas</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">armadas</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">orden</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">disciplina</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">respeto</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">educación</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">pública</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">gratuita</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">calidad</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">rol</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">ideología</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">género</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">proteger</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">familia</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">prioridad</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">nacional</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">T1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T2</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T3</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T4</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T5</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<ul>
+<li class="fragment">T4: educación, pública, gratuita, calidad, estado, rol</li>
+<li class="fragment">T5: ideología, género, proteger, familia, prioridad, nacional</li>
+</ul>
+</section>
+<section id="conceptos-claves-2" class="slide level2">
+<h2>Conceptos claves</h2>
+<ul>
+<li class="fragment"><p><strong>Comparar tweets según palabras compartidas</strong><br>
+Para cada par de tweets, puedes contar cuántas palabras tienen en común.</p></li>
+<li class="fragment"><p><strong>Calcular similitud manualmente</strong><br>
+La&nbsp;<strong>similitud del coseno</strong>&nbsp;se puede calcular a mano usando su fórmula:</p>
+<p><span class="math display">\[
+\text{sim}(A, B) = \frac{A \cdot B}{\|A\| \cdot \|B\|}
+\]</span>​</p></li>
+<li class="fragment"><p>( A B ): es el <strong>producto punto</strong> entre los vectores ( A ) y ( B ). Mide cuántas palabras tienen en común, y puede incorporar pesos si se usan frecuencias o valores como TF-IDF.</p></li>
+<li class="fragment"><p>( |A| ) y ( |B| ): son las <strong>normas</strong> (o magnitudes) de los vectores ( A ) y ( B ).</p></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href=""></a><span class="co">#calidad, educación, estado, gratuita, individual, intervencionismo, libertad, pública, rol</span></span>
+<span id="cb3-2"><a href=""></a></span>
+<span id="cb3-3"><a href=""></a>T2 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb3-4"><a href=""></a>T4 <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="conceptos-claves-3" class="slide level2">
+<h2>Conceptos claves</h2>
+<h3 id="cálculo-paso-a-paso">Cálculo paso a paso</h3>
+<h4 id="producto-punto">1. Producto punto</h4>
+<p><span class="math display">\[
+A \cdot B = (0 \cdot 1) + (0 \cdot 1) + (1 \cdot 1) + (0 \cdot 1) + (1 \cdot 0) + (1 \cdot 0) + (1 \cdot 0) + (0 \cdot 1) + (0 \cdot 1) = 1
+\]</span></p>
+<h4 id="normas">2. Normas</h4>
+<p><span class="math display">\[
+\|T_2\| = \sqrt{1^2 + 1^2 + 1^2 + 1^2} = \sqrt{4} = 2
+\]</span></p>
+<p><span class="math display">\[
+\|T_4\| = \sqrt{1^2 + 1^2 + 1^2 + 1^2 + 1^2 + 1^2} = \sqrt{6} \approx 2.449
+\]</span></p>
+<h4 id="similitud-del-coseno">3. Similitud del coseno</h4>
+<p><span class="math display">\[
+\text{sim}(T_2, T_4) = \frac{1}{2 \cdot 2.449} = \frac{1}{4.898} \approx 0.204
+\]</span></p>
+</section>
+<section id="conceptos-claves-modealmiento-de-tópicos-lda." class="slide level2">
+<h2>Conceptos claves: Modealmiento de tópicos (LDA).</h2>
+<p>El modelamiento de tópicos es una técnica de aprendizaje automático no supervisado que permite descubrir temas latentes (tópicos) en un conjunto de documentos de texto.</p>
+<p>Un tópico es una distribución de probabilidad sobre palabras. Cada documento es una mezcla de estos tópicos. El algoritmo más usado es LDA (Latent Dirichlet Allocation).</p>
+<p>1. Representación vectorial (matriz documento-palabra):</p>
+<ul>
+<li class="fragment">Antes transformaste los tweets en vectores binarios con 0 y 1 (presencia/ausencia de palabras).</li>
+</ul>
+<!-- -->
+<ul>
+<li class="fragment">Esa matriz es el insumo de LDA.</li>
+</ul>
+<ol start="2" type="1">
+<li class="fragment"><p>Similitud del coseno:</p>
+<ul>
+<li class="fragment">Te permite medir cuánto se parecen dos documentos, comparando directamente sus vectores.</li>
+</ul>
+<!-- -->
+<ul>
+<li class="fragment">LDA da un paso más: en lugar de medir similitud directa, infiere estructuras ocultas que agrupan palabras y documentos según temas latentes (por ejemplo: Estado)</li>
+</ul></li>
+</ol>
+</section>
+<section id="modelamiento-lda-en-r-tweets." class="slide level2">
+<h2>Modelamiento LDA en R: Tweets.</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href=""></a><span class="co"># Crear dataset</span></span>
+<span id="cb4-2"><a href=""></a>tweets <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
+<span id="cb4-3"><a href=""></a>  <span class="at">id =</span> <span class="fu">paste0</span>(<span class="st">"T"</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>),</span>
+<span id="cb4-4"><a href=""></a>  <span class="at">texto =</span> <span class="fu">c</span>(</span>
+<span id="cb4-5"><a href=""></a>    <span class="st">"Boric quiere acabar con las instituciones democráticas. Grave."</span>,</span>
+<span id="cb4-6"><a href=""></a>    <span class="st">"La libertad individual está por sobre el Estado. Basta de intervencionismo."</span>,</span>
+<span id="cb4-7"><a href=""></a>    <span class="st">"Apoyo total a nuestras Fuerzas Armadas. Orden, disciplina y respeto."</span>,</span>
+<span id="cb4-8"><a href=""></a>    <span class="st">"La educación pública debe ser gratuita y de calidad. El Estado tiene un rol central."</span>,</span>
+<span id="cb4-9"><a href=""></a>    <span class="st">"No a la ideología de género. Proteger la familia es prioridad nacional."</span>,</span>
+<span id="cb4-10"><a href=""></a>    <span class="st">"El orden público debe garantizarse. Apoyo a Carabineros."</span>,</span>
+<span id="cb4-11"><a href=""></a>    <span class="st">"El Estado no debe intervenir en la economía. Basta de burocracia."</span>,</span>
+<span id="cb4-12"><a href=""></a>    <span class="st">"La patria necesita líderes firmes. Basta de debilidad institucional."</span>,</span>
+<span id="cb4-13"><a href=""></a>    <span class="st">"Los padres tienen derecho a decidir sobre la educación de sus hijos."</span>,</span>
+<span id="cb4-14"><a href=""></a>    <span class="st">"La delincuencia ha superado todos los límites. Más penas y más cárceles."</span></span>
+<span id="cb4-15"><a href=""></a>  )</span>
+<span id="cb4-16"><a href=""></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="modelamiento-lda-en-r" class="slide level2">
+<h2>Modelamiento LDA en R</h2>
+<h3 id="stopwords-y-token">Stopwords y Token</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href=""></a>stop_es <span class="ot">&lt;-</span> stopwords<span class="sc">::</span><span class="fu">stopwords</span>(<span class="st">"es"</span>)</span>
+<span id="cb5-2"><a href=""></a></span>
+<span id="cb5-3"><a href=""></a><span class="co"># Tokenización y limpieza con stopwords en español</span></span>
+<span id="cb5-4"><a href=""></a>tokens <span class="ot">&lt;-</span> tweets <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href=""></a>  <span class="fu">unnest_tokens</span>(word, texto) <span class="sc">%&gt;%</span></span>
+<span id="cb5-6"><a href=""></a>  <span class="fu">filter</span>(<span class="sc">!</span>word <span class="sc">%in%</span> stop_es) <span class="sc">%&gt;%</span></span>
+<span id="cb5-7"><a href=""></a>  <span class="fu">count</span>(id, word)</span>
+<span id="cb5-8"><a href=""></a></span>
+<span id="cb5-9"><a href=""></a>tokens <span class="sc">|&gt;</span> <span class="fu">head</span>(<span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 3
+  id    word             n
+  &lt;chr&gt; &lt;chr&gt;        &lt;int&gt;
+1 T1    acabar           1
+2 T1    boric            1
+3 T1    democráticas     1
+4 T1    grave            1</code></pre>
+</div>
+</div>
+<h3 id="convertir-en-matrix">Convertir en matrix</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href=""></a><span class="co"># Convertir a DocumentTermMatrix</span></span>
+<span id="cb7-2"><a href=""></a>dtm <span class="ot">&lt;-</span> tokens <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href=""></a>  <span class="fu">cast_dtm</span>(<span class="at">document =</span> id, <span class="at">term =</span> word, <span class="at">value =</span> n); dtm</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>&lt;&lt;DocumentTermMatrix (documents: 10, terms: 52)&gt;&gt;
+Non-/sparse entries: 59/461
+Sparsity           : 89%
+Maximal term length: 16
+Weighting          : term frequency (tf)</code></pre>
+</div>
+</div>
+</section>
+<section id="lda-en-r" class="slide level2">
+<h2>LDA en R</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href=""></a><span class="co"># Ajustar modelo LDA (3 tópicos)</span></span>
+<span id="cb9-2"><a href=""></a>lda_model <span class="ot">&lt;-</span> <span class="fu">LDA</span>(dtm, <span class="at">k =</span> <span class="dv">3</span>, <span class="at">control =</span> <span class="fu">list</span>(<span class="at">seed =</span> <span class="dv">1234</span>)) <span class="co"># Seed es para reproducibilidad</span></span>
+<span id="cb9-3"><a href=""></a></span>
+<span id="cb9-4"><a href=""></a><span class="co"># Distribución de palabras por tópico (beta)</span></span>
+<span id="cb9-5"><a href=""></a>topics_terms <span class="ot">&lt;-</span> <span class="fu">tidy</span>(lda_model, <span class="at">matrix =</span> <span class="st">"beta"</span>)</span>
+<span id="cb9-6"><a href=""></a></span>
+<span id="cb9-7"><a href=""></a><span class="co"># Mostrar las 5 palabras más probables por tópico</span></span>
+<span id="cb9-8"><a href=""></a>topics_terms <span class="sc">%&gt;%</span></span>
+<span id="cb9-9"><a href=""></a>  <span class="fu">group_by</span>(topic) <span class="sc">%&gt;%</span></span>
+<span id="cb9-10"><a href=""></a>  <span class="fu">slice_max</span>(beta, <span class="at">n =</span> <span class="dv">5</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-11"><a href=""></a>  <span class="fu">arrange</span>(topic, <span class="sc">-</span>beta) <span class="sc">%&gt;%</span></span>
+<span id="cb9-12"><a href=""></a>  <span class="fu">mutate</span>(<span class="at">term =</span> <span class="fu">reorder_within</span>(term, beta, topic)) <span class="sc">%&gt;%</span></span>
+<span id="cb9-13"><a href=""></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(beta, term, <span class="at">fill =</span> <span class="fu">factor</span>(topic))) <span class="sc">+</span></span>
+<span id="cb9-14"><a href=""></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb9-15"><a href=""></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>topic, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb9-16"><a href=""></a>  <span class="fu">scale_y_reordered</span>() <span class="sc">+</span></span>
+<span id="cb9-17"><a href=""></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Tópicos latentes en los tweets"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure>
+<p><img data-src="presentacion_clase6_files/figure-revealjs/unnamed-chunk-7-1.png" width="960"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="lda-en-r-1" class="slide level2">
+<h2>LDA en R</h2>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table caption-top" data-quarto-postprocess="true" style="width: auto !important; margin-left: auto; margin-right: auto;">
+<caption>Distribución de probabilidad por tópico (gamma)</caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">document</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Tópico_1</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Tópico_2</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Tópico_3</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">T1</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.342</td>
+<td style="text-align: right;">0.331</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T10</td>
+<td style="text-align: right;">0.336</td>
+<td style="text-align: right;">0.339</td>
+<td style="text-align: right;">0.325</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T2</td>
+<td style="text-align: right;">0.327</td>
+<td style="text-align: right;">0.332</td>
+<td style="text-align: right;">0.341</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">T3</td>
+<td style="text-align: right;">0.347</td>
+<td style="text-align: right;">0.326</td>
+<td style="text-align: right;">0.327</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">T4</td>
+<td style="text-align: right;">0.330</td>
+<td style="text-align: right;">0.332</td>
+<td style="text-align: right;">0.338</td>
+</tr>
+</tbody>
+</table>
+
+
+</div>
+</div>
+<ul>
+<li class="fragment"><p>Cada celda muestra la probabilidad de que un tweet esté asociado a un determinado tópico. Por ejemplo:</p>
+<ul>
+<li class="fragment">T1 tiene: 32.7% de pertenencia al Tópico 1, 34.2% al Tópico 2, 33.1% al Tópico 3.</li>
+</ul></li>
+</ul>
+</section></section>
+<section id="después-veremos-datos-reales" class="title-slide slide level1 center">
+<h1>DESPUÉS VEREMOS DATOS REALES</h1>
+
+</section>
+
+<section>
+<section id="uso-de-ia-generativa-para-datos-textuales" class="title-slide slide level1 center">
+<h1>USO DE IA GENERATIVA PARA DATOS TEXTUALES</h1>
+
+</section>
+<section id="qué-es-un-prompt" class="slide level2">
+<h2>¿Qué es un <em>prompt</em>?</h2>
+<p>Un&nbsp;<strong>prompt</strong>&nbsp;es el&nbsp;<strong>texto de entrada</strong>&nbsp;que le das a un modelo de lenguaje (como ChatGPT) para obtener una respuesta.</p>
+<ul>
+<li class="fragment"><p>Puede ser una instrucción, una pregunta o un texto para completar.</p></li>
+<li class="fragment"><p>Es la&nbsp;<strong>forma en que dialogas con la IA</strong>.</p></li>
+</ul>
+<p>🔹&nbsp;<em>Ejemplo:</em></p>
+<blockquote>
+<p>“Resume este artículo en 3 frases”<br>
+“Clasifica este tuit como positivo o negativo”</p>
+</blockquote>
+<p>En modelos generativos,&nbsp;<strong>la calidad del resultado depende en gran medida del prompt.</strong></p>
+</section>
+<section id="qué-es-un-llm" class="slide level2">
+<h2>¿Qué es un <em>LLM</em>?</h2>
+<p>Un&nbsp;<strong>LLM</strong>&nbsp;(<em>Large Language Model</em>) es un&nbsp;<strong>modelo de lenguaje entrenado con enormes volúmenes de texto</strong>&nbsp;para predecir, generar o analizar lenguaje natural.</p>
+<p>🔹 Algunos conocidos:</p>
+<ul>
+<li class="fragment"><p>GPT-4 (OpenAI)</p></li>
+<li class="fragment"><p>BERT (Google)</p></li>
+<li class="fragment"><p>LLaMA (Meta)</p></li>
+<li class="fragment"><p>Claude (Anthropic)</p></li>
+</ul>
+<p>Estas arquitecturas permiten tareas como:</p>
+<ul>
+<li class="fragment"><p>Traducción automática</p></li>
+<li class="fragment"><p>Resumen de textos</p></li>
+<li class="fragment"><p>Análisis de sentimientos</p></li>
+<li class="fragment"><p>Extracción de tópicos o entidades</p></li>
+</ul>
+</section>
+<section id="qué-es-una-api" class="slide level2">
+<h2>¿Qué es una <em>API</em>?</h2>
+<p>Una&nbsp;<strong>API</strong>&nbsp;(<em>Application Programming Interface</em>) es una&nbsp;<strong>interfaz que permite que dos programas se comuniquen entre sí</strong>.</p>
+<p>🔹 En este contexto:<br>
+Una API te permite&nbsp;<strong>enviar texto a un LLM desde tu código</strong>&nbsp;(por ejemplo en R o Python), y recibir la respuesta automáticamente.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure>
+<p><img data-src="images/openIA.png" class="quarto-figure quarto-figure-center" width="566"></p>
+</figure>
+</div>
+</section></section>
 <section id="vamos-al-código" class="title-slide slide level1 center">
-<h1>Vamos al código!</h1>
+<h1>VAMOS AL CÓDIGO!</h1>
 <div class="quarto-auto-generated-content">
 <p><img src="images/logo_ciir.jpg" class="slide-logo"></p>
 <div class="footer footer-default">
