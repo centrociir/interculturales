@@ -13,9 +13,8 @@ library(dplyr)
 # ───────────────────────────────────────────────
 # 🔑 API KEY (solo una vez por sesión)
 # ───────────────────────────────────────────────
-Sys.setenv(GEMINI_API_KEY = "API KEY")
-openai_api_key <- Sys.getenv("API KEY")
-
+Sys.setenv(GEMINI_API_KEY = "")
+openai_api_key <- Sys.getenv("")
 
 # ───────────────────────────────────────────────
 # 🤖 FUNCIÓN GEMINI
@@ -56,7 +55,66 @@ gemini <- function(prompt,
 }
 
 # ───────────────────────────────────────────────
-# 🧠 PROMPT PARA DISCURSO DE ODIO
+# 🧠 PROMPT INICIAL ------
+# ───────────────────────────────────────────────
+
+prompt <- function(texto) {
+  glue(
+    "Eres un experto política y quiero que evalúes este texto según estrategias",
+    "redes de colaboración, tono, lenguaje y estilo",
+  )
+}
+
+
+texto_de_prueba <- "José Antonio Kast aseguró que el gobierno ha sido débil frente a la delincuencia y pidió mano dura. Afirmó que la izquierda protege a los delincuentes y que Carabineros debe recuperar el control del país."
+
+
+# Ejecutar prompt y análisis con Gemini
+resultado <- gemini(prompt = prompt(texto_de_prueba))
+
+# Mostrar resultado
+cat(resultado)
+
+
+# ───────────────────────────────────────────────
+# 🧠 PROMPT INICIAL MEJORADO ------
+# ───────────────────────────────────────────────
+
+
+prompt <- function(texto) {
+  glue::glue(
+    "Eres un analista político chileno especializado en discurso ideológico.\n",
+    "La derecha chilena se define como el conjunto de fuerzas políticas identificadas con ",
+    "valores conservadores o liberales en lo económico, que históricamente han defendido ",
+    "el orden institucional, el mercado libre y una visión tradicional de la sociedad. ",
+    "Esto incluye partidos como la UDI, RN, Evópoli y el Partido Republicano.\n\n",
+    
+    "Analiza este texto en base a las siguientes dimensiones. Si no aplica, responde con 'no aplica'.\n",
+    "Solo da un CONCEPTO concreto por línea, sin explicaciones.\n\n",
+    "1. Tópico temático principal:\n",
+    "2. Frame ideológico dominante:\n",
+    "3. Sentimiento global del texto:\n",
+    "4. Adversario(s) principal(es):\n",
+    "5. Posición respecto a Chile Vamos:\n",
+    "6. Alianzas simbólicas o redes mencionadas:\n",
+    "7. Personas nombradas:\n\n",
+    "Texto a analizar:\n{texto}"
+  )
+}
+
+
+
+texto_de_prueba <- "José Antonio Kast aseguró que el gobierno ha sido débil frente a la delincuencia y pidió mano dura. Afirmó que la izquierda protege a los delincuentes y que Carabineros debe recuperar el control del país."
+
+
+# Ejecutar prompt y análisis con Gemini
+resultado <- gemini(prompt = prompt(texto_de_prueba))
+
+# Mostrar resultado
+cat(resultado)
+
+# ───────────────────────────────────────────────
+# 🧠 PROMPT PARA DISCURSO DE ODIO-----
 # ───────────────────────────────────────────────
 prompt_odio <- function(texto) {
   glue(
