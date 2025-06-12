@@ -1,0 +1,82 @@
+---
+title: "Análisis cuantitativo del texto II"
+subtitle: "Unsupervised learning y GeminiAI"
+author: "Matías Deneken"
+logo: "images/logo_ciir.jpg"
+include-in-header:
+  - text: |
+      <style>
+        .reveal .slides {
+          padding-top: 0px !important;
+        }
+        .reveal h2 {
+          margin-top: -20px !important;
+        }
+      </style>
+footer: "Sesión 3: InteRculturales"
+date: "2025-05-22"
+date-format: long
+format: 
+  revealjs:
+    incremental: true
+    theme: simple
+    width: 1600
+    height: 900
+    transition: slide
+    slide-number: c/t
+    chalkboard: true
+    auto-stretch: false
+callout-appearance: minimal
+---
+
+```{r, eval=TRUE}
+library(tidyverse)
+library(sf)
+library(countrycode)
+library(chilemapas)
+```
+
+# ¿Qué veremos hoy?
+
+1.  ¿Cómo hacer cosas con las palabras?
+2. Breve repaso
+3.  Conceptos claves
+    a.  Unsupervised learning
+    b.  Modelamiento de tópicos
+    c. LLM
+    d. ¿Qué es una Api?
+4.  Uso y práctica en el software
+    a.  LDA
+    b. Api GeminiAI
+5.  Preguntas empíricas
+
+## Resultados esperados {.smaller}
+
+::: columns
+::: {.column width="50%"}
+### Análisis de texto con IA 🥱
+
+![](images/out_put-prompt.png){fig-align="center" width="564" height="435"}
+:::
+
+::: {.column width="50%"}
+### Modelamiento de tópicos (Bad Bunny songs)
+
+![](images/temas.png){fig-align="center" width="666"}
+:::
+:::
+
+## ¿Cómo hacer cosas con las palabras?
+
+```         
+Pues bien; si a un cervantista se le ocurriera decir: el Quijote empieza con dos palabras monosilábicas terminadas en n: (en y un), y sigue con una de cinco letras (lugar), con dos de dos letras (de la), con una de cinco o de seis (Mancha), y luego se le ocurriera derivar conclusiones de eso, inmediatamente se pensaría que está loco. La Biblia ha sido estudiada de ese modo.
+```
+
+```         
+Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches
+```
+
+![](img/borges.jpg){fig-align="center" width="579"}
+
+
+# Vamos al código!

@@ -58,12 +58,18 @@ textstat_simil(matriz_noticias, matriz_noticias["text1",], method = "cosine", ma
 # ======================================================
 
 # Leer archivo con 1000 noticias
-mil_noticias <- read_csv("bbdd/mil-noticias.csv") 
-#mil_noticias <- read_csv("bbdd/letras_jose.csv") |> rename(texto_noticia = Letra)
+#mil_noticias <- read_csv("bbdd/mil-noticias.csv") 
+mil_noticias <- read_csv("bbdd/letras.csv") |> rename(texto_noticia = Letra)
 
 # Cargar stopwords personalizadas
 lista_stopwords <- read_csv("https://raw.githubusercontent.com/7PartidasDigital/AnaText/master/datos/diccionarios/vacias.txt") |> 
   bind_rows(tibble(palabra = c("dijo", "dice", "año", "años", "país", "ser", "tiene")))
+
+lista_stopwords <- read_csv("https://raw.githubusercontent.com/7PartidasDigital/AnaText/master/datos/diccionarios/vacias.txt") |> 
+  bind_rows(tibble(palabra = c("dijo",  "dice",  "año",  "años",  "país",  "ser", 
+                               "tiene", "yeh", "eh","ey", "pa", "oh","to","eh", "na"
+                               )))
+
 
 # Agregar identificador de documento
 mil_noticias <- mil_noticias |> 
@@ -95,7 +101,12 @@ noticias_temas %>%
   ggplot(aes(y = term, x = beta, fill = factor(topic))) +
   geom_col(show.legend = FALSE) +
   facet_wrap(~topic, scales = "free") +
-  scale_y_reordered()
+  scale_y_reordered() +
+  labs(title = "Palabras más relevantes por tópico",
+       x = "Probabilidad de la palabra (beta)",
+       y = "Palabra") 
+
+ggsave("image/temas.png", width = 10, height = 6, dpi = 300)
 
 # ======================================================
 # ASIGNACIÓN DE TÓPICOS A DOCUMENTOS (GAMMA)
