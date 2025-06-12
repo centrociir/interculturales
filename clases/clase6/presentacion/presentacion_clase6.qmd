@@ -3,30 +3,37 @@ title: "Análisis cuantitativo del texto II"
 subtitle: "Unsupervised learning y GeminiAI"
 author: "Matías Deneken"
 logo: "images/logo_ciir.jpg"
-include-in-header:
-  - text: |
-      <style>
-        .reveal .slides {
-          padding-top: 0px !important;
-        }
-        .reveal h2 {
-          margin-top: -20px !important;
-        }
-      </style>
 footer: "Sesión 3: InteRculturales"
 date: "2025-05-22"
 date-format: long
+
 format: 
   revealjs:
-    incremental: true
     theme: simple
+    incremental: true
     width: 1600
     height: 900
     transition: slide
     slide-number: c/t
     chalkboard: true
     auto-stretch: false
+    include-in-header: 
+      text: |
+        <style>
+          .reveal .slides {
+            padding-top: 0px !important;
+            margin-top: -20px !important;
+          }
+          .reveal h2 {
+            /* puedes agregar estilos aquí */
+          }
+        </style>
+
 callout-appearance: minimal
+
+editor: 
+  markdown: 
+    wrap: sentence
 ---
 
 ```{r, eval=TRUE}
@@ -34,20 +41,27 @@ library(tidyverse)
 library(sf)
 library(countrycode)
 library(chilemapas)
+library(tidyverse)
+library(tidytext)
+library(topicmodels)
+library(tm)
+library(knitr)
+library(kableExtra)
+library(stopwords)
 ```
 
 # ¿Qué veremos hoy?
 
 1.  ¿Cómo hacer cosas con las palabras?
-2. Breve repaso
+2.  Breve repaso
 3.  Conceptos claves
     a.  Unsupervised learning
     b.  Modelamiento de tópicos
-    c. LLM
-    d. ¿Qué es una Api?
+    c.  LLM
+    d.  ¿Qué es una Api?
 4.  Uso y práctica en el software
     a.  LDA
-    b. Api GeminiAI
+    b.  Api GeminiAI
 5.  Preguntas empíricas
 
 ## Resultados esperados {.smaller}
@@ -78,5 +92,38 @@ Jorge Luis Borges en "La Cábala". Conferencias denominadas Siete Noches
 
 ![](img/borges.jpg){fig-align="center" width="579"}
 
+# Conceptos claves
 
-# Vamos al código!
+## Conceptos claves (Aprendizaje supervisado)
+
+En este enfoque, cada dato de entrenamiento cuenta con una etiqueta (label), es decir, la respuesta correcta que queremos enseñar al modelo.
+
+-   Correo electrónico → spam o no spam.
+-   Texto de opinión → sentimiento: positivo, negativo, neutral.
+
+Cómo funciona:
+
+-   Alimentamos el modelo con ejemplos (entrada, etiqueta) –\> El modelo aprende a mapear entradas a etiquetas. Luego puede predecir etiquetas en datos nuevos.
+
+Ejemplos en ciencias sociales:
+
+-   Clasificar tweets por ideología política: cada tweet con etiqueta izquierda, derecha, etc.
+
+-   Predecir estado cultural: texto de entrevistas etiquetado como “optimista” o “pesimista”.
+
+## Conceptos claves (Aprendizaje supervisado)
+
+### Ejemplo: Clasificación de tweets por orientación ideológica
+
+#### Objetivo
+
+Clasificar tweets según si expresan una **posición política de derecha** (vs. centro o izquierda).
+
+| Texto del tweet                                                              | Etiqueta  |
+|------------------------------------------------------|------------------|
+| "Los empresarios crean empleo, no el Estado. Menos intervención, por favor." | derecha   |
+| "No más ideología de género en las escuelas. Dejen educar a los padres."     | derecha   |
+| "El gobierno debe garantizar salud pública y educación gratuita"             | izquierda |
+| "La constitución debe reconocer los derechos de los pueblos originarios"     | izquierda |
+
+## 
