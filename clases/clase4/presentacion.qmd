@@ -28,7 +28,7 @@ Intereses:
 :::
 
 ::: {.column width="50%"}
-![](images/1-e4bf0e22.jpg){fig-alt="Alberto Anrique" fig-align="right" width="7.4cm" height="9.4cm"}
+![](image/image.jpeg){fig-alt="Alberto Anrique" fig-align="right" width="300"}
 
 ```         
                               Alberto Anrique D.
