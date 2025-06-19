@@ -1,0 +1,184 @@
+---
+title: "Presentación Web Scrapping"
+subtitle: "Primeros pasos para recopilar datos de páginas web"
+author: "Alberto Anrique D."
+format: revealjs
+theme: night
+editor: visual
+date: "June 19, 2025"
+---
+
+## Sobre mí {.smaller}
+
+Cientista Político. Actualmente se encuentra trabajando en el Laboratorio de Conversación Pública de la UCEN centrándose principalmente en labores de scraping y organización de datos. A su vez, ha participado en labores de investigación sobre las élites políticas y sociales. Finalmente Se destaca la participación en Café Geopolítico en el área de recolección de datos.
+
+::: columns
+::: {.column width="50%"}
+Intereses:
+
+-   La música y la política
+
+-   Plataformas de Redes Sociales
+
+-   Relaciones Internacionales (America Latina y Medio Oriente)
+
+-   La utilización de Redes Neuronales en las Ciencias Sociales
+
+-   Análisis de Medios de Comunicación
+:::
+
+::: {.column width="50%"}
+![](images/1-e4bf0e22.jpg){fig-alt="Alberto Anrique" fig-align="right" width="7.4cm" height="9.4cm"}
+
+```         
+                              Alberto Anrique D.
+```
+:::
+
+::: {.column width="50%"}
+
+------------------------------------------------------------------------
+:::
+:::
+
+## ¿Qué veremos hoy?
+
+1.  Páginas web
+    a.  lenguajes
+2.  ¿Qué es el Web Scrapping?
+3.  Usos y comandos en el software R
+4.  Explicación paso a paso
+5.  Casos prácticos
+
+## Páginas Web {.smaller}
+
+En internet existen un montón de páginas web, cada una con sus particularidades, pero todas comparten una lógica de organización interna para su funcionamiento y visualización, en este aspecto, destacan dos lenguajes fundamentales:
+
+![](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*bMdzfjPsvXIh3sR0DEnDpQ.jpeg){fig-align="left" width="564" height="345"} ![](https://media.gcflearnfree.org/content/6138c7c490347d098804a491_09_08_2021/Inspeccionar-elementos-html-de-una-pa%CC%81gina.png){fig-align="center" width="460" height="345"}
+
+## Lenguajes {.smaller}
+
+::: columns
+::: {.column width="50%"}
+**HTML (Hypertext Markup Languaje)**
+
+Es el lenguaje base de toda página web. Su función principal es estructurar el contenido mediante etiquetas como 'section', 'div', 'a', 'b', entre otras. HTML organiza la información en bloques jerárquicos (o de cascada) que, por sí solos, no tienen estilos visuales definidos. Para dar forma y diseño a esa estructura, se utiliza CSS (Cascading Style Sheets), el cual define colores, tamaños de fuente, márgenes, posiciones, etc.
+:::
+
+::: {.column width="50%"}
+**JavaScript**
+
+Es un lenguaje de programación que permite agregar interactividad y dinamismo a las páginas web. A diferencia de HTML, que es estático, JavaScript puede modificar la estructura del contenido en tiempo real, lo que complica la automatización o extracción de datos. Esto se debe a que los datos pueden generarse de forma asincrónica, es decir, cargarse después de que la página se ha renderizado inicialmente.
+:::
+:::
+
+# ¿Qué es el Web Scrapping? {.smaller}
+
+::: columns
+::: {.column width="60%"}
+El Web scrapping es una herramienta que permite extraer y ordenar datos de páginas web de forma automatizada y que, muchas veces, busca simular la navegación humana. Los procesos que se llevan a cabo son:
+:::
+
+::: {.column width="40%"}
+1.  Identificación de casos (¿Qué vamos a extraer?)
+2.  Desarrollo del Scraper (¿cuál será el lenguaje que utilizaremos?)
+3.  Extracción y almacenamiento (¿Dónde lo guardaremos?)
+:::
+:::
+
+## Usos y comandos en el software R (I) {.smaller}
+
+Paquetes importantes:
+
+::: columns
+::: {.column width="50%"}
+-   **rvest**
+
+    -   Es un paquete que facilita la extracción de datos de páginas web (web scraping). Funciona de manera similar a la biblioteca BeautifulSoup de Python.
+
+-   **dpylr**
+
+    -   Ofrece un conjunto consistente de funciones (verbos como el caso del "pipe") para filtrar, seleccionar, ordenar, transformar y resumir datos de manera eficiente y legible.
+:::
+
+::: {.column width="50%"}
+-   **tidyverse**
+
+    -   Se centra en la manipulación, visualización y transformación de datos de manera consistente y eficiente. Los paquetes que componen Tidyverse comparten una filosofía de diseño, gramática y estructuras de datos subyacentes comunes, lo que permite trabajar con datos de forma más armoniosa.
+:::
+:::
+
+## Usos y comandos en el software R (II) {.smaller}
+
+En R existe el paquete 'rvest' el cual tiene funciones de lectura (*read_html*), recolección(*html_element* o *html_elements*) y limpieza de datos (*html_text* o *html_text2*)
+
+Si quisieramos extraer el siguiente titular: \< h1 itemprop="name" class="entry-title "\> 100 preguntas sobre el nuevo desorden; Carlos Taibo\< /h1\>
+
+Necesitaríamos utilizar el siguiente comando:
+
+```{r}
+#| eval: TRUE
+#| echo: TRUE
+library(dplyr)
+library(rvest)
+
+prueba <- read_html("https://html.rincondelvago.com/100-preguntas-sobre-el-nuevo-desorden_carlos-taibo.html")
+titular <- prueba %>% html_element(".entry-title") %>% html_text2()
+
+
+```
+
+lo cual dejaría el siguiente texto:
+
+```{r}
+titular
+```
+
+## Explicación paso a paso (a) {.medium}
+
+Lo que se llevo a cabo en el código anterior fue:
+
+-   En primer lugar, se le pone un nombre a la URL, en este caso *"prueba"*. En prueba se le carga todo el HTML de la página de "El Rincón del Vago" con el comando **read_html**.
+
+-   Posteriormente, se cargan los datos que se encuentran en *"class= entry-title"*, en una variable, que en este caso se llama *"titular"*.
+
+-   Finalmente, para que el texto esté limpio se utiliza el comando **"html_text2"**.
+
+## Usos y comandos en el software R (III) {.smaller}
+
+*rvest* cuenta con un comando capaz de extraer tablas de páginas web, lo que facilita el la extracción manual, además de ser actualizable en caso de que la página agregue más datos, como ejemplo se utilizará la tabla de la Fórmula 1:
+
+\< table style="border-collapse:collapse;border-spacing:0" class="Table Table--align-right"\>\< /table\>
+
+```{r}
+#| eval: TRUE
+#| echo: TRUE
+formula1 <- read_html("https://www.espn.cl/deporte-motor/f1/posiciones")
+f1_data <- formula1 %>% html_element("table") %>% html_table()
+```
+
+Lo que daría como resultado:
+
+```{r}
+f1_data
+```
+
+## Explicación paso a paso (b)
+
+En este proceso se puede observar que:
+
+-   Lo primero que se hace es presentar la URL en una variable llamada *"formula1"*, para posteriormente hacer una variable que contenga los elementos que se encuentran en la sección *"table"* para así, posteriormente, pasarlos al comando **html_table** y que éste lo ordene.
+
+## ¿Cómo funciona Python? Una breve mirada {.smaller}
+
+En los primeros años de la programación se utilizaban lenguajes como PHP o C, los cuales para el análisis de datos eran (y son) engorrosos para llevar a cabo tareas determinadas. Frente a este conflicto Guido Van Rossum quizo facilitar el análisis de datos con un lenguaje de programación sencillo para el usuario promedio. Este ha logrado ser uno de los más utilizados en la actualidad e incluso ha logrado una gran versatilidad de temas como Machine Learning o Creación de Aplicaciones.
+
+Algunos paquetes que son fundamentales para la recopilación de datos son:
+
+-   csv (Comma Separated Values)
+
+-   bs4 (BeautifulSoup)
+
+-   os
+
+# Pasemos a un ejemplo práctico con la página de la Cuenta Pública :)
