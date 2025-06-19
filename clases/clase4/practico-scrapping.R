@@ -1,12 +1,13 @@
 #Paquetes a autilizar -----
 library(tidyverse)
+#install.packages(rvest)
 library(rvest)
 library(dplyr)
 library(lubridate)
 library(janitor)
-library(rvest)
 library(readr)
 library(stringr)
+#install.packages(httr)
 library(httr)
 #Texto El Rincón del Vago ------
 prueba <- read_html("https://html.rincondelvago.com/100-preguntas-sobre-el-nuevo-desorden_carlos-taibo.html")
